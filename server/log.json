@@ -1,0 +1,237 @@
+[
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539255142 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487828821 },
+      { "title": "Gotti", "year": 1996, "score": 0.481011033 }
+    ],
+    "movieRecommendation": "The Stone Killer, 1973"
+  },
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539238214 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487957329 },
+      { "title": "Gotti", "year": 1996, "score": 0.481038451 }
+    ],
+    "movieRecommendation": "Gotti, 1996"
+  },
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539238214 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487957329 },
+      { "title": "Gotti", "year": 1996, "score": 0.481038451 }
+    ],
+    "movieRecommendation": "The Stone Killer, 1973"
+  },
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539238214 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487957329 },
+      { "title": "Gotti", "year": 1996, "score": 0.481038451 }
+    ],
+    "movieRecommendation": "Black Hand, 1950"
+  },
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539238214 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487957329 },
+      { "title": "Gotti", "year": 1996, "score": 0.481038451 }
+    ],
+    "movieRecommendation": "The Stone Killer, 1973"
+  },
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539238214 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487957329 },
+      { "title": "Gotti", "year": 1996, "score": 0.481038451 }
+    ],
+    "movieRecommendation": "Gotti, 1996"
+  },
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539238214 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487957329 },
+      { "title": "Gotti", "year": 1996, "score": 0.481038451 }
+    ],
+    "movieRecommendation": "The Godfather, 1972"
+  },
+  {
+    "userQuery": "recommend me a movie about the italian mafia",
+    "startYear": "1940",
+    "endYear": "2015",
+    "databaseQueryResult": [
+      { "title": "The Stone Killer", "year": 1973, "score": 0.539238214 },
+      { "title": "Black Hand", "year": 1950, "score": 0.487957329 },
+      { "title": "Gotti", "year": 1996, "score": 0.481038451 }
+    ],
+    "movieRecommendation": "The Godfather II, 1974"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1900",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      {
+        "title": "The Incredible Mr. Limpet",
+        "year": 1964,
+        "score": 0.431454867
+      },
+      { "title": "All Is Lost", "year": 2013, "score": 0.400180757 },
+      { "title": "Splash", "year": 1984, "score": 0.400169134 }
+    ],
+    "movieRecommendation": "The Incredible Mr. Limpet, 1964"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1900",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      {
+        "title": "The Incredible Mr. Limpet",
+        "year": 1964,
+        "score": 0.431454867
+      },
+      { "title": "All Is Lost", "year": 2013, "score": 0.400180757 },
+      { "title": "Splash", "year": 1984, "score": 0.400169134 }
+    ],
+    "movieRecommendation": "The Incredible Mr. Limpet (1964)"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1900",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      {
+        "title": "The Incredible Mr. Limpet",
+        "year": 1964,
+        "score": 0.431454867
+      },
+      { "title": "All Is Lost", "year": 2013, "score": 0.400180757 },
+      { "title": "Splash", "year": 1984, "score": 0.400169134 }
+    ],
+    "movieRecommendation": "The Incredible Mr. Limpet, 1964"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1900",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      {
+        "title": "The Incredible Mr. Limpet",
+        "year": 1964,
+        "score": 0.431454867
+      },
+      { "title": "All Is Lost", "year": 2013, "score": 0.400180757 },
+      { "title": "Splash", "year": 1984, "score": 0.400169134 }
+    ],
+    "movieRecommendation": "The Incredible Mr. Limpet (1964)"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1900",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      {
+        "title": "The Incredible Mr. Limpet",
+        "year": 1964,
+        "score": 0.431454867
+      },
+      { "title": "All Is Lost", "year": 2013, "score": 0.400180757 },
+      { "title": "Splash", "year": 1984, "score": 0.400169134 }
+    ],
+    "movieRecommendation": "The Incredible Mr. Limpet (1964)"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1900",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      {
+        "title": "The Incredible Mr. Limpet",
+        "year": 1964,
+        "score": 0.431454867
+      },
+      { "title": "All Is Lost", "year": 2013, "score": 0.400180757 },
+      { "title": "Splash", "year": 1984, "score": 0.400169134 }
+    ],
+    "movieRecommendation": "The Incredible Mr. Limpet (1964)"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1970",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      { "title": "The Neptune Factor", "year": 1973, "score": 0.421696693 },
+      { "title": "Finding Dory", "year": 2016, "score": 0.414707273 },
+      { "title": "Splash", "year": 1984, "score": 0.414485186 }
+    ],
+    "movieRecommendation": "Finding Dory (2016)"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1970",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      { "title": "The Neptune Factor", "year": 1973, "score": 0.421847492 },
+      { "title": "Finding Dory", "year": 2016, "score": 0.414922446 },
+      { "title": "Splash", "year": 1984, "score": 0.414532393 }
+    ],
+    "movieRecommendation": "Finding Dory, 2016"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1970",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      { "title": "The Neptune Factor", "year": 1973, "score": 0.421396941 },
+      { "title": "Finding Dory", "year": 2016, "score": 0.41432178 },
+      { "title": "Splash", "year": 1984, "score": 0.413888544 }
+    ],
+    "movieRecommendation": "The Neptune Factor, 1973"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1970",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      { "title": "The Neptune Factor", "year": 1973, "score": 0.421396941 },
+      { "title": "Finding Dory", "year": 2016, "score": 0.41432178 },
+      { "title": "Splash", "year": 1984, "score": 0.413888544 }
+    ],
+    "movieRecommendation": "Splash, 1984"
+  },
+  {
+    "userQuery": "find me a movie about a fish that gets lost",
+    "startYear": "1970",
+    "endYear": "2020",
+    "databaseQueryResult": [
+      { "title": "The Neptune Factor", "year": 1973, "score": 0.421396941 },
+      { "title": "Finding Dory", "year": 2016, "score": 0.41432178 },
+      { "title": "Splash", "year": 1984, "score": 0.413888544 },
+      { "title": "All Is Lost", "year": 2013, "score": 0.404490948 },
+      { "title": "Wonderstruck", "year": 2017, "score": 0.394633085 }
+    ],
+    "movieRecommendation": "Finding Dory (2016)"
+  }
+]
