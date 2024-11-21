@@ -24,6 +24,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://localhost:8080'], // Allow both ports
+    methods: ['GET', 'POST'],
+    credentials: true,
+  })
+);
+
 app.post(
   '/api/ai/argument',
   parseUserQuery,

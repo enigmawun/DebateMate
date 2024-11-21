@@ -34,7 +34,6 @@ const ConversationPage = () => {
   const { backEndInput } = location.state || {}; // Get state values from location
   const topic = backEndInput.topic;
   const userSide = backEndInput.user_side;
-  console.log('is there anything in userside');
   const [aiArguments, setAiArguments] = useState([] as string[]);
   const [userArguments, setUserArguments] = useState([] as string[]);
   const [round, setRound] = useState(0);
@@ -47,51 +46,34 @@ const ConversationPage = () => {
   const [userStrongPoints, setuserStrongPoints] = useState([] as string[]);
 
   const [assessment, setAssessment] = useState({});
-  let argArray: any[] = [];
-  const createArgBody = () => {
-    for (let i = 0; i < aiArguments.length; i++) {
-      argArray.push(<Argument body={aiArguments[i]} />);
-      if (userArguments[i]) argArray.push(<Argument body={userArguments[i]} />);
-    }
-  };
-  const firstFetch = async () => {
-    try {
-      const newData = await fetch('http://localhost:3000/api/ai/argument', {
-        // rename here after
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_side: 'pro',
-          topic: topic,
-          round: round + 1,
-        }),
-      });
-      const data = await newData.json();
-      const newArr = data.ai_arguments;
-      console.log('NEW ARR: ', newArr);
-      setAiArguments(newArr);
-      createArgBody();
-    } catch {
-      console.error('error fetching first round of data');
-    }
-  };
-  // rerender components if aiInputState is updated
-  //function that creates paragraph for each argument in aiInputState and userInputState
 
-  //create an array of Argument components that alternates the AI's argument with the user's
-  //aiInputState[0], user_arguments[0], backEndInput.ai_arguments[1], user_arguments[1];
+  //  Move argArray into state to trigger re-renders
+  const [argumentElements, setArgumentElements] = useState<JSX.Element[]>([]);
+
+  // Update createArgBody to set state instead of mutating variable
+  const createArgBody = () => {
+    const newArgArray: JSX.Element[] = [];
+    for (let i = 0; i < aiArguments.length; i++) {
+      newArgArray.push(<Argument key={`ai-${i}`} body={aiArguments[i]} />);
+      if (userArguments[i]) {
+        newArgArray.push(
+          <Argument key={`user-${i}`} body={userArguments[i]} />
+        );
+      }
+    }
+    setArgumentElements(newArgArray);
+  };
+
+  // FUpdate useEffect to watch both arrays
   useEffect(() => {
-    firstFetch();
-  }, []);
+    createArgBody();
+  }, [aiArguments, userArguments]);
 
   //if aiInputState is changed, rerender components
   //populate the display with the chat bot's response
   useEffect(() => {
     if (userArguments[1] === null) createArgBody();
     else {
-      argArray = [];
       createArgBody();
     }
   }, [aiArguments]);
@@ -143,11 +125,9 @@ const ConversationPage = () => {
       console.log('data from server', data);
       //then we want to add string ai_argument to AI input state as new elem in array
       //store response object data on the existing array within backEndInput
-      const newAiArgumentsArr = [data.ai_arguments];
-      const updatedAiArguments: string[] = [...aiArguments].concat(
-        newAiArgumentsArr
-      );
-      setAiArguments(updatedAiArguments);
+      // Use the correct property name from server response
+      const newAiArgument = data.ai_argument; // Changed from ai_arguments
+      setAiArguments((prev) => [...prev, newAiArgument]);
 
       const newAiReasoningsArr = [data.ai_reasonings];
       const updatedAiReasonings: string[] = [...aiReasonings].concat(
@@ -183,7 +163,7 @@ const ConversationPage = () => {
       const updatedUserWeakPoints: string[] = [...userWeakPoints].concat(
         newUserWeakPoints
       );
-      setaiReasonings(updatedUserWeakPoints);
+      setUserWeakPoints(updatedUserWeakPoints);
 
       // backEndInput.ai_reasoning = data.ai_reasoning;
       // backEndInput.ai_strong_point = data.ai_strong_point;
@@ -267,15 +247,67 @@ const ConversationPage = () => {
     console.log('userInputState updated:', userArguments);
   }, [userArguments]);
 
-  // useEffect(() => {
-  //   sendArgToServer();
-  //   console.log(aiArguments);
-  // }, []);
+  useEffect(() => {
+    // Only run if we have the required data from location state
+    if (topic && userSide) {
+      console.log('Making initial fetch with:', { topic, userSide });
+
+      const initialFetch = async () => {
+        try {
+          const newData = await fetch('http://localhost:3000/api/ai/argument', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              user_arguments: [],
+              ai_arguments: [],
+              topic: topic,
+              user_side: userSide,
+              round: 0,
+            }),
+          });
+
+          if (!newData.ok) {
+            const errorText = await newData.text();
+            throw new Error(`HTTP Error ${newData.status}: ${errorText}`);
+          }
+
+          const data = await newData.json();
+          console.log('Initial API response:', data);
+
+          if (data.ai_argument) {
+            console.log('Setting AI argument:', data.ai_argument);
+            setAiArguments([data.ai_argument]);
+            setaiReasonings([data.ai_reasoning]);
+            setaiWeakPoints([data.ai_weak_point]);
+            setAiStrongPoints([data.ai_strong_point]);
+            setuserStrongPoints([data.user_strong_point]);
+            setUserWeakPoints([data.user_weak_point]);
+            setRound(1);
+          } else {
+            console.error('No AI argument in response:', data);
+          }
+        } catch (error) {
+          console.error('Error fetching  data:', error);
+        }
+      };
+
+      initialFetch();
+    } else {
+      console.log('Missing required data:', { topic, userSide });
+    }
+  }, [topic, userSide]);
+
+  useEffect(() => {
+    console.log('Current AI Arguments:', aiArguments);
+  }, [aiArguments]);
 
   return (
     <div>
       <h1>Conversation Page</h1>
-      {argArray}
+      {argumentElements} {/* Use the state array instead of variable */}
       <input
         type="text"
         value={userString}
