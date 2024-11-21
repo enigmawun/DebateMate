@@ -5,8 +5,8 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 // import Recommendations from './Components/Recommendations';
-import ConversationPage from './Components/Recommendations';
-import AssessmentPage from './Components/Recommendations';
+import ConversationPage from './Components/ConversationPage';
+import AssessmentPage from './Components/AssessmentPage';
 
 import {
   createBrowserRouter,
@@ -15,29 +15,56 @@ import {
 
 
 const App = () => {
-  const [proOrCon, setProOrCon] = useState(false)
-  const [prompt, choosePrompt] = useState('')
+  //const [proOrCon, setProOrCon] = useState('');
+  const [topic, setTopic] = useState('AI intelligence');
+  const [round, setRound] = useState(0);
 
   const navigate = useNavigate();
+
+  const proChoice = () => {
+    console.log("button is clicked");
+    // //setProOrCon("pro");
+    // console.log(proOrCon);
+    sendToConversationPage('pro');
+  }
+
+  const conChoice = () => {
+    console.log("button is clicked");
+    //setProOrCon("con");
+    // console.log(proOrCon);
+    sendToConversationPage('con');
+  }
   
-  const sendToConversationPage = async () => {
+  const sendToConversationPage = async (proOrCon : string) => {
     try {
       // Send data to backend
-      const aiInput = await fetch('http://localhost:5001/api/choices', { // rename here after
-        method: 'POST',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
-        body: JSON.stringify({
-          proOrCon, //shorthand here too
-          prompt, //shorthand here too
-        }),
-      });
+      console.log('pieces of state before we fetch: topic, round, proOrCon', topic, round, proOrCon)
+      // const backEndInput = await fetch('http://localhost:3000/api/ai/argument', { // rename here after
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     prompt, //shorthand here too
+      //     "user_arguments": [],
+      //     "ai_arguments": [],
+      //       "topic": {topic},
+      //       "user_side": {proOrCon},
+      //     "round": {round} 
+      //   }),
+      // });
   
       // Navigate to Conversation Page
       navigate('/conversationPage', { 
         state: { 
-          aiInput //name of the key is the same as the variable, shorthand
+          // backEndInput //name of the key is the same as the variable, shorthand
+          backEndInput : {
+            "user_arguments": [],
+            "ai_arguments": ['AI systems may appear intelligent, but their abilities are fundamentally limited to processing patterns and correlations from data within narrowly defined tasks. They lack the ability to generalize knowledge across domains, as a chess-playing AI, for example, cannot apply its problem-solving skills to composing music or diagnosing diseases without explicit retraining. Crucially, AI lacks intentionality, the hallmark of true intelligence, as it operates without goals, desires, or understanding of the world. Its outputs are the result of statistical computations rather than genuine reasoning or awareness. Ultimately, AI demonstrates an illusion of intelligence, driven by algorithmic sophistication, but it falls short of the creativity, awareness, and independent reasoning required for true intelligence.'],
+            "topic": topic,
+            "user_side": proOrCon,
+            "round": round,
+          }
         } 
       });
     } catch (error) {
@@ -49,13 +76,13 @@ const App = () => {
     <div>
       {/* <Recommendations /> */}
       <p> What would you like to debate? </p>
-      <select id="dropdown">
-        <option value="a">a</option>
-        <option value="b">b</option>
+      <select id="dropdown" onChange={(e)=>{setTopic(e.target.value)}}>
+        <option value="AI intelligence">Is AI capable of real intelligence?</option>
+        <option value="b">Other option to come</option>
       </select>
       <p> Choose your side </p>
-      <button onClick = {sendToConversationPage}>PRO</button>
-      <button onClick = {sendToConversationPage}>CON</button>
+      <button value="pro" onClick = {proChoice}>PRO</button>
+      <button value="con" onClick = {conChoice}>CON</button>
       
     </div>
   );

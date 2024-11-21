@@ -6,21 +6,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const ConversationPage = () => {
     
   const location = useLocation();
-  const { aiInput } = location.state || {}; // Get state values from location
+  const { backEndInput } = location.state || {}; // Get state values from location
 
   const [aiInputState, setAIInputState] = useState([]);
   const [userInputState, setUserInputState] = useState([])
 
-  // Save `aiInput` into the state on initial render
+  // Save `backEndInput` into the state on initial render
   useEffect(() => {
-    if (aiInput) {
-      setAIInputState(aiInputState.concat(aiInput));
+    if (backEndInput) {
+      setAIInputState(aiInputState.concat(backEndInput.ai_arguments[0]));
+      console.log(backEndInput, "backend input is here")
     }
-  }, [aiInput]);
+  }, []);
 
   const navigate = useNavigate();
 
   const gotoAssessmentPage = () => {
+    
+    // if round is 3
     navigate('/assessmentPage', { 
         state: { 
             aiInputState,
@@ -32,6 +35,7 @@ const ConversationPage = () => {
   return (
     <div>
       <h1>Conversation Page</h1>
+      <input>Input</input>
       <button onClick = {gotoAssessmentPage}>Submit</button>
     </div>
   );
