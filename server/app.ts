@@ -14,6 +14,8 @@ import {
   customizePrompts,
   parseArguments,
   parseTopic,
+  parseDebateHistoryFeedback,
+  customizeEvaluationPrompts
 } from './controllers/promptController.js';
 
 import { ServerError } from '../types/types.js';
@@ -29,7 +31,7 @@ app.post(
   parseTopic,
   customizePrompts,
   queryOpenAIArgument,
-  logDataDuringDebate,
+  // logDataDuringDebate,
   (_req, res) => {
     res.status(200).json({
       ai_argument: res.locals.aiArgument,
@@ -42,22 +44,25 @@ app.post(
   }
 );
 
-app.post(
-  '/api/ai/assessment',
-  parseUserQuery,
-  queryOpenAIEvaluation,
-  logDataAfterDebate,
-  (_req, res) => {
-    res.status(200).json({
-      comp_assessment: res.locals.compAssessment,
-      winner: res.locals.winner,
-      user_score: res.locals.userScore,
-      ai_score: res.locals.aiScore,
-      ai_advice: res.locals.aiAdvice,
-      user_blindspots: res.locals.userBlindspots,
-    });
-  }
-);
+// app.post(
+//   '/api/ai/assessment',
+//   parseUserQuery,
+//   parseTopic,
+//   parseDebateHistoryFeedback,
+//   customizeEvaluationPrompts 
+//   // queryOpenAIEvaluation,
+//   logDataAfterDebate,
+//   (_req, res) => {
+//     res.status(200).json({
+//       comp_assessment: res.locals.compAssessment,
+//       winner: res.locals.winner,
+//       user_score: res.locals.userScore,
+//       ai_score: res.locals.aiScore,
+//       ai_advice: res.locals.aiAdvice,
+//       user_blindspots: res.locals.userBlindspots,
+//     });
+//   }
+// );
 
 const errorHandler: ErrorRequestHandler = (
   err: ServerError,

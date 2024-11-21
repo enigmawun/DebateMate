@@ -6,6 +6,7 @@ export const parseUserQuery: RequestHandler = async (
   res,
   next
 ) => {
+  // console.log('BODY:', req.body);
   if (!req.body.topic || !req.body.user_side || !req.body.round) {
     const error: ServerError = {
       log: 'Either the topic, user_side or round is missing from the request body',
@@ -15,9 +16,24 @@ export const parseUserQuery: RequestHandler = async (
     return next(error);
   }
 
-  const { user_arguments, ai_arguments, topic, user_side, round } = req.body;
+  const {
+    user_arguments,
+    ai_arguments,
+    topic,
+    user_side,
+    round,
+    ai_reasonings,
+    ai_strong_points,
+    ai_weak_points,
+    user_strong_points,
+    user_weak_points,
+  } = req.body;
 
-  if (typeof topic !== 'string' || typeof user_side !== 'string' || typeof round !== 'number') {
+  if (
+    typeof topic !== 'string' ||
+    typeof user_side !== 'string' ||
+    typeof round !== 'number'
+  ) {
     const error: ServerError = {
       log: 'User query type is wrong',
       status: 400,
@@ -30,7 +46,21 @@ export const parseUserQuery: RequestHandler = async (
   res.locals.userArguments = user_arguments;
   res.locals.topic = topic;
   res.locals.userSide = user_side;
-  res.locals.round = round;
-  
+
+  if (
+    Array.isArray(ai_reasonings) &&
+    Array.isArray(ai_strong_points) &&
+    Array.isArray(ai_weak_points) &&
+    Array.isArray(user_strong_points) &&
+    Array.isArray(user_weak_points)
+  ) {
+    res.locals.aiReasonings = ai_reasonings;
+    res.locals.aiStrongPoints = ai_strong_points;
+    res.locals.aiWeakPoints = ai_weak_points;
+    res.locals.userStrongPoints = user_strong_points;
+    res.locals.userWeakPoints = user_weak_points;
+  }
+
+  console.log('User query parsed successfully');
   return next();
 };
