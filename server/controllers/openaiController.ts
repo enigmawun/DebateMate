@@ -9,6 +9,63 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
+
+  const { systemContent, user_arguments } = res.locals; 
+
+  if (!systemContent) {
+    const error: ServerError = {
+      log: 'queryOpenAIArgument did not receive system content ',
+      status: 500,
+      message: { err: 'An error occurred before querying OpenAI' },
+    };
+    return next(error);
+  }
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: systemContent,
+        },
+        {
+          role: 'user',
+          content: user_arguments,
+        },
+      ],
+      temperature: 1.3,
+    });
+
+    const argumentParams = JSON.parse(response.choices[0].message.content!);
+    if (argumentParams) {
+      res.locals.ai_argument = argumentParams.ai_argument;
+      res.locals.ai_reasoning = argumentParams.ai_reasoning;
+      res.locals.ai_strong_point = argumentParams.ai_strong_point;
+      res.locals.ai_weak_point = argumentParams.ai_weak_point;
+      res.locals.user_strong_point = argumentParams.user_strong_point;
+      res.locals.user_weak_point = argumentParams.user_weak_point;
+      return next();
+    } else {
+      const apiError: ServerError = {
+        log: 'OpenAI did not return an argument',
+        status: 500,
+        message: { err: 'An error occurred while querying OpenAI' },
+      };
+      return next(apiError);
+    }
+  } catch (err) {
+    const apiError: ServerError = {
+      log: 'queryOpenAI: Error: OpenAI error' + err,
+      status: 500,
+      message: { err: 'An error occurred while querying OpenAI' },
+    };
+    return next(apiError);
+  }
+  
+}
+
 export const queryOpenAIEmbedding: RequestHandler = async (_req, res, next) => {
   const { userQuery, startYear, endYear } = res.locals;
 
@@ -180,7 +237,14 @@ export const queryOpenAIChat: RequestHandler = async (_req, res, next) => {
     return next(apiError);
   }
 
+
   // res.locals.movieRecommendation =
   //   'Wishmaster - A malevolent genie wreaks havoc after being freed, leading to a battle between his dark desires and those trying to stop him.';
   // return next();
 };
+
+export const queryOpenAIEvaluation = async(req, res, next) => {
+    
+}
+
+
