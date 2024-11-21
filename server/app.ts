@@ -14,6 +14,8 @@ import {
   customizePrompts,
   parseArguments,
   parseTopic,
+  parseDebateHistoryFeedback,
+  customizeEvaluationPrompts
 } from './controllers/promptController.js';
 
 import { ServerError } from '../types/types.js';
@@ -45,6 +47,9 @@ app.post(
 app.post(
   '/api/ai/assessment',
   parseUserQuery,
+  parseTopic,
+  parseDebateHistoryFeedback,
+  customizeEvaluationPrompts 
   queryOpenAIEvaluation,
   logDataAfterDebate,
   (_req, res) => {

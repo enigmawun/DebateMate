@@ -5,25 +5,29 @@ import fs from 'fs';
 import path from 'path';
 
 export const logDataDuringDebate: RequestHandler = async (_req, res, next) => {
-
+  console.log('Beginning the logging process...');
   if (
-    res.locals.aiArguments &&
-    res.locals.userArguments &&
-    res.locals.parsedArguments &&
+    res.locals.aiArgument &&
+    // res.locals.userArguments &&
+    // res.locals.parsedArguments &&
     res.locals.topic &&
     res.locals.userSide &&
-    res.locals.round &&
-    res.locals.aiResponse
+    res.locals.round
   ) {
-   
+    console.log('Logging Data...');
     const loggingData = {
-      "parsedArguments": res.locals.parsedArguments,
-      "topic": res.locals.topic,
-      "userSide": res.locals.userSide,
-      "round": res.locals.round,
-      "aiResponse": res.locals.aiResponse
+      'debate topic': res.locals.parsedTopic,
+      "user's side": res.locals.userSide,
+      "round number": res.locals.round,
+      'past debate': res.locals.parsedArguments,
+      'new argument by ai': res.locals.aiArgument,
+      "ai's reasoning of this argument": res.locals.aiReasoning,
+      "ai's weak point of this argument": res.locals.aiStrongPoint,
+      "ai's strong point of this argument": res.locals.aiWeakPoint,
+      "user's strong point of last argument ": res.locals.userStrongPoint,
+      "user's weak point of last argument": res.locals.userWeakPoint,
     };
-
+    console.log('loggingData: ', loggingData);
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
     const filePath = path.join(__dirname, '../log.json');
 
@@ -41,17 +45,19 @@ export const logDataDuringDebate: RequestHandler = async (_req, res, next) => {
       const apiError: ServerError = {
         log: `logger: Error: logging failed ${err}`,
         status: 500,
-        message: { err: 'An error occurred while logging the data during the debate' },
+        message: {
+          err: 'An error occurred while logging the data during the debate',
+        },
       };
       return next(apiError);
     }
   } else {
+    console.log('logger: did not enter the if statement');
     console.error('Error logging data to JSON file');
   }
 };
 
 export const logDataAfterDebate: RequestHandler = async (_req, res, next) => {
-
   if (
     res.locals.userQuery &&
     res.locals.pineconeQueryResult &&
@@ -111,7 +117,4 @@ export const logDataAfterDebate: RequestHandler = async (_req, res, next) => {
   } else {
     console.error('Error logging movie to JSON file');
   }
-
 };
-
-
