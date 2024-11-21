@@ -138,10 +138,10 @@ td {
     gap: 15px;
   }
 
-  textarea {
+  /* textarea {
     font-size: 0.9rem;
     padding: 10px;
-  }
+  } */
 
   button {
     font-size: 0.9rem;
@@ -152,4 +152,19 @@ td {
   td {
     padding: 10px 12px;
   }
+}
+
+input[type='text'] {
+  background-color: #121826;
+  color: #c7d4ed;
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 1rem;
+  resize: vertical;
+  outline: none;
+}
+
+input[type='text']::placeholder {
+  color: #707b94;
 }
