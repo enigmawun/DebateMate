@@ -4,12 +4,53 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
 
-export const logTheData: RequestHandler = async (_req, res, next) => {
-  //   if (res.locals.pineconeQueryResult) {
-  //     const databaseQueryResult = res.locals.pineconeQueryResult.map((movieObj) => {
-  //         return {title: movieObj.metadata.title, score: movieObj.score};
-  //       });
-  //   }
+export const logDataDuringDebate: RequestHandler = async (_req, res, next) => {
+
+  if (
+    res.locals.aiArguments &&
+    res.locals.userArguments &&
+    res.locals.parsedArguments &&
+    res.locals.topic &&
+    res.locals.userSide &&
+    res.locals.round &&
+    res.locals.aiResponse
+  ) {
+   
+    const loggingData = {
+      "parsedArguments": res.locals.parsedArguments,
+      "topic": res.locals.topic,
+      "userSide": res.locals.userSide,
+      "round": res.locals.round,
+      "aiResponse": res.locals.aiResponse
+    };
+
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const filePath = path.join(__dirname, '../log.json');
+
+    try {
+      let log = await fs.promises.readFile(filePath, 'utf-8');
+      // console.log('usersjson', usersjson);
+
+      const parsedLog = JSON.parse(log);
+      parsedLog.push(loggingData);
+      log = JSON.stringify(parsedLog);
+      await fs.promises.writeFile(filePath, log, 'utf-8');
+
+      return next();
+    } catch (err) {
+      const apiError: ServerError = {
+        log: `logger: Error: logging failed ${err}`,
+        status: 500,
+        message: { err: 'An error occurred while logging the data during the debate' },
+      };
+      return next(apiError);
+    }
+  } else {
+    console.error('Error logging data to JSON file');
+  }
+};
+
+export const logDataAfterDebate: RequestHandler = async (_req, res, next) => {
 
   if (
     res.locals.userQuery &&
@@ -71,33 +112,6 @@ export const logTheData: RequestHandler = async (_req, res, next) => {
     console.error('Error logging movie to JSON file');
   }
 
-  //   try {
-  //     await fs.appendFile(filePath, JSON.stringify(loggingData), () => {});
-
-  //     console.log('Data appended successfully.');
-  //     return next();
-  //   } catch (err) {
-  //     const apiError: ServerError = {
-  //       log: `logger: Error: logging failed`,
-  //       status: 500,
-  //       message: { err: 'An error occurred while logging the data' },
-  //     };
-  //     return next(apiError);
-  //   }
 };
 
-// read and write a .json file
-// const fs = require("fs");
-// let usersjson = fs.readFileSync("users.json","utf-8");
 
-// transform a json string into a javascript array
-// let users = JSON.parse(usersjson);
-
-// append an object to an array
-// users.push(obj);
-
-// transform back the array into a json string
-// usersjson = JSON.stringify(users);
-
-// save the json file
-// fs.writeFileSync("users.json",usersjson,"utf-8");

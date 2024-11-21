@@ -6,39 +6,31 @@ export const parseUserQuery: RequestHandler = async (
   res,
   next
 ) => {
-  if (!req.body.userQuery) {
+  if (!req.body.topic || !req.body.user_side || !req.body.round) {
     const error: ServerError = {
-      log: 'User query not provided',
+      log: 'Either the topic, user_side or round is missing from the request body',
       status: 400,
       message: { err: 'An error occurred while parsing the user query' },
     };
     return next(error);
   }
 
-  const {
-    userQuery,
-    startYear,
-    endYear,
-    hasBeenCalled,
-    numRecalled,
-    userTopMovies,
-  } = req.body;
+  const { user_arguments, ai_arguments, topic, user_side, round } = req.body;
 
-  if (typeof userQuery !== 'string') {
+  if (typeof topic !== 'string' || typeof user_side !== 'string' || typeof round !== 'number') {
     const error: ServerError = {
-      log: 'User query is not a string',
+      log: 'User query type is wrong',
       status: 400,
       message: { err: 'An error occurred while parsing the user query' },
     };
     return next(error);
   }
 
-  res.locals.userQuery = userQuery;
-  res.locals.startYear = startYear;
-  res.locals.endYear = endYear;
-  res.locals.hasBeenCalled = hasBeenCalled;
-  res.locals.numRecalled = numRecalled;
-  res.locals.userTopMovies = userTopMovies;
-
+  res.locals.aiArguments = ai_arguments;
+  res.locals.userArguments = user_arguments;
+  res.locals.topic = topic;
+  res.locals.userSide = user_side;
+  res.locals.round = round;
+  
   return next();
 };
