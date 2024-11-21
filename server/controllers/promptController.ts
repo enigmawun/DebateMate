@@ -37,12 +37,14 @@ export const parseArguments: RequestHandler = async (_req, res, next) => {
 export const parseTopic: RequestHandler = async (_req, res, next) => {
   const { topic } = res.locals;
 
-  const topicLookupTable = { 'AI intelligence': 'AI could eventually have true intelligence' };
+  const topicLookupTable: any = {
+    'AI intelligence': 'AI could eventually have true intelligence',
+  };
   const parsedTopic = topicLookupTable[topic];
 
   res.locals.parsedTopic = parsedTopic;
   return next();
-}
+};
 
 export const customizePrompts: RequestHandler = async (_req, res, next) => {
   const { parsedArguments, parsedTopic, userSide } = res.locals;
