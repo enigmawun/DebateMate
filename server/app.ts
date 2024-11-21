@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { parseUserQuery } from './controllers/userQueryController.js';
 import {
   queryOpenAIArgument,
-  queryOpenAIEvaluation,
+  // queryOpenAIEvaluation,
 } from './controllers/openaiController.js';
 import {
   logDataAfterDebate,
@@ -15,7 +15,7 @@ import {
   parseArguments,
   parseTopic,
   parseDebateHistoryFeedback,
-  customizeEvaluationPrompts
+  customizeEvaluationPrompts,
 } from './controllers/promptController.js';
 
 import { ServerError } from '../types/types.js';
@@ -49,7 +49,7 @@ app.post(
 //   parseUserQuery,
 //   parseTopic,
 //   parseDebateHistoryFeedback,
-//   customizeEvaluationPrompts 
+//   customizeEvaluationPrompts
 //   // queryOpenAIEvaluation,
 //   logDataAfterDebate,
 //   (_req, res) => {

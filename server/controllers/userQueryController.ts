@@ -6,10 +6,10 @@ export const parseUserQuery: RequestHandler = async (
   res,
   next
 ) => {
-  // console.log('BODY:', req.body);
-  if (!req.body.topic || !req.body.user_side || !req.body.round) {
+  console.log('BODY:', req.body);
+  if (!req.body.topic || !req.body.user_side) {
     const error: ServerError = {
-      log: 'Either the topic, user_side or round is missing from the request body',
+      log: 'Either the topic, user_side is missing from the request body',
       status: 400,
       message: { err: 'An error occurred while parsing the user query' },
     };
