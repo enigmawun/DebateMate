@@ -15,26 +15,26 @@ const AssessmentPage = () => {
   //YOUR SUMMARY
   const [userStrongPoints, setUserStrongPoints] = useState('');
   const [userWeakPoints, setUserWeakPoints] = useState('');
+  const [winner, setWinner] = useState(assessmentPageInfo.winner);
 
   // example format
-  // {
-  //   "summary": "AI performed well in reasoning but weak in counterpoints.",
-  //   "ai_performance": {
-  //     "strong_points": ["Clear reasoning", "Structured arguments"],
-  //     "weak_points": ["Lack of emotional appeal"]
-  //   },
-  //   "user_performance": {
-  //     "strong_points": ["Compelling examples"],
-  //     "weak_points": ["Lack of detailed rebuttals"]
-  //   }
-  // }
+
+  // user_arguments: userArguments,
+  // ai_arguments: aiArguments,
+  // topic: topic,
+  // user_side: userSide,
+  // ai_reasonings: aiReasonings,
+  // ai_strong_points: aiStrongPoints,
+  // ai_weak_points: aiWeakPoints,
+  // user_strong_points: userStrongPoints,
+  // user_weak_points: userWeakPoints,
 
   useEffect(() => {
-    setassessmentSummary(assessmentPageInfo.summary);
-    setaiStrongPoints(assessmentPageInfo.ai_performance.strong_points);
-    setaiWeakPoints(assessmentPageInfo.ai_performance.weak_points);
-    setUserStrongPoints(assessmentPageInfo.user_performance.strong_points);
-    setUserWeakPoints(assessmentPageInfo.user_performance.weak_points);
+    setassessmentSummary(assessmentPageInfo.comp_assessment); //what is the summary called
+    setaiStrongPoints(assessmentPageInfo.ai_score);
+    setaiWeakPoints(assessmentPageInfo.winner);
+    setUserStrongPoints(assessmentPageInfo.userScore);
+    setUserWeakPoints(assessmentPageInfo.userBlindspot);
   }, []);
 
   return (

@@ -243,12 +243,10 @@ const ConversationPage = () => {
   };
 
   useEffect(() => {
-    // This will log whenever userInputState changes
     console.log('userInputState updated:', userArguments);
   }, [userArguments]);
 
   useEffect(() => {
-    // Only run if we have the required data from location state
     if (topic && userSide) {
       console.log('Making initial fetch with:', { topic, userSide });
 
@@ -290,7 +288,7 @@ const ConversationPage = () => {
             console.error('No AI argument in response:', data);
           }
         } catch (error) {
-          console.error('Error fetching  data:', error);
+          console.error('Error fetching data:', error);
         }
       };
 

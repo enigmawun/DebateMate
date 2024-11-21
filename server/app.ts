@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { parseUserQuery } from './controllers/userQueryController.js';
 import {
   queryOpenAIArgument,
-  // queryOpenAIEvaluation,
+  queryOpenAIEvaluation,
 } from './controllers/openaiController.js';
 import {
   logDataAfterDebate,
@@ -52,25 +52,25 @@ app.post(
   }
 );
 
-// app.post(
-//   '/api/ai/assessment',
-//   parseUserQuery,
-//   parseTopic,
-//   parseDebateHistoryFeedback,
-//   customizeEvaluationPrompts
-//   // queryOpenAIEvaluation,
-//   logDataAfterDebate,
-//   (_req, res) => {
-//     res.status(200).json({
-//       comp_assessment: res.locals.compAssessment,
-//       winner: res.locals.winner,
-//       user_score: res.locals.userScore,
-//       ai_score: res.locals.aiScore,
-//       ai_advice: res.locals.aiAdvice,
-//       user_blindspots: res.locals.userBlindspots,
-//     });
-//   }
-// );
+app.post(
+  '/api/ai/assessment',
+  parseUserQuery,
+  parseTopic,
+  parseDebateHistoryFeedback,
+  customizeEvaluationPrompts,
+  queryOpenAIEvaluation,
+  // logDataAfterDebate,
+  (_req, res) => {
+    res.status(200).json({
+      comp_assessment: res.locals.compAssessment,
+      winner: res.locals.winner,
+      user_score: res.locals.userScore,
+      ai_score: res.locals.aiScore,
+      ai_advice: res.locals.aiAdvice,
+      user_blindspots: res.locals.userBlindspots,
+    });
+  }
+);
 
 const errorHandler: ErrorRequestHandler = (
   err: ServerError,

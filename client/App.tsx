@@ -1,92 +1,40 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+// import ReactDOM from 'react-dom/client';
 import { useNavigate } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-// import Recommendations from './Components/Recommendations';
 import ConversationPage from './Components/ConversationPage';
 import AssessmentPage from './Components/AssessmentPage';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const App = () => {
-  console.log('APP IS LOADED');
   const [topic, setTopic] = useState('AI intelligence');
-  // const [round, setRound] = useState(0);
-  const [userSide, setUserSide] = useState('');
 
   const navigate = useNavigate();
 
   const proChoice = () => {
-    setUserSide('pro');
-    sendToConversationPage();
-  };
-
-  const conChoice = () => {
-    setUserSide('con');
-    sendToConversationPage();
-  };
-
-  const sendToConversationPage = () => {
-    // try {
-    //   // Send data to backend
-    //   const response = await fetch('http://localhost:3000/api/ai/argument', {
-    //     // rename here after
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       user_side: userSide,
-    //       topic: topic,
-    //     }),
-    //   });
-    //   const responsedata = await response.json();
-    // };
-    //dummy data before hooking up to backend
-    // const responsedata = {
-    //   ai_argument: `AI systems may appear intelligent,
-    // but their abilities are fundamentally limited to processing patterns
-    // and correlations from data within narrowly defined tasks. They lack
-    // the ability to generalize knowledge across domains, as a chess-playing
-    //  AI, for example, cannot apply its problem-solving skills to composing
-    //  music or diagnosing diseases without explicit retraining. Crucially, AI
-    //  lacks intentionality, the hallmark of true intelligence, as it operates
-    //  without goals, desires, or understanding of the world. Its outputs are
-    //  the result of statistical computations rather than genuine reasoning or
-    //   awareness. Ultimately, AI demonstrates an illusion of intelligence,
-    //   driven by algorithmic sophistication, but it falls short of the creativity,
-    //    awareness, and independent reasoning required for true intelligence,`,
-    //   ai_reasoning: 'some reasoning string',
-    //   ai_strong_point: 'sdfsdfsd',
-    //   ai_weak_point: 'alsfjkdljflsdkj',
-    //   user_strong_point: 'sdfkljdsklfj',
-    //   user_weak_point: 'sldjfkldsjfkls',
-    // };
-    // Navigate to Conversation Page
-    console.log('NAVIGATE TO CONVERSATION PAGE');
     navigate('/conversationPage', {
       state: {
-        // backEndInput //name of the key is the same as the variable, shorthand
         backEndInput: {
-          // user_arguments: [],
-          // ai_arguments: [responsedata.ai_argument],
           topic: topic,
-          user_side: userSide,
-          // round: round,
-          // ai_reasoning: [responsedata.ai_reasoning],
-          // ai_strong_point: [responsedata.ai_strong_point],
-          // ai_weak_point: [responsedata.ai_weak_point],
-          // user_strong_point: [responsedata.user_strong_point],
-          // user_weak_point: [responsedata.user_weak_point],
+          user_side: 'pro',
         },
       },
     });
   };
-  // } catch (error) {
-  //   console.error('Error sending data to backend:', error);
-  // }
+
+  const conChoice = () => {
+    navigate('/conversationPage', {
+      state: {
+        backEndInput: {
+          topic: topic,
+          user_side: 'con',
+        },
+      },
+    });
+  };
 
   return (
     <div>

@@ -21,6 +21,11 @@ export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
   }
 
   try {
+    console.log('Attempting OpenAI request with:', {
+      systemContent,
+      userArguments,
+    });
+
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
@@ -30,12 +35,13 @@ export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
         },
         {
           role: 'user',
-          content: JSON.stringify(userArguments),
+          content: JSON.stringify(userArguments || []),
         },
       ],
       temperature: 0.7,
     });
-    console.log('response: ', response.choices[0].message.content);
+
+    console.log('Raw OpenAI response:', response.choices[0].message.content);
     const argumentParams = JSON.parse(response.choices[0].message.content!);
     if (argumentParams) {
       res.locals.aiArgument = argumentParams.ai_argument;
