@@ -6,14 +6,17 @@ import {
   queryOpenAIArgument,
   queryOpenAIEvaluation,
 } from './controllers/openaiController.js';
-import { logDataAfterDebate, logDataDuringDebate } from './controllers/loggingController.js';
-import { 
-  customizePrompts, 
+import {
+  logDataAfterDebate,
+  logDataDuringDebate,
+} from './controllers/loggingController.js';
+import {
+  customizePrompts,
   parseArguments,
-  parseTopic } from './controllers/promptController.js';
+  parseTopic,
+} from './controllers/promptController.js';
 
 import { ServerError } from '../types/types.js';
-
 const app = express();
 
 app.use(cors());
@@ -42,7 +45,7 @@ app.post(
 app.post(
   '/api/ai/assessment',
   parseUserQuery,
-  queryOpenAIEvaluation, 
+  queryOpenAIEvaluation,
   logDataAfterDebate,
   (_req, res) => {
     res.status(200).json({

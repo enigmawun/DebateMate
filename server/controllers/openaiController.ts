@@ -10,8 +10,7 @@ const openai = new OpenAI({
 });
 
 export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
-
-  const { systemContent, user_arguments } = res.locals; 
+  const { systemContent, user_arguments } = res.locals;
 
   if (!systemContent) {
     const error: ServerError = {
@@ -63,8 +62,7 @@ export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
     };
     return next(apiError);
   }
-  
-}
+};
 
 export const queryOpenAIEmbedding: RequestHandler = async (_req, res, next) => {
   const { userQuery, startYear, endYear } = res.locals;
@@ -237,14 +235,13 @@ export const queryOpenAIChat: RequestHandler = async (_req, res, next) => {
     return next(apiError);
   }
 
-
   // res.locals.movieRecommendation =
   //   'Wishmaster - A malevolent genie wreaks havoc after being freed, leading to a battle between his dark desires and those trying to stop him.';
   // return next();
 };
 
-export const queryOpenAIEvaluation = async(req, res, next) => {
-    
-}
-
-
+export const queryOpenAIEvaluation: RequestHandler = async (
+  req,
+  res,
+  next
+) => {};
