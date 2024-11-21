@@ -84,8 +84,6 @@ export const queryOpenAIEvaluation: RequestHandler = async (
     return next(error);
   }
 
-
-
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',

@@ -16,11 +16,11 @@ export const logDataDuringDebate: RequestHandler = async (_req, res, next) => {
   ) {
     console.log('Logging Data...');
     const loggingData = {
-      'debate topic': res.locals.parsedTopic,
+      "debate topic": res.locals.parsedTopic,
       "user's side": res.locals.userSide,
       "round number": res.locals.round,
-      'past debate': res.locals.parsedArguments,
-      'new argument by ai': res.locals.aiArgument,
+      "past debate": res.locals.parsedArguments,
+      "new argument by ai": res.locals.aiArgument,
       "ai's reasoning of this argument": res.locals.aiReasoning,
       "ai's weak point of this argument": res.locals.aiStrongPoint,
       "ai's strong point of this argument": res.locals.aiWeakPoint,
@@ -58,63 +58,5 @@ export const logDataDuringDebate: RequestHandler = async (_req, res, next) => {
 };
 
 export const logDataAfterDebate: RequestHandler = async (_req, res, next) => {
-  if (
-    res.locals.userQuery &&
-    res.locals.pineconeQueryResult &&
-    res.locals.movieRecommendation &&
-    res.locals.startYear &&
-    res.locals.endYear
-  ) {
-    const userQuery = res.locals.userQuery;
-
-    const databaseQueryResult = res.locals.pineconeQueryResult.map(
-      (movieObj) => {
-        if (movieObj.metadata) {
-          return {
-            title: movieObj.metadata.title,
-            year: movieObj.metadata.year,
-            score: movieObj.score,
-          };
-        }
-      }
-    );
-    // const movieRecommendation = res.locals.movieRecommendation;
-    const movieRecommendation = JSON.parse(
-      res.locals.movieRecommendation
-    ).recommendation;
-    const startYear = res.locals.startYear;
-    const endYear = res.locals.endYear;
-
-    const loggingData = {
-      userQuery,
-      startYear,
-      endYear,
-      databaseQueryResult,
-      movieRecommendation,
-    };
-
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const filePath = path.join(__dirname, '../log.json');
-
-    try {
-      let usersjson = await fs.promises.readFile(filePath, 'utf-8');
-      // console.log('usersjson', usersjson);
-
-      const users = JSON.parse(usersjson);
-      users.push(loggingData);
-      usersjson = JSON.stringify(users);
-      await fs.promises.writeFile(filePath, usersjson, 'utf-8');
-
-      return next();
-    } catch (err) {
-      const apiError: ServerError = {
-        log: `logger: Error: logging failed ${err}`,
-        status: 500,
-        message: { err: 'An error occurred while logging the data' },
-      };
-      return next(apiError);
-    }
-  } else {
-    console.error('Error logging movie to JSON file');
-  }
+  return next();
 };
