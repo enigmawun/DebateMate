@@ -347,9 +347,9 @@ const ConversationPage = () => {
       <h1 className="permanent-marker-regular debate">
       {`You are debating `}
       <span 
-      className='user-side'
+      className='user-side permanent-marker-regular'
       style={{
-        color: userSide === 'pro' ? 'rgb(144, 255, 144)' : 'rgb(255, 99, 99)',
+        color: userSide === 'pro' ? 'green' : 'rgb(255, 99, 99)',
       }}
       >{userSide === 'pro' ? 'for' : 'against'}</span>
       <span className='permanent-marker-regular topic'>
