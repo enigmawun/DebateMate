@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import ReactDOM from 'react-dom/client';
 import { useNavigate } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
-import './styles.css';
+import './styles2.css';
 
 import ConversationPage from './Components/ConversationPage';
 import AssessmentPage from './Components/AssessmentPage';
