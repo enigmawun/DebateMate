@@ -145,6 +145,7 @@ export const parseDebateHistoryFeedback: RequestHandler = async (
     userWeakPoints,
   } = res.locals;
 
+  console.log('AI Weakpoints', aiWeakPoints);
   //  parsed history and feedback:
   //   Round 1 (AI's argument): res.locals.ai_argument[0]
   //   Round 1 (weak points in AI's argument): res.locals.ai_weak_point[0]
@@ -180,6 +181,7 @@ export const parseDebateHistoryFeedback: RequestHandler = async (
 
   for (let i = 0; i < maxLen - 1; i++) {
     if (aiArguments[i]) {
+      console.log(debateHistoryFeedback);
       // Add to parsed Arguments
       debateHistoryFeedback += `Round ${i + 1} (AI's argument): ${aiArguments[i]} \n`;
       debateHistoryFeedback += `Round ${i + 1} (weak points in AI's argument): ${aiWeakPoints[i]} \n`;

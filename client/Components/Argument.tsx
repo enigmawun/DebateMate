@@ -6,7 +6,7 @@ interface ArgumentProps {
   font: string;
 }
 
-const Argument: React.FC<ArgumentProps> = ({ body, key, font }) => {
+const Argument: React.FC<ArgumentProps> = ({ body, font }) => {
   let classFont;
 
   return (

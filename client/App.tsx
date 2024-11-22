@@ -37,7 +37,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className='topic-selector'>
       <p> What would you like to debate? </p>
       <select
         id="dropdown"

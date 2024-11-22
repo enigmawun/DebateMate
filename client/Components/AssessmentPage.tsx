@@ -54,7 +54,8 @@ const AssessmentPage = () => {
     setAssessment(assessmentFake.comp_assessment);
   }, []);
 
-  if (winner == 'user')
+  if (winner == 'user') {
+    {console.log(winner)}
     return (
       <div>
         <h1>Congratulations,</h1>
@@ -70,11 +71,13 @@ const AssessmentPage = () => {
         </div>
       </div>
     );
-  else if (winner == 'ai')
+  }
+  else if (winner == 'ai') {
+    
     return (
       <div>
         <h1>Sorry,</h1>
-        <h2>you've been defeated by AI.</h2>
+        <h2>You've been defeated by AI.</h2>
         <h3>
           AI Score: {aiScore} vs. Your Score: {userScore}
         </h3>
@@ -86,6 +89,7 @@ const AssessmentPage = () => {
         </div>
       </div>
     );
+  }
 };
 //   return (
 //     <div>
