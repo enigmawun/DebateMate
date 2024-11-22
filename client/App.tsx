@@ -37,26 +37,30 @@ const App = () => {
   };
 
   return (
-    <div>
-      <p> What would you like to debate? </p>
-      <select
-        id="dropdown"
-        onChange={(e) => {
-          setTopic(e.target.value);
-        }}
-      >
-        <option value="AI intelligence">
-          Is AI capable of real intelligence?
-        </option>
-        <option value="b">Other option to come</option>
-      </select>
-      <p> Choose your side </p>
-      <button value="pro" onClick={proChoice}>
+    <div className="entry">
+      <h1 className="permanent-marker-regular">
+        What would you like to debate?
+      </h1>
+      <div className="custom-select">
+        <select
+          id="dropdown"
+          onChange={(e) => {
+            setTopic(e.target.value);
+          }}
+        >
+          <option value="AI intelligence">
+            Is AI capable of real intelligence?
+          </option>
+          <option value="free will">Does free will exist?</option>
+        </select>
+      </div>
+      <p className="permanent-marker-regular"> Choose your side </p>
+      <button value="pro" className="pro" onClick={proChoice}>
         PRO
       </button>
-      <button value="con" onClick={conChoice}>
+      <button value="con" className="con" onClick={conChoice}>
         CON
-      </button>{' '}
+      </button>
     </div>
   );
 };

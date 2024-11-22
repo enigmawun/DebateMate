@@ -56,7 +56,7 @@ const AssessmentPage = () => {
 
   if (winner == 'user')
     return (
-      <div>
+      <div className="summary">
         <h1>Congratulations,</h1>
         <h2>YOU WON!</h2>
         <h3>
@@ -72,7 +72,7 @@ const AssessmentPage = () => {
     );
   else if (winner == 'ai')
     return (
-      <div>
+      <div className="summary">
         <h1>Sorry,</h1>
         <h2>you've been defeated by AI.</h2>
         <h3>

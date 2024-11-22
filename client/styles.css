@@ -1,21 +1,34 @@
-@import url('https://fonts.google.com/share?selection.family=Caveat:wght@400..700|Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700|Permanent+Marker');
-
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Gochi+Hand&family=Inconsolata:wght@200..900&family=Permanent+Marker&display=swap');
 /* General Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  background-color: white;
+  -webkit-appearance: none;
   color: black;
 }
 
 /*fonts*/
-.caveat-hand {
-  font-family: 'Caveat', cursive;
-  font-optical-sizing: auto;
-  font-weight: normal;
+
+.gochi-hand-regular {
+  font-family: 'Gochi Hand', cursive;
+  font-weight: 400;
   font-style: normal;
+}
+
+.bubblegum-sans-regular {
+  font-family: 'Bubblegum Sans', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.inconsolata-reg {
+  font-family: 'Inconsolata', serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
 }
 
 .comic-neue-regular {
@@ -30,15 +43,24 @@
 }
 /* Dark Mode Background */
 body {
+  font-family: 'gochi hand';
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  background-color: #0a0e17;
+  background-color: white;
   color: #d3e7ff;
   line-height: 1.6;
   padding: 20px;
   min-height: 100vh;
+  display: flex;
 }
 
+div .entry {
+  border: 2px solid black;
+  border-radius: 5px;
+}
 /* Container Styles */
+
 div .inputbox {
   display: grid;
   grid-template-columns: 80% 20%;
@@ -48,29 +70,57 @@ div .chatcontainer {
   width: 80%;
   text-align: left;
   background-color: white;
-  border: 10px black solid;
+  border: 10px #101315;
 }
-.container {
+
+div .ai > p {
+  max-width: 800px;
+  text-align: left;
+  color: #202020;
+  padding: 10px;
+  /* background-image: url(Speech_bubble.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: stretch-x; */
+}
+h1.permanent-marker-regular {
+  font-family: 'Permanent Marker';
+}
+h1.permanent-marker-regular > span.blue {
+  font-family: 'Permanent Marker';
+  color: #3178c9;
+}
+
+div .user > p {
+  font-family: 'gochi hand';
+  max-width: 800px;
+  text-align: left;
+  color: #3178c9;
+  padding: 10px;
+}
+
+p.permanent-marker-regular {
+  color: #3178c9;
+}
+div.entry,
+div.container,
+div.summary {
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
+  justify-content: space-between;
+  max-width: 800px;
   min-height: 500px;
   margin: 0 auto;
   padding: 20px;
-  border: 1px solid #202833;
+  border: 4px solid #202833;
   border-radius: 8px;
-  background: linear-gradient(145deg, #111722, #0c1017);
+  background: linear-gradient(145deg, #f9f9f9, #fbf7f5);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
   overflow: hidden;
   color: #a8d0e6;
 }
 
 /* Form Styles */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 
 input[type='text'] {
   background-color: #121826;
@@ -82,15 +132,17 @@ input[type='text'] {
   resize: vertical;
   outline: none;
   width: 100%;
+  font-family: 'gochi hand';
 }
 
 input[type='text']::placeholder {
-  color: #707b94;
+  color: #3178c9;
 }
 
-button {
-  background-color: #1c2d50;
-  color: #d9edf7;
+button #addArgument {
+  background-color: #3178c9;
+  font-family: 'Permanent Marker';
+  /* color: #d9edf7; */
   border: none;
   padding: 12px 20px;
   font-size: 1rem;
@@ -100,13 +152,38 @@ button {
 }
 
 button:hover {
-  background-color: #243b5e;
+  background-color: #3a9ddf;
   transform: translateY(-2px);
 }
 
+button:enabled {
+  background-color: #3178c9;
+  font-family: 'Permanent Marker';
+  font-size: 1.3rem;
+  padding: 12px 20px;
+}
+
 button:disabled {
-  background-color: #1a263e;
+  background-color: black;
   cursor: not-allowed;
+}
+
+button.pro,
+button:enabled .pro {
+  background-color: #33a240;
+  margin: 20px;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+button.con,
+button:enabled .con {
+  background-color: #c0220e;
+  margin: 20px;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 10px;
 }
 
 /* Error Message */
@@ -137,23 +214,25 @@ pre {
   overflow-x: auto;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .container {
-    padding: 15px;
-  }
+/* Custom Select Menu on Landing Page */
+/* The container must be positioned relative: */
 
-  /* form {
-    gap: 15px;
-  } */
-
-  /* textarea {
-    font-size: 0.9rem;
-    padding: 10px;
-  } */
-
-  button {
-    font-size: 0.9rem;
-    padding: 10px 15px;
+div .custom-select {
+  margin: 40px;
+}
+select {
+  padding: 10px;
+  background-color: #fad800;
+  font-family: 'Inconsolata';
+  border-radius: 5px;
+  border: 2px solid black;
+  color: black;
+  padding: 10px 30px 10px 10px;
+  outline: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  &::-ms-expand {
+    display: none;
   }
 }

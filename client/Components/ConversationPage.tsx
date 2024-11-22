@@ -2,34 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Argument from './Argument';
 
-// LANDING PAGE
-// Grab state - topic & user_side
-// Pass that information & call conversation page
-
-// CONVERSATION PAGE
-// State for user arguments: []
-// State for ai arguments: []
-// State for ai reasoning:  []
-// State for ai strong points []
-// State for ai weak points []
-// State for user strong points []
-// State for user weak points []
-// State for round []
-
-// at every request to /arguments
-// build each individual state array
-
-// last fetch
-// the same call to /arguments
-// pass all state info to new page --> assessments
-// /assessment endpoint will be called using the passed in state
-
 const ConversationPage = () => {
   // const [templateState, setTemplateState] = useState('');
   // const [assessmentPageInfo, setAssessmentPageInfo] = useState({});
-  // State for ai reasoning:  []
-  // State for user strong points []
-  // State for user weak points
+
   const location = useLocation();
   const { backEndInput } = location.state || {}; // Get state values from location
   const topic = backEndInput.topic;
@@ -46,7 +22,7 @@ const ConversationPage = () => {
   const [userStrongPoints, setuserStrongPoints] = useState([] as string[]);
 
   const [assessment, setAssessment] = useState({});
-
+  const [loading, setLoading] = useState(true);
   //  Move argArray into state to trigger re-renders
   const [argumentElements, setArgumentElements] = useState<JSX.Element[]>([]);
 
@@ -57,16 +33,18 @@ const ConversationPage = () => {
       newArgArray.push(
         <Argument
           key={`ai-${i}`}
+          user="ai"
           body={aiArguments[i]}
-          font="ai comic-neue-regular"
+          font="ai inconsolata-reg"
         />
       );
       if (userArguments[i]) {
         newArgArray.push(
           <Argument
             key={`user-${i}`}
+            user="user"
             body={userArguments[i]}
-            font="user caveat-hand"
+            font="user gochi hand"
           />
         );
       }
@@ -88,30 +66,12 @@ const ConversationPage = () => {
     }
   }, [aiArguments]);
 
-  // if (backEndInput) {
-  //   const newArg = aiInputState.concat(backEndInput.ai_arguments[0]);
-  //   setAIInputState(aiInputState.concat(backEndInput.ai_arguments[0]));
-  //   console.log(backEndInput, 'backend input is here');
-  // }
-  // }, [backEndInput]);
-
   const navigate = useNavigate();
 
   //submit new argument to API along with all the other info contained in backEndInput
   const sendArgToServer = async () => {
     try {
-      // Send data to backend
-      // const newObj = [...backEndInput, userInputState, aiInputState]
-      // backEndInput.round += 1;
       setRound(round + 1);
-      // const newround = backEndInput.round;
-      // const userSide = backEndInput.user_side;
-      // const topic = backEndInput.topic;
-      // console.log('backendinput in sendarg to server', backEndInput);
-      // console.log(
-      //   'rounds after changing backendinput rounds',
-      //   backEndInput.round
-      // );
       const newData = await fetch('http://localhost:3000/api/ai/argument', {
         // rename here after
         method: 'POST',
@@ -174,12 +134,6 @@ const ConversationPage = () => {
         newUserWeakPoints
       );
       setUserWeakPoints(updatedUserWeakPoints);
-
-      // backEndInput.ai_reasoning = data.ai_reasoning;
-      // backEndInput.ai_strong_point = data.ai_strong_point;
-      // backEndInput.ai_weak_point = data.ai_weak_point;
-      // backEndInput.user_strong_point = data.user_strong_point;
-      // backEndInput.user_weak_point = data.user_weak_point;
 
       // console.log(
       //   'this is backendinput after we get it back from server',
@@ -294,6 +248,7 @@ const ConversationPage = () => {
             setuserStrongPoints([data.user_strong_point]);
             setUserWeakPoints([data.user_weak_point]);
             setRound(1);
+            setLoading(false);
           } else {
             console.error('No AI argument in response:', data);
           }
@@ -314,10 +269,18 @@ const ConversationPage = () => {
 
   return (
     <div className="container">
-      <h1 className="permanent-marker-regular">Create a debate</h1>
-      <div className="chatcontainer">
-        {argumentElements} {/* Use the state array instead of variable */}
-      </div>
+      {loading && (
+        <h1 className="loading permanent-marker-regular">
+          generating an argument...
+        </h1>
+      )}
+      {!loading && (
+        <h1 className="permanent-marker-regular">
+          <span className="blue">debate:</span> is AI capable of true
+          intelligence?
+        </h1>
+      )}
+      {argumentElements} {/* Use the state array instead of variable */}
       <div className="inputbox">
         <input
           type="text"
@@ -328,7 +291,9 @@ const ConversationPage = () => {
           }}
           // onChange={(e) => addArgument(e.target.value)}
         />
-        <button onClick={handleSubmit}>Submit</button>
+        <button id="addArgument" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
     </div>
   );
