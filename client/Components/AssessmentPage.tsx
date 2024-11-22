@@ -15,12 +15,10 @@ const AssessmentPage = () => {
   //YOUR SUMMARY
   // const [userStrongPoints, setUserStrongPoints] = useState('');
   // const [userWeakPoints, setUserWeakPoints] = useState('');
-  const [winner, setWinner] = useState(assessmentPageInfo.winner);
-  const [aiScore, setAIScore] = useState(assessmentPageInfo.ai_score);
-  const [userScore, setUserScore] = useState(assessmentPageInfo.user_score);
-  const [blindSpots, setBlindSpots] = useState(
-    assessmentPageInfo.user_blind_spots
-  );
+  const [winner, setWinner] = useState(String);
+  const [aiScore, setAIScore] = useState(Number);
+  const [userScore, setUserScore] = useState(Number);
+  const [blindSpots, setBlindSpots] = useState(String);
 
   // example format
 
@@ -34,17 +32,17 @@ const AssessmentPage = () => {
   // user_strong_points: userStrongPoints,
   // user_weak_points: userWeakPoints,
 
-  const assessmentFake = {
-    comp_assessment:
-      'a string of comprehensive assessment of user debate performance',
-    ai_score: 80,
-    winner: 'user',
-    user_score: 40,
-    user_blind_spots:
-      'a string of blind spot that AI thinks user could tackle during the debate',
-    ai_advice:
-      'this is the advice that the AI is giving to you in addition to describing your blindspots',
-  };
+  const assessmentFake = { ...assessmentPageInfo };
+  //   comp_assessment:
+  //     'a string of comprehensive assessment of user debate performance',
+  //   ai_score: 80,
+  //   winner: 'user',
+  //   user_score: 40,
+  //   user_blind_spots:
+  //     'a string of blind spot that AI thinks user could tackle during the debate',
+  //   ai_advice:
+  //     'this is the advice that the AI is giving to you in addition to describing your blindspots',
+  // };
 
   useEffect(() => {
     // setassessmentSummary(assessmentPageInfo.comp_assessment); //what is the summary called
