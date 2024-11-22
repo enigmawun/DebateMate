@@ -2,42 +2,82 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Argument from './Argument';
 
+// LANDING PAGE
+// Grab state - topic & user_side
+// Pass that information & call conversation page
+
+// CONVERSATION PAGE
+// State for user arguments: []
+// State for ai arguments: []
+// State for ai reasoning:  []
+// State for ai strong points []
+// State for ai weak points []
+// State for user strong points []
+// State for user weak points []
+// State for round []
+
+// at every request to /arguments
+// build each individual state array
+
+// last fetch
+// the same call to /arguments
+// pass all state info to new page --> assessments
+// /assessment endpoint will be called using the passed in state
+
 const ConversationPage = () => {
+  // const [templateState, setTemplateState] = useState('');
+  // const [assessmentPageInfo, setAssessmentPageInfo] = useState({});
+  // State for ai reasoning:  []
+  // State for user strong points []
+  // State for user weak points
   const location = useLocation();
   const { backEndInput } = location.state || {}; // Get state values from location
+  const topic = backEndInput.topic;
+  const userSide = backEndInput.user_side;
+  const [aiArguments, setAiArguments] = useState([] as string[]);
+  const [userArguments, setUserArguments] = useState([] as string[]);
+  const [round, setRound] = useState(0);
+  const [userString, setUserString] = useState('');
 
-  const [aiInputState, setAIInputState] = useState([
-    backEndInput.ai_arguments[0],
-  ]);
-  const [userInputState, setUserInputState] = useState(
-    backEndInput.user_arguments
-  );
-  const [templateState, setTemplateState] = useState('');
+  const [aiReasonings, setaiReasonings] = useState([] as string[]);
+  const [aiWeakPoints, setaiWeakPoints] = useState([] as string[]);
+  const [aiStrongPoints, setAiStrongPoints] = useState([] as string[]);
+  const [userWeakPoints, setUserWeakPoints] = useState([] as string[]);
+  const [userStrongPoints, setuserStrongPoints] = useState([] as string[]);
 
-  // rerender components if aiInputState is updated
-  //function that creates paragraph for each argument in aiInputState and userInputState
+  const [assessment, setAssessment] = useState({});
 
-  //create an array of Argument components that alternates the AI's argument with the user's
-  //aiInputState[0], user_arguments[0], backEndInput.ai_arguments[1], user_arguments[1];
-  let argArray: any[] = [];
-  function createArgBody() {
-    for (let i = 0; i < aiInputState.length; i++) {
-      argArray.push(<Argument body={aiInputState[i]} />);
-      if (userInputState[i])
-        argArray.push(<Argument body={userInputState[i]} />);
+  //  Move argArray into state to trigger re-renders
+  const [argumentElements, setArgumentElements] = useState<JSX.Element[]>([]);
+
+  // Update createArgBody to set state instead of mutating variable
+  const createArgBody = () => {
+    const newArgArray: JSX.Element[] = [];
+    for (let i = 0; i < aiArguments.length; i++) {
+      newArgArray.push(<Argument key={`ai-${i}`} body={aiArguments[i]} />);
+      if (userArguments[i]) {
+        newArgArray.push(
+          <Argument key={`user-${i}`} body={userArguments[i]} />
+        );
+      }
     }
-  }
+    setArgumentElements(newArgArray);
+  };
 
-  createArgBody();
+  // FUpdate useEffect to watch both arrays
+  useEffect(() => {
+    createArgBody();
+  }, [aiArguments, userArguments]);
+
   //if aiInputState is changed, rerender components
   //populate the display with the chat bot's response
   useEffect(() => {
-    if (aiInputState[1] === null) createArgBody();
+    if (userArguments[1] === null) createArgBody();
     else {
-      argArray = [];
       createArgBody();
     }
-  }, [aiInputState]);
+  }, [aiArguments]);
+
   // if (backEndInput) {
   //   const newArg = aiInputState.concat(backEndInput.ai_arguments[0]);
   //   setAIInputState(aiInputState.concat(backEndInput.ai_arguments[0]));
@@ -52,12 +92,16 @@ const ConversationPage = () => {
     try {
       // Send data to backend
       // const newObj = [...backEndInput, userInputState, aiInputState]
-      backEndInput.round += 1;
-      console.log('backendinput in sendarg to server', backEndInput);
-      console.log(
-        'rounds after changing backendinput rounds',
-        backEndInput.round
-      );
+      // backEndInput.round += 1;
+      setRound(round + 1);
+      // const newround = backEndInput.round;
+      // const userSide = backEndInput.user_side;
+      // const topic = backEndInput.topic;
+      // console.log('backendinput in sendarg to server', backEndInput);
+      // console.log(
+      //   'rounds after changing backendinput rounds',
+      //   backEndInput.round
+      // );
       const newData = await fetch('http://localhost:3000/api/ai/argument', {
         // rename here after
         method: 'POST',
@@ -65,11 +109,11 @@ const ConversationPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_arguments: userInputState,
-          ai_arguments: aiInputState,
-          topic: backEndInput.topic,
-          user_side: backEndInput.proOrCon,
-          round: backEndInput.round,
+          user_arguments: userArguments,
+          ai_arguments: aiArguments,
+          topic: topic,
+          user_side: userSide,
+          round: round,
         }),
       });
 
@@ -78,90 +122,195 @@ const ConversationPage = () => {
       }
 
       const data = await newData.json();
-
+      console.log('data from server', data);
       //then we want to add string ai_argument to AI input state as new elem in array
       //store response object data on the existing array within backEndInput
-      setAIInputState(aiInputState.concat([data.ai_argument]));
-      backEndInput.ai_reasoning.concat([data.ai_reasoning]);
-      backEndInput.ai_strong_point.concat([data.ai_strong_point]);
-      backEndInput.ai_weak_point.concat([data.ai_weak_point]);
-      backEndInput.user_strong_point.concat([data.user_strong_point]);
-      backEndInput.user_weak_point.concat([data.user_weak_point]);
+      // Use the correct property name from server response
+      const newAiArgument = data.ai_argument; // Changed from ai_arguments
+      setAiArguments((prev) => [...prev, newAiArgument]);
+
+      const newAiReasoningsArr = [data.ai_reasonings];
+      const updatedAiReasonings: string[] = [...aiReasonings].concat(
+        newAiReasoningsArr
+      );
+      setaiReasonings(updatedAiReasonings);
+
+      // const updatedAiWeakPoints = aiWeakPoints.slice().concat(data.ai_weak_points);
+      // setaiWeakPoints(updatedAiWeakPoints);
+      const aiweakPoint = [data.ai_weak_points];
+      const updatedaiWeakPoints: string[] = [...aiWeakPoints].concat(
+        aiweakPoint
+      );
+      setaiWeakPoints(updatedaiWeakPoints);
+
+      const newAiStrongPointsArr = [data.ai_strong_points];
+      const updatedAiStrongPoints: string[] = [...aiStrongPoints].concat(
+        newAiStrongPointsArr
+      );
+      setAiStrongPoints(updatedAiStrongPoints);
+
+      // const updatedUserWeakPoints = aiArguments.slice().concat(data.user_weak_points);
+      // setUserWeakPoints(updatedUserWeakPoints);
+      const newUserStrongPointsArr = [data.user_strong_points];
+      const updatedUserStrongPoints: string[] = [...userStrongPoints].concat(
+        newUserStrongPointsArr
+      );
+      setuserStrongPoints(updatedUserStrongPoints);
+
+      // const updatedUserStrongPoints = aiArguments.slice().concat(data.user_strong_points);
+      // setUserStrongPoints(updatedUserStrongPoints);'
+      const newUserWeakPoints = [data.user_weak_points];
+      const updatedUserWeakPoints: string[] = [...userWeakPoints].concat(
+        newUserWeakPoints
+      );
+      setUserWeakPoints(updatedUserWeakPoints);
+
+      // backEndInput.ai_reasoning = data.ai_reasoning;
+      // backEndInput.ai_strong_point = data.ai_strong_point;
+      // backEndInput.ai_weak_point = data.ai_weak_point;
+      // backEndInput.user_strong_point = data.user_strong_point;
+      // backEndInput.user_weak_point = data.user_weak_point;
+
+      // console.log(
+      //   'this is backendinput after we get it back from server',
+      //   backEndInput
+      // );
     } catch {
-      console.error('Error sending data to backend @', backEndInput.round);
+      console.error('Error sending data to backend @ round ', round);
     }
   };
 
   //fetch request one more time to ai/arguments tendpoint and wait for it
   //to come back and have it provide us with a response before we move on to
-  //the assessment -- the assessment endpoint will make use of final AI argument
+  //the assessment -- the assessment endpoint will make use of final AI argument and all reasonings
   const lastFetch = async () => {
+    // one last time sending post request to /api/ai/argument to get the final AI argument
+    sendArgToServer();
+
     try {
-      const newData = await fetch('http://localhost:3000/api/ai/argument', {
-        // rename here after
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...backEndInput,
-          user_arguments: userInputState,
-          ai_arguments: aiInputState,
-        }),
-      });
+      const assessmentResponse = await fetch(
+        'http://localhost:3000/api/ai/assessment',
+        {
+          // rename here after
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_arguments: userArguments,
+            ai_arguments: aiArguments,
+            topic: topic,
+            user_side: userSide,
+            ai_reasonings: aiReasonings,
+            ai_strong_points: aiStrongPoints,
+            ai_weak_points: aiWeakPoints,
+            user_strong_points: userStrongPoints,
+            user_weak_points: userWeakPoints,
+          }),
+        }
+      );
+
+      const assessmentData = await assessmentResponse.json();
+      console.log('assessmentData', assessmentData);
+      setAssessment(assessmentData);
     } catch {
-      console.error('error with the final fetch');
+      console.error('Error getting data from backend for assessment');
     }
   };
 
   const handleSubmit = () => {
-    //add user argument to array of user args
-    let newUserState = [...userInputState];
-    newUserState.push(templateState);
-    setUserInputState(newUserState);
-    //send user argument to the server
-    sendArgToServer();
-    //clear user argument from input box
-    setTemplateState('');
-
-    // console.log('newUserState', newUserState);
-    // console.log('userInputState', userInputState);
-
-    if (backEndInput.round === 3) {
+    const userArgument = [userString];
+    const updatedUserArguments: string[] = [...userArguments].concat(
+      userArgument
+    );
+    setUserArguments(updatedUserArguments);
+    setUserString('');
+    if (round === 3) {
       lastFetch();
       navigate('/assessmentPage', {
         state: {
-          backEndInput: {
-            user_arguments: aiInputState,
-            ai_arguments: userInputState,
-            ai_reasoning: [backEndInput.ai_reasoning],
-            ai_strong_point: [backEndInput.ai_strong_point],
-            ai_weak_point: [backEndInput.ai_weak_point],
-            user_strong_point: [backEndInput.user_strong_point],
-            user_weak_point: [backEndInput.user_strong_point],
-            topic: backEndInput.topic,
-            user_side: backEndInput.user_side,
-            round: backEndInput.round,
+          assessmentPageInfo: {
+            ...assessment,
           },
         },
       });
+    } else {
+      //send user argument to the server
+      sendArgToServer();
     }
+    // console.log('newUserState', newUserState);
+    // console.log('userInputState', userInputState);
   };
 
   useEffect(() => {
-    // This will log whenever userInputState changes
-    console.log('userInputState updated:', userInputState);
-  }, [userInputState]);
+    console.log('userInputState updated:', userArguments);
+  }, [userArguments]);
+
+  useEffect(() => {
+    if (topic && userSide) {
+      console.log('Making initial fetch with:', { topic, userSide });
+
+      const initialFetch = async () => {
+        try {
+          const newData = await fetch('http://localhost:3000/api/ai/argument', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              user_arguments: [],
+              ai_arguments: [],
+              topic: topic,
+              user_side: userSide,
+              round: 0,
+            }),
+          });
+
+          if (!newData.ok) {
+            const errorText = await newData.text();
+            throw new Error(`HTTP Error ${newData.status}: ${errorText}`);
+          }
+
+          const data = await newData.json();
+          console.log('Initial API response:', data);
+
+          if (data.ai_argument) {
+            console.log('Setting AI argument:', data.ai_argument);
+            setAiArguments([data.ai_argument]);
+            setaiReasonings([data.ai_reasoning]);
+            setaiWeakPoints([data.ai_weak_point]);
+            setAiStrongPoints([data.ai_strong_point]);
+            setuserStrongPoints([data.user_strong_point]);
+            setUserWeakPoints([data.user_weak_point]);
+            setRound(1);
+          } else {
+            console.error('No AI argument in response:', data);
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      initialFetch();
+    } else {
+      console.log('Missing required data:', { topic, userSide });
+    }
+  }, [topic, userSide]);
+
+  useEffect(() => {
+    console.log('Current AI Arguments:', aiArguments);
+  }, [aiArguments]);
 
   return (
     <div>
       <h1>Conversation Page</h1>
-      {argArray}
+      {argumentElements} {/* Use the state array instead of variable */}
       <input
         type="text"
-        value={templateState}
+        value={userString}
         onChange={(e) => {
-          setTemplateState(e.target.value);
+          setUserString(e.target.value);
         }}
         // onChange={(e) => addArgument(e.target.value)}
       />
