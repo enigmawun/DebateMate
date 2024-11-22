@@ -34,6 +34,10 @@ export default {
   module: {
     rules: [
       {
+        test: /\.(png|jpe?g|gif\svg)$/i,
+        type: "asset/resource"
+      },
+      {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         exclude: /node_modules/,

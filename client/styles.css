@@ -3,11 +3,11 @@
 /* General Reset */
 * {
   box-sizing: border-box;
-  margin: 0;
+  /* margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
   background-color: white;
-  color: black;
+  color: black; */
 }
 
 .assessment-container {
@@ -263,4 +263,36 @@ pre {
     font-size: 0.9rem;
     padding: 10px 15px;
   }
+}
+
+
+.red-bar-big {
+  width: 100vw !important;
+}
+
+.red-bar-small {
+  width: 0vw !important;
+}
+
+.swirl-opacityZero {
+  opacity:0 !important;
+  width: 100vw !important;
+}
+
+.leftMic-small {
+  left: 12vw !important;
+  height: 68.5vh !important;
+}
+
+.rightMic-small {
+  left: 68vw !important;
+  height: 68.5vh !important;
+}
+
+.disappear {
+  opacity: 0 !important;
+}
+
+.appear {
+  opacity: 100 !important;
 }
