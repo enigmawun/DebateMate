@@ -29,18 +29,18 @@ export const parseUserQuery: RequestHandler = async (
     user_weak_points,
   } = req.body;
 
-  if (
-    typeof topic !== 'string' ||
-    typeof user_side !== 'string' ||
-    typeof round !== 'number'
-  ) {
-    const error: ServerError = {
-      log: 'User query type is wrong',
-      status: 400,
-      message: { err: 'An error occurred while parsing the user query' },
-    };
-    return next(error);
-  }
+  // if (
+  //   typeof topic !== 'string' ||
+  //   typeof user_side !== 'string' ||
+  //   typeof round !== 'number'
+  // ) {
+  //   const error: ServerError = {
+  //     log: 'User query type is wrong',
+  //     status: 400,
+  //     message: { err: 'An error occurred while parsing the user query' },
+  //   };
+  //   return next(error);
+  // }
 
   res.locals.aiArguments = ai_arguments;
   res.locals.userArguments = user_arguments;

@@ -189,27 +189,126 @@ export const parseDebateHistoryFeedback: RequestHandler = async (
     if (userArguments[i]) {
       debateHistoryFeedback += `Round ${i + 1} (User's Argument): ${userArguments[i]} \n`;
       debateHistoryFeedback += `Round ${i + 1} (weak points in user's argument): ${userWeakPoints[i + 1]} \n`;
-      debateHistoryFeedback += `Round ${i + 1} (weak points in user's argument): ${userStrongPoints[i + 1]} \n`;
+      debateHistoryFeedback += `Round ${i + 1} (weak strong in user's argument): ${userStrongPoints[i + 1]} \n`;
     }
   }
 
   res.locals.debateHistoryFeedback = debateHistoryFeedback;
   console.log('debateHistoryFeedback: ', debateHistoryFeedback);
   console.log('debate history parsed successfully');
+  return next();
 };
 
-export const customizeEvaluationPrompts: RequestHandler = async (_req, res, next) => {
+export const customizeEvaluationPrompts: RequestHandler = async (
+  _req,
+  res,
+  next
+) => {
+  const { parsedTopic, userSide } = res.locals;
+  const ai_side = userSide === 'pro' ? 'against' : 'for';
 
-  const { debateHistoryFeedback, topic, userSide } = res.locals;
+  const judgementRole = `You will act as the judge in a debate between a human (user) and an AI. The topic of the debate is: ${parsedTopic}. 
+  The ai side is ${ai_side} the topic, and the user side is on another side.
+  `;
 
-  const role = '';
+  const judgementGoal = `After reviewing the entire debate, provide a comprehensive analysis`;
 
-  const systemEvaluationContent = role;
+  const rubrics = `
+Assessment Rubrics:
+
+Please follow the assessment rubrics below:
+
+1. Comprehensive Assessment (comp_assessment)
+
+Criteria for Assessment:
+
+Clarity and Coherence: Evaluate how clearly and logically the user presented their arguments. Were the points easy to understand?
+Use of Evidence: Consider the strength and relevance of evidence provided to support claims. Did the user reference credible sources or data?
+Counterarguments: Assess the ability to address and refute opposing arguments. Did the user effectively counter the AI's points?
+Persuasiveness: Reflect on how convincingly the user articulated their position. Did the user engage the audience?
+Structure: Review the overall organization of arguments. Was there a logical flow to the points made?
+Output: Provide a narrative that highlights both strengths and weaknesses in the user’s performance based on the criteria above.
+
+2. Determining the Winner (winner)
+
+Criteria for Winner Determination:
+
+Overall Effectiveness: Compare the impact of both the user’s and AI’s arguments. Which side presented a more compelling case?
+Balance of Arguments: Evaluate which side had stronger points overall, taking into account the quality of evidence and effectiveness of rebuttals.
+Audience Engagement: Consider which side resonated better with the audience (or a hypothetical audience).
+Output: Choose either "user" or "ai" based on the overall effectiveness of their arguments.
+
+3. Constructive Advice for Improvement (ai_advice)
+
+Criteria for Advice:
+
+Identified Weaknesses: Based on the performance analysis, highlight specific areas where the user struggled (e.g., lack of evidence, weak rebuttals).
+Skills Development: Suggest ways to enhance skills such as research, structuring arguments, or public speaking.
+Future Strategies: Offer practical tips for future debates, such as practicing counterarguments or improving clarity.
+Output: Provide a constructive feedback statement focused on improvement.
+
+4. Scoring Evaluation (user_score and ai_score)
+
+Scoring Criteria:
+
+Scale Definition: Use a scale from 1 to 10, where:
+1-3: Poor performance, significant improvement needed.
+4-6: Average performance, with identifiable weaknesses and some strengths.
+7-9: Strong performance, with clear strengths and minor weaknesses.
+10: Exceptional performance, no significant weaknesses observed.
+Output: Assign a score based on the overall assessment of each side's debate performance, considering the clarity, evidence, rebuttals, and persuasiveness.
+
+5. Identifying User Blind Spots (user_blind_spots)
+
+Criteria for Identification:
+
+Recurrent Issues: Look for patterns in the user’s arguments where they consistently lacked depth or clarity.
+Missed Opportunities: Identify any points where the user could have provided stronger arguments or countered the AI more effectively.
+Growth Potential: Highlight areas where the user has room for growth, whether in argumentation, engagement, or knowledge of the topic.
+Output: Provide a concise statement outlining the user’s blind spots to encourage focused improvement in future debates.
+`;
+
+  const contextFormat = `
+Context:
+
+In the prompt, I will provide the debate chat history, detailing each round with the user's argument, the AI's argument, and a third-party analysis of each side's strong and weak points.
+The format of the debate history and third party analysis for each round should be in the following format:
+
+Round 1:
+User Argument: [user's argument for this round]
+AI Argument: [AI's argument for this round]
+User Strong Points: [user's strong points in the last argument]
+User Weak Points: [user's weak points in the last argument]
+AI Strong Points: [AI's strong points in the current argument]
+AI Weak Points: [AI's weak points in the current argument]
+
+Round 2:
+User Argument: [user's argument for this round]
+AI Argument: [AI's argument for this round]
+User Strong Points: [user's strong points in the last argument]
+User Weak Points: [user's weak points in the last argument]
+AI Strong Points: [AI's strong points in the current argument]
+AI Weak Points: [AI's weak points in the current argument]
+(Continue this format for additional rounds as needed.)
+`;
+
+  const outputFormat = `
+Output Format: 
+
+Output your response in a JSON object with the following fields, do not include the word "json" in it:
+
+"comp_assessment": A string that offers a detailed assessment of the user’s debate performance, highlighting strengths and weaknesses.
+"winner": Indicate whether the "user" or "ai" performed better in the debate.
+"ai_advice": A string offering constructive advice for the user to improve their debate skills.
+"user_score": A numerical score (1-10) evaluating the user’s debate performance.
+"ai_score": A numerical score (1-10) evaluating the AI’s debate performance.
+"user_blind_spots": A string identifying any blind spots or areas for improvement that the user could address in future debates.
+`;
+
+  const systemEvaluationContent =
+    judgementRole + judgementGoal + contextFormat + rubrics + outputFormat;
 
   res.locals.systemEvaluationContent = systemEvaluationContent;
 
   return next();
-}
-
-
-
+};
