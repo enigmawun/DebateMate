@@ -1,11 +1,33 @@
+@import url('https://fonts.google.com/share?selection.family=Caveat:wght@400..700|Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700|Permanent+Marker');
+
 /* General Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
+  background-color: white;
+  color: black;
 }
 
+/*fonts*/
+.caveat-hand {
+  font-family: 'Caveat', cursive;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.comic-neue-regular {
+  font-family: 'Comic Neue', serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.permanent-marker-regular {
+  font-family: 'Permanent Marker', serif;
+  font-weight: 400;
+  font-style: normal;
+}
 /* Dark Mode Background */
 body {
   text-align: center;
@@ -17,8 +39,22 @@ body {
 }
 
 /* Container Styles */
+div .inputbox {
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+div .chatcontainer {
+  flex-direction: column;
+  width: 80%;
+  text-align: left;
+  background-color: white;
+  border: 10px black solid;
+}
 .container {
+  display: flex;
+  flex-direction: column;
   max-width: 1200px;
+  min-height: 500px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #202833;
@@ -36,7 +72,7 @@ form {
   gap: 20px;
 }
 
-textarea {
+input[type='text'] {
   background-color: #121826;
   color: #c7d4ed;
   border: none;
@@ -45,9 +81,10 @@ textarea {
   font-size: 1rem;
   resize: vertical;
   outline: none;
+  width: 100%;
 }
 
-textarea::placeholder {
+input[type='text']::placeholder {
   color: #707b94;
 }
 
@@ -100,43 +137,15 @@ pre {
   overflow-x: auto;
 }
 
-/* Table Styles */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background-color: #10151d;
-  color: #a8d0e6;
-  border: 1px solid #1f2c3e;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-th,
-td {
-  padding: 12px 15px;
-  text-align: left;
-  border: 1px solid #1f2c3e;
-}
-
-th {
-  background-color: #1b2838;
-  color: #d3e7ff;
-}
-
-td {
-  background-color: #111722;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {
     padding: 15px;
   }
 
-  form {
+  /* form {
     gap: 15px;
-  }
+  } */
 
   /* textarea {
     font-size: 0.9rem;
@@ -147,24 +156,4 @@ td {
     font-size: 0.9rem;
     padding: 10px 15px;
   }
-
-  th,
-  td {
-    padding: 10px 12px;
-  }
-}
-
-input[type='text'] {
-  background-color: #121826;
-  color: #c7d4ed;
-  border: none;
-  border-radius: 5px;
-  padding: 15px;
-  font-size: 1rem;
-  resize: vertical;
-  outline: none;
-}
-
-input[type='text']::placeholder {
-  color: #707b94;
 }

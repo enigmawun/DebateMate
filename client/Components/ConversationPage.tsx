@@ -54,10 +54,20 @@ const ConversationPage = () => {
   const createArgBody = () => {
     const newArgArray: JSX.Element[] = [];
     for (let i = 0; i < aiArguments.length; i++) {
-      newArgArray.push(<Argument key={`ai-${i}`} body={aiArguments[i]} />);
+      newArgArray.push(
+        <Argument
+          key={`ai-${i}`}
+          body={aiArguments[i]}
+          font="ai comic-neue-regular"
+        />
+      );
       if (userArguments[i]) {
         newArgArray.push(
-          <Argument key={`user-${i}`} body={userArguments[i]} />
+          <Argument
+            key={`user-${i}`}
+            body={userArguments[i]}
+            font="user caveat-hand"
+          />
         );
       }
     }
@@ -303,18 +313,23 @@ const ConversationPage = () => {
   }, [aiArguments]);
 
   return (
-    <div>
-      <h1>Conversation Page</h1>
-      {argumentElements} {/* Use the state array instead of variable */}
-      <input
-        type="text"
-        value={userString}
-        onChange={(e) => {
-          setUserString(e.target.value);
-        }}
-        // onChange={(e) => addArgument(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Submit</button>
+    <div className="container">
+      <h1 className="permanent-marker-regular">Create a debate</h1>
+      <div className="chatcontainer">
+        {argumentElements} {/* Use the state array instead of variable */}
+      </div>
+      <div className="inputbox">
+        <input
+          type="text"
+          value={userString}
+          placeholder="Craft your argument here..."
+          onChange={(e) => {
+            setUserString(e.target.value);
+          }}
+          // onChange={(e) => addArgument(e.target.value)}
+        />
+        <button onClick={handleSubmit}>Submit</button>
+      </div>
     </div>
   );
 };

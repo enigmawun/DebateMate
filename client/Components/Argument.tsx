@@ -2,12 +2,16 @@ import React from 'react';
 
 interface ArgumentProps {
   body: string;
+  key: string;
+  font: string;
 }
 
-const Argument: React.FC<ArgumentProps> = ({ body }) => {
+const Argument: React.FC<ArgumentProps> = ({ body, key, font }) => {
+  let classFont;
+
   return (
     <div>
-      <p>{body}</p>
+      <p className={font}>{body}</p>
     </div>
   );
 };
