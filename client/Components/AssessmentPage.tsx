@@ -19,6 +19,7 @@ const AssessmentPage = () => {
   const [aiScore, setAIScore] = useState(Number);
   const [userScore, setUserScore] = useState(Number);
   const [blindSpots, setBlindSpots] = useState(String);
+  const [aiAdvice, setAiAdvice] = useState(String);
 
   // example format
 
@@ -52,6 +53,7 @@ const AssessmentPage = () => {
     setUserScore(assessmentFake.user_score);
     setBlindSpots(assessmentFake.user_blind_spots);
     setAssessment(assessmentFake.comp_assessment);
+    setAiAdvice(assessmentFake.ai_advice);
   }, []);
 
   if (winner == 'user') {
@@ -70,6 +72,8 @@ const AssessmentPage = () => {
           <p>{assessment}</p>
           <h4>Points for Improvement</h4>
           <p>{blindSpots}</p>
+          <h4>Advice for Debate Skills</h4>
+          <p>{aiAdvice}</p>
         </div>
       </div>
     );
@@ -88,6 +92,8 @@ const AssessmentPage = () => {
           <p>{assessment}</p>
           <h4>Points for Improvement</h4>
           <p>{blindSpots}</p>
+          <h4>Advice for Debate Skills</h4>
+          <p>{aiAdvice}</p>
         </div>
       </div>
     );

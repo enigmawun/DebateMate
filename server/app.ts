@@ -59,26 +59,8 @@ app.post(
   parseDebateHistoryFeedback,
   customizeEvaluationPrompts,
   queryOpenAIEvaluation,
-  logDataAfterDebate,
+  // logDataAfterDebate,
   (_req, res) => {
-    //dummy data for front end
-    // console.log('did we get to the end of hte post request at assessment');
-    // res.locals.compAssessment = 'dummy';
-    // res.locals.winner = 'ai';
-    // res.locals.userScore = 60;
-    // res.locals.aiScore = 40;
-    // res.locals.aiAdvice = 'ai gives sage advice';
-    // res.locals.userBlindSpots = 'userblindspot';
-
-    // res.status(200).json({
-    //   comp_assessment: res.locals.evaluationResult.comp_assessment,
-    //   winner: res.locals.winner,
-    //   user_score: res.locals.userScore,
-    //   ai_score: res.locals.aiScore,
-    //   ai_advice: res.locals.aiAdvice,
-    //   user_blindspots: res.locals.userBlindspots,
-    // });
-
     res.status(200).json(res.locals.evaluationResult);
   }
 );
