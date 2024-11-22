@@ -59,6 +59,7 @@ const ConversationPage = () => {
           key={`ai-${i}`}
           body={aiArguments[i]}
           font="ai comic-neue-regular"
+          role="ai"
         />
       );
       if (userArguments[i]) {
@@ -67,6 +68,7 @@ const ConversationPage = () => {
             key={`user-${i}`}
             body={userArguments[i]}
             font="user caveat-hand"
+            role="user"
           />
         );
       }
@@ -81,7 +83,7 @@ const ConversationPage = () => {
     createArgBody();
   }, [aiArguments, userArguments]);
 
- // For testing purposes only - debugging why ai arguments render twice on every request
+  // For testing purposes only - debugging why ai arguments render twice on every request
   useEffect(() => {
     console.log('Refresh triggered. Updated AI Arguments:', aiArguments);
   }, [aiArguments]);
@@ -208,7 +210,7 @@ const ConversationPage = () => {
   //the assessment -- the assessment endpoint will make use of final AI argument and all reasonings
   const lastFetch = async () => {
     // one last time sending post request to /api/ai/argument to get the final AI argument
-    console.log('Sending last Arg to server... ')
+    console.log('Sending last Arg to server... ');
 
     sendArgToServer();
     console.log('Fetching assessment response...');
@@ -287,7 +289,7 @@ const ConversationPage = () => {
       console.log('Making initial fetch with:', { topic, userSide });
 
       const initialFetch = async () => {
-        console.log('Sending initial Arg to server... ')
+        console.log('Sending initial Arg to server... ');
 
         try {
           const newData = await fetch('http://localhost:3000/api/ai/argument', {
@@ -342,8 +344,23 @@ const ConversationPage = () => {
 
   return (
     <div className="container">
-      <h1 className="permanent-marker-regular">Create a debate</h1>
-      <div className="chatcontainer">
+      <h1 className="permanent-marker-regular debate">
+      {`You are debating `}
+      <span 
+      className='user-side'
+      style={{
+        color: userSide === 'pro' ? 'rgb(144, 255, 144)' : 'rgb(255, 99, 99)',
+      }}
+      >{userSide === 'pro' ? 'for' : 'against'}</span>
+      <span className='permanent-marker-regular topic'>
+      {` the topic: ${topic}`}
+      </span>
+      </h1>
+      <div className="chatcontainer"
+            style={{
+              boxShadow: userSide === 'pro' ? '4px 4px 8px rgba(144, 255, 144, 0.4)' : '4px 4px 8px rgba(255, 99, 99, 0.4)',
+            }}
+      >
         {argumentElements} {/* Use the state array instead of variable */}
       </div>
       <div className="inputbox">
