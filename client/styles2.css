@@ -1,15 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Gochi+Hand&family=Inconsolata:wght@200..900&family=Permanent+Marker&display=swap');
 /* General Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
+/* * { */
+box-sizing: border-box;
+/* margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
   -webkit-appearance: none;
   color: black;
-}
+} */
 
 /*fonts*/
+
+.assessment-container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  height: 100vh; /* Takes up the full height of the viewport */
+  padding: 20px;
+  overflow-y: auto; /* Ensures the content scrolls if it's too long */
+  background-color: #111722; /* Dark background for contrast */
+}
+
+.assessment-details p {
+  background-color: transparent;
+  color: white;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+.assessment-details h4 {
+  margin-bottom: 10px;
+  margin-top: 60px;
+  background-color: transparent;
+  color: white;
+}
+.assessment-summary h1,
+.assessment-summary h2,
+.assessment-summary h3,
+.assessment-summary h4,
+.assessment-summary p {
+  background-color: transparent;
+  color: white;
+}
+
+.assessment-summary {
+  background-color: transparent;
+  border-bottom: 1px solid #3b3a51;
+  padding-bottom: 40px;
+}
+.assessment-details {
+  background-color: transparent;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #333;
+  width: 90%;
+  align-self: center;
+}
 
 .gochi-hand-regular {
   font-family: 'Gochi Hand', cursive;

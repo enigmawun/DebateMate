@@ -59,7 +59,7 @@ const AssessmentPage = () => {
       console.log(winner);
     }
     return (
-      <div>
+      <div className="summary">
         <h1>Congratulations,</h1>
         <h2>YOU WON!</h2>
         <h3>

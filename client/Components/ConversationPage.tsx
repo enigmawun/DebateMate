@@ -38,6 +38,7 @@ const ConversationPage = () => {
   const [userArguments, setUserArguments] = useState([] as string[]);
   const [round, setRound] = useState(0);
   const [userString, setUserString] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const [aiReasonings, setaiReasonings] = useState([] as string[]);
   const [aiWeakPoints, setaiWeakPoints] = useState([] as string[]);
@@ -58,7 +59,7 @@ const ConversationPage = () => {
         <Argument
           key={`ai-${i}`}
           body={aiArguments[i]}
-          font="ai comic-neue-regular"
+          font="ai inconsolata-reg"
           role="ai"
         />
       );
@@ -67,7 +68,7 @@ const ConversationPage = () => {
           <Argument
             key={`user-${i}`}
             body={userArguments[i]}
-            font="user caveat-hand"
+            font="user gochi hand"
             role="user"
           />
         );
@@ -324,6 +325,7 @@ const ConversationPage = () => {
             setuserStrongPoints([data.user_strong_point]);
             setUserWeakPoints([data.user_weak_point]);
             setRound(1);
+            setLoading(false);
           } else {
             console.error('No AI argument in response:', data);
           }
@@ -344,37 +346,57 @@ const ConversationPage = () => {
 
   return (
     <div className="container">
-      <h1 className="permanent-marker-regular debate">
-      {`You are debating `}
-      <span 
-      className='user-side'
-      style={{
-        color: userSide === 'pro' ? 'rgb(144, 255, 144)' : 'rgb(255, 99, 99)',
-      }}
-      >{userSide === 'pro' ? 'for' : 'against'}</span>
-      <span className='permanent-marker-regular topic'>
-      {` the topic: ${topic}`}
-      </span>
-      </h1>
-      <div className="chatcontainer"
-            style={{
-              boxShadow: userSide === 'pro' ? '4px 4px 8px rgba(144, 255, 144, 0.4)' : '4px 4px 8px rgba(255, 99, 99, 0.4)',
-            }}
+      {loading && (
+        <h1 className="loading permanent-marker-regular">
+          generating an argument...
+        </h1>
+      )}
+      {!loading && (
+        <h1 className="permanent-marker-regular">
+          <span className="blue">debate:</span> is AI capable of true
+          intelligence?
+        </h1>
+      )}
+      {/* {loading && (
+      <h1 className="loading permanent-marker-regular debate">
+        `generating an argument... ` </h1>)}        {/* <span */}
+      {/* className="user-side"
+          style={{
+            color:
+              userSide === 'pro' ? 'rgb(144, 255, 144)' : 'rgb(255, 99, 99)',
+          }}
+        >
+          {userSide === 'pro' ? 'for' : 'against'} */}
+      {/* </span>
+        <span className="permanent-marker-regular topic">
+          {` the topic: ${topic}`}
+        </span>
+      </h1> */}
+      <div
+        className="chatcontainer"
+        style={{
+          boxShadow:
+            userSide === 'pro'
+              ? '4px 4px 8px rgba(144, 255, 144, 0.4)'
+              : '4px 4px 8px rgba(255, 99, 99, 0.4)',
+        }}
       >
         {argumentElements} {/* Use the state array instead of variable */}
       </div>
-      <div className="inputbox">
-        <input
-          type="text"
-          value={userString}
-          placeholder="Craft your argument here..."
-          onChange={(e) => {
-            setUserString(e.target.value);
-          }}
-          // onChange={(e) => addArgument(e.target.value)}
-        />
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
+      {!loading && (
+        <div className="inputbox">
+          <input
+            type="text"
+            value={userString}
+            placeholder="Craft your argument here..."
+            onChange={(e) => {
+              setUserString(e.target.value);
+            }}
+            // onChange={(e) => addArgument(e.target.value)}
+          />
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+      )}
     </div>
   );
 };
