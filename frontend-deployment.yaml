@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-daffy-frontend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-daffy-frontend
+  template:
+    metadata:
+      labels:
+        app: ai-daffy-frontend
+    spec:
+      containers:
+        - name: ai-daffy-frontend
+          image: randomlettergenerator/ai-daffy-frontend:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '250m'
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-daffy-frontend-service
+spec:
+  type: NodePort
+  selector:
+    app: ai-daffy-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30081

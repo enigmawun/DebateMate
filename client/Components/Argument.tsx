@@ -4,20 +4,17 @@ interface ArgumentProps {
   body: string;
   key: string;
   font: string;
-  role: "ai" | "user";
+  role: 'ai' | 'user';
 }
 
 const Argument: React.FC<ArgumentProps> = ({ body, font, role }) => {
+  const containerClass = role === 'ai' ? 'ai-argument' : 'user-argument';
 
-  const containerClass = role === "ai" ? "ai-argument" : "user-argument";
-
-
-
-  console.log("ARGS BODY: ", body)
+  console.log('ARGS BODY: ', body);
 
   return (
     <div className={`arguments-container ${containerClass}`}>
-      <p className={`${font} arguments` }>{body}</p>
+      <p className={`${font} arguments`}>{body}</p>
     </div>
   );
 };

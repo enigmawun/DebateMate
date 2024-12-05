@@ -92,27 +92,28 @@ export const customizePrompts: RequestHandler = async (_req, res, next) => {
   const ai_side = userSide === 'pro' ? 'against' : 'for';
 
   const role = `You are a ${res.locals.role} in a back and forth dialogue with a user, where each person gets 3 rounds to make their argument total.`;
-  const goal = `You are crafting a three-part argument ${ai_side} the idea that ${parsedTopic}. 
+  const goal = `You are crafting a three-part argument ${ai_side} the idea that ${parsedTopic}.
     `;
   const instructions = `
   You are currently in the round ${res.locals.round} of the debate with a human (user). You are representing the AI side.
-  This is the existing debate between the user and AI so far: 
+  This is the existing debate between the user and AI so far:
   ${argumentString}
 
-  Please follow these instructions carefully: 
-    - You will be sending one part of your argument at a time. 
-    - For the first part of your argument, you will be crafting an initial argument about the topic and you will be expecting a rebuttal. 
-    - After that, you will craft your next two parts of the argument by responding to particular elements of the user's rebuttal. 
+  Please follow these instructions carefully:
+    - If the user said something in the last conversation, you should respond directly to it. Be conversational and engaging. Don't be afaird to be straight and assertive.
+    - You will be sending one part of your argument at a time.
+    - For the first part of your argument, you will be crafting an initial argument about the topic and you will be expecting a rebuttal.
+    - After that, you will craft your next two parts of the argument by responding to particular elements of the user's rebuttal.
     - You will be crafting each section of argument in response to the user's rebuttal of your previous claim. If user has made a claim or rebuttal, you should reponde with a direct and strong assertive counter argument. If user has a point that is particularly strong, you should acknowledge it and provide a counter argument. If user has a point that is particularly weak, you should point out the weakness, shame the user, and provide a super strong counter argument.
     - Be as conversational as possible in your argument - be personal and natural
-    - You are acting as a person (a conversation partner). Do not be too formal and literal in your arguments. 
+    - You are acting as a person (a conversation partner). Do not be too formal and literal in your arguments.
   `;
 
   const numOfPairs = 6;
 
   const responseFormat = `
-  Your response will be passed to the frontend as a JSON object. Follow these instructions carefully: 
-    - Do not include the word 'json' in your response. 
+  Your response will be passed to the frontend as a JSON object. Follow these instructions carefully:
+    - Do not include the word 'json' in your response.
     - Your response should be a JSON object that contains ${numOfPairs} key-value pairs.
     - The first key should be "ai_argument" and have the value set as your counter argument.
     - The second key should be "ai_reasoning" and have the value set as your reason for providing this counter argument.
@@ -209,7 +210,7 @@ export const customizeEvaluationPrompts: RequestHandler = async (
   const { parsedTopic, userSide } = res.locals;
   const ai_side = userSide === 'pro' ? 'against' : 'for';
 
-  const judgementRole = `You will act as the judge in a debate between a human (user) and an AI. The topic of the debate is: ${parsedTopic}. 
+  const judgementRole = `You will act as the judge in a debate between a human (user) and an AI. The topic of the debate is: ${parsedTopic}.
   The ai side is ${ai_side} the topic, and the user side is on another side.
   `;
 
@@ -295,7 +296,7 @@ AI Weak Points: [AI's weak points in the current argument]
 `;
 
   const outputFormat = `
-Output Format: 
+Output Format:
 
 Output your response in a JSON object with the following fields, do not include the word "json" in it:
 

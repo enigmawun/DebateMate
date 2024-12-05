@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: backend
+    ports:
+      - '3000:3000'
+    environment:
+      - OPENAI_API_KEY=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
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: frontend
+    ports:
+      - '8080:80'
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -59,7 +59,7 @@ app.post(
   parseDebateHistoryFeedback,
   customizeEvaluationPrompts,
   queryOpenAIEvaluation,
-  logDataAfterDebate,
+  // logDataAfterDebate,
   (_req, res) => {
     //dummy data for front end
     // console.log('did we get to the end of hte post request at assessment');
@@ -82,6 +82,10 @@ app.post(
     res.status(200).json(res.locals.evaluationResult);
   }
 );
+
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
 
 const errorHandler: ErrorRequestHandler = (
   err: ServerError,

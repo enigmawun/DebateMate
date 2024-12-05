@@ -122,7 +122,7 @@ const ConversationPage = () => {
       //   'rounds after changing backendinput rounds',
       //   backEndInput.round
       // );
-      const newData = await fetch('http://localhost:3000/api/ai/argument', {
+      const newData = await fetch('/api/ai/argument', {
         // rename here after
         method: 'POST',
         headers: {
@@ -215,27 +215,24 @@ const ConversationPage = () => {
     sendArgToServer();
     console.log('Fetching assessment response...');
     try {
-      const assessmentResponse = await fetch(
-        'http://localhost:3000/api/ai/assessment',
-        {
-          // rename here after
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            user_arguments: userArguments,
-            ai_arguments: aiArguments,
-            topic,
-            user_side: userSide,
-            ai_reasoning: aiReasonings,
-            ai_strong_points: aiStrongPoints,
-            ai_weak_points: aiWeakPoints,
-            user_strong_points: userStrongPoints,
-            user_weak_points: userWeakPoints,
-          }),
-        }
-      );
+      const assessmentResponse = await fetch('/api/ai/assessment', {
+        // rename here after
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_arguments: userArguments,
+          ai_arguments: aiArguments,
+          topic,
+          user_side: userSide,
+          ai_reasoning: aiReasonings,
+          ai_strong_points: aiStrongPoints,
+          ai_weak_points: aiWeakPoints,
+          user_strong_points: userStrongPoints,
+          user_weak_points: userWeakPoints,
+        }),
+      });
 
       if (!assessmentResponse.ok) {
         throw new Error(`HTTP Error: ${assessmentResponse.status}`);
@@ -292,7 +289,7 @@ const ConversationPage = () => {
         console.log('Sending initial Arg to server... ');
 
         try {
-          const newData = await fetch('http://localhost:3000/api/ai/argument', {
+          const newData = await fetch('/api/ai/argument', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -345,21 +342,28 @@ const ConversationPage = () => {
   return (
     <div className="container">
       <h1 className="permanent-marker-regular debate">
-      {`You are debating `}
-      <span 
-      className='user-side'
-      style={{
-        color: userSide === 'pro' ? 'rgb(144, 255, 144)' : 'rgb(255, 99, 99)',
-      }}
-      >{userSide === 'pro' ? 'for' : 'against'}</span>
-      <span className='permanent-marker-regular topic'>
-      {` the topic: ${topic}`}
-      </span>
+        {`You are debating `}
+        <span
+          className="user-side"
+          style={{
+            color:
+              userSide === 'pro' ? 'rgb(144, 255, 144)' : 'rgb(255, 99, 99)',
+          }}
+        >
+          {userSide === 'pro' ? 'for' : 'against'}
+        </span>
+        <span className="permanent-marker-regular topic">
+          {` the topic: ${topic}`}
+        </span>
       </h1>
-      <div className="chatcontainer"
-            style={{
-              boxShadow: userSide === 'pro' ? '4px 4px 8px rgba(144, 255, 144, 0.4)' : '4px 4px 8px rgba(255, 99, 99, 0.4)',
-            }}
+      <div
+        className="chatcontainer"
+        style={{
+          boxShadow:
+            userSide === 'pro'
+              ? '4px 4px 8px rgba(144, 255, 144, 0.4)'
+              : '4px 4px 8px rgba(255, 99, 99, 0.4)',
+        }}
       >
         {argumentElements} {/* Use the state array instead of variable */}
       </div>

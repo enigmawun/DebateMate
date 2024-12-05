@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-daffy-backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-daffy-backend
+  template:
+    metadata:
+      labels:
+        app: ai-daffy-backend
+    spec:
+      containers:
+        - name: ai-daffy-backend
+          image: randomlettergenerator/ai-daffy-backend:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '250m'
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 3000
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-secret
+                  key: OPENAI_API_KEY
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-daffy-backend-service
+spec:
+  selector:
+    app: ai-daffy-backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-backend
+spec:
+  podSelector:
+    matchLabels:
+      app: ai-daffy-backend
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: ai-daffy-frontend
+      ports:
+        - protocol: TCP
+          port: 3000
