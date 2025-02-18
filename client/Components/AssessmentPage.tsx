@@ -15,12 +15,11 @@ const AssessmentPage = () => {
   //YOUR SUMMARY
   // const [userStrongPoints, setUserStrongPoints] = useState('');
   // const [userWeakPoints, setUserWeakPoints] = useState('');
-  const [winner, setWinner] = useState(assessmentPageInfo.winner);
-  const [aiScore, setAIScore] = useState(assessmentPageInfo.ai_score);
-  const [userScore, setUserScore] = useState(assessmentPageInfo.user_score);
-  const [blindSpots, setBlindSpots] = useState(
-    assessmentPageInfo.user_blind_spots
-  );
+  const [winner, setWinner] = useState(String);
+  const [aiScore, setAIScore] = useState(Number);
+  const [userScore, setUserScore] = useState(Number);
+  const [blindSpots, setBlindSpots] = useState(String);
+  const [aiAdvice, setAiAdvice] = useState(String);
 
   // example format
 
@@ -34,17 +33,17 @@ const AssessmentPage = () => {
   // user_strong_points: userStrongPoints,
   // user_weak_points: userWeakPoints,
 
-  const assessmentFake = {
-    comp_assessment:
-      'a string of comprehensive assessment of user debate performance',
-    ai_score: 80,
-    winner: 'user',
-    user_score: 40,
-    user_blind_spots:
-      'a string of blind spot that AI thinks user could tackle during the debate',
-    ai_advice:
-      'this is the advice that the AI is giving to you in addition to describing your blindspots',
-  };
+  const assessmentFake = { ...assessmentPageInfo };
+  //   comp_assessment:
+  //     'a string of comprehensive assessment of user debate performance',
+  //   ai_score: 80,
+  //   winner: 'user',
+  //   user_score: 40,
+  //   user_blind_spots:
+  //     'a string of blind spot that AI thinks user could tackle during the debate',
+  //   ai_advice:
+  //     'this is the advice that the AI is giving to you in addition to describing your blindspots',
+  // };
 
   useEffect(() => {
     // setassessmentSummary(assessmentPageInfo.comp_assessment); //what is the summary called
@@ -54,9 +53,13 @@ const AssessmentPage = () => {
     setUserScore(assessmentFake.user_score);
     setBlindSpots(assessmentFake.user_blind_spots);
     setAssessment(assessmentFake.comp_assessment);
+    setAiAdvice(assessmentFake.ai_advice);
   }, []);
 
-  if (winner == 'user')
+  if (winner == 'user') {
+    {
+      console.log(winner);
+    }
     return (
       <div>
         <h1>Congratulations,</h1>
@@ -69,25 +72,32 @@ const AssessmentPage = () => {
           <p>{assessment}</p>
           <h4>Points for Improvement</h4>
           <p>{blindSpots}</p>
+          <h4>Advice for Debate Skills</h4>
+          <p>{aiAdvice}</p>
         </div>
       </div>
     );
-  else if (winner == 'ai')
+  } else if (winner == 'ai') {
     return (
-      <div>
-        <h1>Sorry,</h1>
-        <h2>you've been defeated by AI.</h2>
-        <h3>
-          AI Score: {aiScore} vs. Your Score: {userScore}
-        </h3>
-        <div>
+      <div className="assessment-container">
+        <div className="assessment-summary">
+          <h1>Sorry,</h1>
+          <h2>You've been defeated by AI.</h2>
+          <h3>
+            AI Score: {aiScore} vs. Your Score: {userScore}
+          </h3>
+        </div>
+        <div className="assessment-details">
           <h4>Comprehensive Assessment</h4>
           <p>{assessment}</p>
           <h4>Points for Improvement</h4>
           <p>{blindSpots}</p>
+          <h4>Advice for Debate Skills</h4>
+          <p>{aiAdvice}</p>
         </div>
       </div>
     );
+  }
 };
 //   return (
 //     <div>

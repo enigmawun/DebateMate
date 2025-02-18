@@ -54,10 +54,22 @@ const ConversationPage = () => {
   const createArgBody = () => {
     const newArgArray: JSX.Element[] = [];
     for (let i = 0; i < aiArguments.length; i++) {
-      newArgArray.push(<Argument key={`ai-${i}`} body={aiArguments[i]} />);
+      newArgArray.push(
+        <Argument
+          key={`ai-${i}`}
+          body={aiArguments[i]}
+          font="ai comic-neue-regular"
+          role="ai"
+        />
+      );
       if (userArguments[i]) {
         newArgArray.push(
-          <Argument key={`user-${i}`} body={userArguments[i]} />
+          <Argument
+            key={`user-${i}`}
+            body={userArguments[i]}
+            font="user caveat-hand"
+            role="user"
+          />
         );
       }
     }
@@ -66,17 +78,24 @@ const ConversationPage = () => {
 
   // FUpdate useEffect to watch both arrays
   useEffect(() => {
+    console.log('User Arguments:', userArguments);
+    console.log('AI Arguments:', aiArguments);
     createArgBody();
   }, [aiArguments, userArguments]);
 
+  // For testing purposes only - debugging why ai arguments render twice on every request
+  useEffect(() => {
+    console.log('Refresh triggered. Updated AI Arguments:', aiArguments);
+  }, [aiArguments]);
+
   //if aiInputState is changed, rerender components
   //populate the display with the chat bot's response
-  useEffect(() => {
-    if (userArguments[1] === null) createArgBody();
-    else {
-      createArgBody();
-    }
-  }, [aiArguments]);
+  // useEffect(() => {
+  //   if (userArguments[1] === null) createArgBody();
+  //   else {
+  //     createArgBody();
+  //   }
+  // }, [aiArguments, userArguments]);
 
   // if (backEndInput) {
   //   const newArg = aiInputState.concat(backEndInput.ai_arguments[0]);
@@ -89,6 +108,7 @@ const ConversationPage = () => {
 
   //submit new argument to API along with all the other info contained in backEndInput
   const sendArgToServer = async () => {
+    console.log('Sending Arg to server... ');
     try {
       // Send data to backend
       // const newObj = [...backEndInput, userInputState, aiInputState]
@@ -175,8 +195,13 @@ const ConversationPage = () => {
       //   'this is backendinput after we get it back from server',
       //   backEndInput
       // );
-    } catch {
-      console.error('Error sending data to backend @ round ', round);
+    } catch (err) {
+      console.error(
+        'Error sending data to backend @ round ',
+        round,
+        ' ERROR: ',
+        err
+      );
     }
   };
 
@@ -185,8 +210,10 @@ const ConversationPage = () => {
   //the assessment -- the assessment endpoint will make use of final AI argument and all reasonings
   const lastFetch = async () => {
     // one last time sending post request to /api/ai/argument to get the final AI argument
-    sendArgToServer();
+    console.log('Sending last Arg to server... ');
 
+    sendArgToServer();
+    console.log('Fetching assessment response...');
     try {
       const assessmentResponse = await fetch(
         'http://localhost:3000/api/ai/assessment',
@@ -199,9 +226,9 @@ const ConversationPage = () => {
           body: JSON.stringify({
             user_arguments: userArguments,
             ai_arguments: aiArguments,
-            topic: topic,
+            topic,
             user_side: userSide,
-            ai_reasonings: aiReasonings,
+            ai_reasoning: aiReasonings,
             ai_strong_points: aiStrongPoints,
             ai_weak_points: aiWeakPoints,
             user_strong_points: userStrongPoints,
@@ -210,15 +237,26 @@ const ConversationPage = () => {
         }
       );
 
+      if (!assessmentResponse.ok) {
+        throw new Error(`HTTP Error: ${assessmentResponse.status}`);
+      }
+
       const assessmentData = await assessmentResponse.json();
       console.log('assessmentData', assessmentData);
-      setAssessment(assessmentData);
+      console.log('Navigating with state:', {
+        assessmentPageInfo: assessmentData,
+      });
+      navigate('/assessmentPage', {
+        state: {
+          assessmentPageInfo: assessmentData, // Pass data directly to the navigate page
+        },
+      });
     } catch {
       console.error('Error getting data from backend for assessment');
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const userArgument = [userString];
     const updatedUserArguments: string[] = [...userArguments].concat(
       userArgument
@@ -226,17 +264,17 @@ const ConversationPage = () => {
     setUserArguments(updatedUserArguments);
     setUserString('');
     if (round === 3) {
-      lastFetch();
-      navigate('/assessmentPage', {
-        state: {
-          assessmentPageInfo: {
-            ...assessment,
-          },
-        },
-      });
+      await lastFetch();
+      // navigate('/assessmentPage', {
+      //   state: {
+      //     assessmentPageInfo: {
+      //       ...assessment,
+      //     },
+      //   },
+      // });
     } else {
       //send user argument to the server
-      sendArgToServer();
+      await sendArgToServer();
     }
     // console.log('newUserState', newUserState);
     // console.log('userInputState', userInputState);
@@ -251,6 +289,8 @@ const ConversationPage = () => {
       console.log('Making initial fetch with:', { topic, userSide });
 
       const initialFetch = async () => {
+        console.log('Sending initial Arg to server... ');
+
         try {
           const newData = await fetch('http://localhost:3000/api/ai/argument', {
             method: 'POST',
@@ -303,18 +343,38 @@ const ConversationPage = () => {
   }, [aiArguments]);
 
   return (
-    <div>
-      <h1>Conversation Page</h1>
-      {argumentElements} {/* Use the state array instead of variable */}
-      <input
-        type="text"
-        value={userString}
-        onChange={(e) => {
-          setUserString(e.target.value);
-        }}
-        // onChange={(e) => addArgument(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Submit</button>
+    <div className="container">
+      <h1 className="permanent-marker-regular debate">
+      {`You are debating `}
+      <span 
+      className='user-side permanent-marker-regular'
+      style={{
+        color: userSide === 'pro' ? 'green' : 'rgb(255, 99, 99)',
+      }}
+      >{userSide === 'pro' ? 'for' : 'against'}</span>
+      <span className='permanent-marker-regular topic'>
+      {` the topic: ${topic}`}
+      </span>
+      </h1>
+      <div className="chatcontainer"
+            style={{
+              boxShadow: userSide === 'pro' ? '4px 4px 8px rgba(144, 255, 144, 0.4)' : '4px 4px 8px rgba(255, 99, 99, 0.4)',
+            }}
+      >
+        {argumentElements} {/* Use the state array instead of variable */}
+      </div>
+      <div className="inputbox">
+        <input
+          type="text"
+          value={userString}
+          placeholder="Craft your argument here..."
+          onChange={(e) => {
+            setUserString(e.target.value);
+          }}
+          // onChange={(e) => addArgument(e.target.value)}
+        />
+        <button onClick={handleSubmit}>Submit</button>
+      </div>
     </div>
   );
 };

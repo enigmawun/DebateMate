@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Gochi+Hand&family=Inconsolata:wght@200..900&family=Permanent+Marker&display=swap');
+/* General Reset */
+* {
+/* box-sizing: border-box; */
+margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  -webkit-appearance: none;
+  color: black;
+}
+
+/*fonts*/
+
+.assessment-container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  height: 100vh; /* Takes up the full height of the viewport */
+  padding: 20px;
+  overflow-y: auto; /* Ensures the content scrolls if it's too long */
+  background-color: #111722; /* Dark background for contrast */
+}
+
+.assessment-details p {
+  background-color: transparent;
+  color: white;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+.assessment-details h4 {
+  margin-bottom: 10px;
+  margin-top: 60px;
+  background-color: transparent;
+  color: white;
+}
+.assessment-summary h1,
+.assessment-summary h2,
+.assessment-summary h3,
+.assessment-summary h4,
+.assessment-summary p {
+  background-color: transparent;
+  color: white;
+}
+
+.assessment-summary {
+  background-color: transparent;
+  border-bottom: 1px solid #3b3a51;
+  padding-bottom: 40px;
+}
+.assessment-details {
+  background-color: transparent;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #333;
+  width: 90%;
+  align-self: center;
+}
+
+.gochi-hand-regular {
+  font-family: 'Gochi Hand', cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.bubblegum-sans-regular {
+  font-family: 'Bubblegum Sans', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.inconsolata-reg {
+  font-family: 'Inconsolata', serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
+}
+
+.comic-neue-regular {
+  font-family: 'Comic Neue', serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.permanent-marker-regular {
+  font-family: 'Permanent Marker', serif;
+  font-weight: 400;
+  font-style: normal;
+}
+/* Dark Mode Background */
+body {
+  font-family: 'gochi hand';
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: white;
+  color: #d3e7ff;
+  line-height: 1.6;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+}
+
+div .entry {
+  border: 2px solid black;
+  border-radius: 5px;
+}
+/* Container Styles */
+
+div .inputbox {
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+div .chatcontainer {
+  flex-direction: column;
+  width: 80%;
+  text-align: left;
+  background-color: white;
+  border: 10px #101315;
+}
+
+div .ai > p {
+  max-width: 800px;
+  text-align: left;
+  color: #202020;
+  padding: 10px;
+  /* background-image: url(Speech_bubble.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: stretch-x; */
+}
+h1.permanent-marker-regular {
+  font-family: 'Permanent Marker';
+}
+h1.permanent-marker-regular > span.blue {
+  font-family: 'Permanent Marker';
+  color: #3178c9;
+}
+
+div .user > p {
+  font-family: 'gochi hand';
+  max-width: 800px;
+  text-align: left;
+  color: #3178c9;
+  padding: 10px;
+}
+
+p.permanent-marker-regular {
+  color: #3178c9;
+}
+div.entry,
+div.container,
+div.summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 800px;
+  min-height: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 4px solid #202833;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #f9f9f9, #fbf7f5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  color: #a8d0e6;
+}
+
+/* Form Styles */
+
+input[type='text'] {
+  background-color: #121826;
+  color: #c7d4ed;
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 1rem;
+  resize: vertical;
+  outline: none;
+  width: 100%;
+  font-family: 'gochi hand';
+}
+
+input[type='text']::placeholder {
+  color: #3178c9;
+}
+
+button #addArgument {
+  background-color: #3178c9;
+  font-family: 'Permanent Marker';
+  /* color: #d9edf7; */
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  background-color: #3a9ddf;
+  transform: translateY(-2px);
+}
+
+button:enabled {
+  background-color: #3178c9;
+  font-family: 'Permanent Marker';
+  font-size: 1.3rem;
+  padding: 12px 20px;
+}
+
+button:disabled {
+  background-color: black;
+  cursor: not-allowed;
+}
+
+button.pro,
+button:enabled .pro {
+  background-color: #33a240;
+  margin: 20px;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+button.con,
+button:enabled .con {
+  background-color: #c0220e;
+  margin: 20px;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+/* Error Message */
+.error {
+  color: #ff4d4f;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Result Section */
+.result {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #111722;
+  border-left: 5px solid #246aff;
+  border-radius: 5px;
+}
+
+.result h2 {
+  color: #63a4ff;
+}
+
+pre {
+  background-color: #0d141d;
+  color: #c7d4ed;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+/* Custom Select Menu on Landing Page */
+/* The container must be positioned relative: */
+
+div .custom-select {
+  margin: 40px;
+}
+select {
+  padding: 10px;
+  background-color: #fad800;
+  font-family: 'Inconsolata';
+  border-radius: 5px;
+  border: 2px solid black;
+  color: black;
+  padding: 10px 30px 10px 10px;
+  outline: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  &::-ms-expand {
+    display: none;
+  }
+}

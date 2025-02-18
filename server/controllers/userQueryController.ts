@@ -22,12 +22,13 @@ export const parseUserQuery: RequestHandler = async (
     topic,
     user_side,
     round,
-    ai_reasonings,
+    ai_reasoning,
     ai_strong_points,
     ai_weak_points,
     user_strong_points,
     user_weak_points,
   } = req.body;
+  console.log('ai_weak_points at parseUserQuery', ai_weak_points);
 
   // if (
   //   typeof topic !== 'string' ||
@@ -48,19 +49,18 @@ export const parseUserQuery: RequestHandler = async (
   res.locals.userSide = user_side;
 
   if (
-    Array.isArray(ai_reasonings) &&
+    Array.isArray(ai_reasoning) &&
     Array.isArray(ai_strong_points) &&
     Array.isArray(ai_weak_points) &&
     Array.isArray(user_strong_points) &&
     Array.isArray(user_weak_points)
   ) {
-    res.locals.aiReasonings = ai_reasonings;
+    res.locals.aiReasonings = ai_reasoning;
     res.locals.aiStrongPoints = ai_strong_points;
     res.locals.aiWeakPoints = ai_weak_points;
     res.locals.userStrongPoints = user_strong_points;
     res.locals.userWeakPoints = user_weak_points;
   }
-
   console.log('User query parsed successfully');
   return next();
 };

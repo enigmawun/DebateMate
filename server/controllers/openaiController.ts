@@ -9,7 +9,7 @@ const openai = new OpenAI({
 });
 
 export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
-  const { systemContent, userArguments } = res.locals;
+  const { systemContent, userArguments, userContent } = res.locals;
 
   if (!systemContent) {
     const error: ServerError = {
@@ -23,7 +23,7 @@ export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
   try {
     console.log('Attempting OpenAI request with:', {
       systemContent,
-      userArguments,
+      userContent,
     });
 
     const response = await openai.chat.completions.create({
@@ -35,7 +35,7 @@ export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {
         },
         {
           role: 'user',
-          content: JSON.stringify(userArguments || []),
+          content: JSON.stringify(userContent || []),
         },
       ],
       temperature: 0.7,
