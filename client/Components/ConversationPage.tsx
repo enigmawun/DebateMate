@@ -2,34 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Argument from './Argument';
 
-// LANDING PAGE
-// Grab state - topic & user_side
-// Pass that information & call conversation page
-
-// CONVERSATION PAGE
-// State for user arguments: []
-// State for ai arguments: []
-// State for ai reasoning:  []
-// State for ai strong points []
-// State for ai weak points []
-// State for user strong points []
-// State for user weak points []
-// State for round []
-
-// at every request to /arguments
-// build each individual state array
-
-// last fetch
-// the same call to /arguments
-// pass all state info to new page --> assessments
-// /assessment endpoint will be called using the passed in state
-
 const ConversationPage = () => {
-  // const [templateState, setTemplateState] = useState('');
-  // const [assessmentPageInfo, setAssessmentPageInfo] = useState({});
-  // State for ai reasoning:  []
-  // State for user strong points []
-  // State for user weak points
   const location = useLocation();
   const { backEndInput } = location.state || {}; // Get state values from location
   const topic = backEndInput.topic;
@@ -88,40 +61,14 @@ const ConversationPage = () => {
     console.log('Refresh triggered. Updated AI Arguments:', aiArguments);
   }, [aiArguments]);
 
-  //if aiInputState is changed, rerender components
-  //populate the display with the chat bot's response
-  // useEffect(() => {
-  //   if (userArguments[1] === null) createArgBody();
-  //   else {
-  //     createArgBody();
-  //   }
-  // }, [aiArguments, userArguments]);
-
-  // if (backEndInput) {
-  //   const newArg = aiInputState.concat(backEndInput.ai_arguments[0]);
-  //   setAIInputState(aiInputState.concat(backEndInput.ai_arguments[0]));
-  //   console.log(backEndInput, 'backend input is here');
-  // }
-  // }, [backEndInput]);
-
   const navigate = useNavigate();
 
   //submit new argument to API along with all the other info contained in backEndInput
   const sendArgToServer = async () => {
     console.log('Sending Arg to server... ');
     try {
-      // Send data to backend
-      // const newObj = [...backEndInput, userInputState, aiInputState]
-      // backEndInput.round += 1;
       setRound(round + 1);
-      // const newround = backEndInput.round;
-      // const userSide = backEndInput.user_side;
-      // const topic = backEndInput.topic;
-      // console.log('backendinput in sendarg to server', backEndInput);
-      // console.log(
-      //   'rounds after changing backendinput rounds',
-      //   backEndInput.round
-      // );
+
       const newData = await fetch('http://localhost:3000/api/ai/argument', {
         // rename here after
         method: 'POST',
@@ -191,10 +138,10 @@ const ConversationPage = () => {
       // backEndInput.user_strong_point = data.user_strong_point;
       // backEndInput.user_weak_point = data.user_weak_point;
 
-      // console.log(
-      //   'this is backendinput after we get it back from server',
-      //   backEndInput
-      // );
+      console.log(
+        'this is backendinput after we get it back from server',
+        backEndInput
+      );
     } catch (err) {
       console.error(
         'Error sending data to backend @ round ',
@@ -345,33 +292,43 @@ const ConversationPage = () => {
   return (
     <div className="container">
       <h1 className="permanent-marker-regular debate">
-      {`You are debating `}
-      <span 
-      className='user-side permanent-marker-regular'
-      style={{
-        color: userSide === 'pro' ? 'green' : 'rgb(255, 99, 99)',
-      }}
-      >{userSide === 'pro' ? 'for' : 'against'}</span>
-      <span className='permanent-marker-regular topic'>
-      {` the topic: ${topic}`}
-      </span>
+        {`You are debating `}
+        <span
+          className="user-side permanent-marker-regular"
+          style={{
+            color: userSide === 'pro' ? 'green' : 'rgb(255, 99, 99)',
+          }}
+        >
+          {userSide === 'pro' ? 'for' : 'against'}
+        </span>
+        <span className="permanent-marker-regular topic">
+          {` the topic: ${topic}`}
+        </span>
       </h1>
-      <div className="chatcontainer"
-            style={{
-              boxShadow: userSide === 'pro' ? '4px 4px 8px rgba(144, 255, 144, 0.4)' : '4px 4px 8px rgba(255, 99, 99, 0.4)',
-            }}
+      <div
+        className="chatcontainer"
+        style={{
+          boxShadow:
+            userSide === 'pro'
+              ? '4px 4px 8px rgba(144, 255, 144, 0.4)'
+              : '4px 4px 8px rgba(255, 99, 99, 0.4)',
+        }}
       >
         {argumentElements} {/* Use the state array instead of variable */}
       </div>
       <div className="inputbox">
-        <input
-          type="text"
+        <textarea
+          className="userinput"
           value={userString}
           placeholder="Craft your argument here..."
           onChange={(e) => {
             setUserString(e.target.value);
           }}
-          // onChange={(e) => addArgument(e.target.value)}
+          rows={8}
+          cols={40}
+          style={{
+            textWrap: 'wrap',
+          }}
         />
         <button onClick={handleSubmit}>Submit</button>
       </div>

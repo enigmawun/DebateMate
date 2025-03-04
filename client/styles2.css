@@ -1,16 +1,63 @@
 @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Gochi+Hand&family=Inconsolata:wght@200..900&family=Permanent+Marker&display=swap');
 /* General Reset */
 * {
-/* box-sizing: border-box; */
-margin: 0;
+  /* box-sizing: border-box; */
+  margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
   -webkit-appearance: none;
   color: black;
 }
 
-/*fonts*/
+/*animations*/
 
+/*custom variables*/
+:root {
+  --blue: #020fcb;
+  --red: #c31003;
+}
+
+.background {
+  position: absolute;
+  width: 50vw;
+  height: 100vh;
+}
+
+.background.background-left {
+  top: 0;
+  left: 0;
+  background-color: var(--red);
+}
+
+.background.background-right {
+  width: 100vw;
+  background-color: var(--blue);
+  right: 0;
+  top: 0;
+  transition:
+    opacity 4s ease-out,
+    width 4s ease-in-out,
+    background-color ease-in-out;
+}
+
+.swirlBg {
+  width: 50vw;
+  height: 100vh;
+  mix-blend-mode: 'color-burn';
+  width: 400px;
+  opacity: 0.5;
+  transform: scaleX(-1);
+  transition:
+    opacity 4s ease-out,
+    width 4s ease-in-out,
+    background-color ease-in-out;
+}
+
+/* .swirlBg:hover {
+  height: 100px;
+  width: 500px;
+  background-color: pink;
+} */
 .assessment-container {
   display: flex;
   flex-direction: column;
@@ -107,8 +154,7 @@ div .entry {
 /* Container Styles */
 
 div .inputbox {
-  display: grid;
-  grid-template-columns: 80% 20%;
+  display: flex;
 }
 div .chatcontainer {
   flex-direction: column;
@@ -167,7 +213,7 @@ div.summary {
 
 /* Form Styles */
 
-input[type='text'] {
+textarea.userinput {
   background-color: #121826;
   color: #c7d4ed;
   border: none;
@@ -180,7 +226,7 @@ input[type='text'] {
   font-family: 'gochi hand';
 }
 
-input[type='text']::placeholder {
+textarea::placeholder {
   color: #3178c9;
 }
 
@@ -280,4 +326,61 @@ select {
   &::-ms-expand {
     display: none;
   }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  /* form {
+    gap: 15px;
+  } */
+
+  /* textarea {
+    font-size: 0.9rem;
+    padding: 10px;
+  } */
+
+  button {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+}
+
+.red-bar-big {
+  width: 100vw !important;
+}
+
+.red-bar-small {
+  width: 0vw !important;
+}
+
+.swirl-opacityZero {
+  opacity: 0 !important;
+  width: 100vw !important;
+}
+
+/* .leftMic-small {
+  left: 12vw !important;
+  height: 68.5vh !important;
+} */
+
+.leftMic-small:hover {
+  left: 12vw;
+  height: 68.5vh;
+}
+
+.rightMic-small:hover {
+  left: 68vw;
+  height: 68.5vh;
+}
+
+.disappear {
+  display: none;
+}
+
+.appear {
+  opacity: 100 !important;
 }
