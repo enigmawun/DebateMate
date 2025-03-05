@@ -1,36 +1,37 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, forwardRef } from 'react';
 // import ReactDOM from 'react-dom/client';
 import { useNavigate } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import './styles2.css';
-
+import hoveredContext from './Components/Contexts';
 import ConversationPage from './Components/ConversationPage';
 import AssessmentPage from './Components/AssessmentPage';
-
+import SelectMenu from './Components/SelectMenu';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
+import DebateMateLogo from './Components/DebateMateLogo';
+import HalfBg from './Components/HalfBg';
 //images
 import instructions from './assets/debateMate_instructions.png';
 
-import textureBg from './assets/debateMateTexture.png';
-import blueBg from './assets/debateMate_blueBg.png';
-import swirlBg from './assets/debateMate_spinTexture.png';
 import leftMic from './assets/debateMate_leftMic.png';
 import rightMic from './assets/debateMate_rightMic.png';
 import choosePromptPic from './assets/debateMate_chooseyourprompt.png';
-import DebateMateLogo from './Components/DebateMateLogo';
+import textureBg from './assets/debateMateTexture.png';
+import swirlBgImg from './assets/debateMate_spinTexture.png';
 import titlePic from './assets/debateMate_Title.png';
-
-import yes from './assets/debate-yes.png';
+import Container from './Components/Container';
 import no from './assets/debate-no.png';
+import yes from './assets/debate-yes.png';
 
 const App = () => {
   const [topic, setTopic] = useState('AI Intelligence');
-  const [isHovered, setHoveredSide] = useState('');
-  const redSideRef = useRef(null);
-
+  const [isHovered, setHoveredSide] = useState<'red' | 'blue' | ''>('');
+  const blueMicRef = useRef<HTMLImageElement | null>(null);
+  const redMicRef = useRef<HTMLImageElement | null>(null);
+  const blueBgRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
+  /*ROUTER*/
   const proChoice = () => {
     navigate('/conversationPage', {
       state: {
@@ -53,51 +54,42 @@ const App = () => {
     });
   };
 
-  // const handleHover = (e) => {
-  //   setHoveredSide(e.target.value);
-  //   e.setAttribute();
-  // };
-  const moveRedBar = () => {
-    // const leftMic = document.getElementById('leftMic');
-    // leftMic!.classList.add('leftMic-small');
-    setHoveredSide('red');
-    const leftBg = document.getElementById('background-left');
-    const rightBg = document.getElementById('background-right');
-    rightBg!.classList.add('disappear');
-    leftBg!.classList.add('red-bar-big');
-    // const redBar = document.getElementById('red-bar');
-    // // redBar!.classList.add('red-bar-big');
+  /*Expand the red side on hover*/
+  const handleMouseEnter = (color: 'red' | 'blue' | '') => {
+    setHoveredSide(color);
 
-    // const swirlLeftBg = document.getElementById('swirlLeftBg');
+    // const swirlLeftBg = document.getElementById('background-left');
+    // swirlLeftBg!.setAttribute('display', 'none');
     // swirlLeftBg!.classList.add('swirl-opacityZero');
 
     // const rightMic = document.getElementById('rightMic');
     // rightMic!.classList.add('disappear');
 
-    // const swirlRightBg = document.getElementById('swirlRightBg');
+    // const swirlRightBg = document.getElementById('background-right');
     // swirlRightBg!.classList.add('disappear');
 
     // const CONside = document.getElementById('CONside');
     // CONside!.classList.add('appear');
   };
 
-  const moveRedBarBack = () => {
-    // const leftMic = document.getElementById('leftMic');
-    // leftMic!.classList.remove('leftMic-small');
+  const handleMouseLeave = (color: 'blue' | 'red') => {
+    console.log('moved bar back');
+    // if (color === 'red' && redMicRef.current) {
+    //   redMicRef.current.classList.remove('leftMic-small');
+    // } else if (color === 'blue' && blueMicRef.current) {
+    //   blueMicRef.current.setAttribute('background-color', 'blue');
+    // }
+    setHoveredSide('');
+    // const redBar = document.getElementById('red-bar');
 
-    const redBar = document.getElementById('red-bar');
+    // const swirlLeftBg = document.getElementById('swirlLeftBg');
+    // swirlLeftBg!.classList.remove('swirl-opacityZero');
 
-    const swirlLeftBg = document.getElementById('swirlLeftBg');
-    swirlLeftBg!.classList.remove('swirl-opacityZero');
+    // const swirlRightBg = document.getElementById('swirlRightBg');
+    // swirlRightBg!.classList.remove('disappear');
 
-    const rightMic = document.getElementById('rightMic');
-    rightMic!.classList.remove('disappear');
-
-    const swirlRightBg = document.getElementById('swirlRightBg');
-    swirlRightBg!.classList.remove('disappear');
-
-    const CONside = document.getElementById('CONside');
-    CONside!.classList.remove('appear');
+    // const CONside = document.getElementById('CONside');
+    // CONside!.classList.remove('appear');
   };
 
   const moveBlueBar = () => {
@@ -136,7 +128,6 @@ const App = () => {
     const PROside = document.getElementById('PROside');
     PROside!.classList.remove('appear');
   };
-  //IMAGE STYLING
 
   return (
     <div
@@ -146,131 +137,45 @@ const App = () => {
         justifyContent: 'center',
       }}
     >
-      <div className="background background-right" id="background-right">
-        <img src={blueBg} alt="Background Blue Image" className="bluebg" />
+      {isHovered === 'red' ? (
+        <HalfBg color={isHovered} />
+      ) : (
+        <Container key="bluecontainer" isHovered={isHovered} color="blue">
+          <img
+            ref={blueMicRef}
+            key="blueMic"
+            src={rightMic}
+            id="leftMic"
+            className="mic-image leftMic"
+            alt="left Mic Picture"
+            onMouseEnter={() => handleMouseEnter('blue')}
+            onMouseLeave={() => handleMouseLeave('blue')}
+            onClick={conChoice}
+          />
+        </Container>
+      )}
+      {isHovered === 'blue' ? (
+        <HalfBg color={isHovered}></HalfBg>
+      ) : (
+        <Container key="redcontainer" isHovered={isHovered} color="red">
+          <img
+            ref={redMicRef}
+            key="redMic"
+            src={rightMic}
+            id="rightMic"
+            className="mic-image rightMic"
+            alt="right Mic Picture"
+            onPointerEnter={() => handleMouseEnter('red')}
+            onPointerLeave={() => handleMouseLeave('red')}
+            onClick={proChoice}
+          />
+          <img src={instructions} alt="instructions" className="instructions" />
+        </Container>
+      )}
 
-        <img
-          src={swirlBg}
-          id="swirlRightBg"
-          alt="Background Swirl Texture"
-          className="swirlBg"
-        />
-        <img
-          src={rightMic}
-          id="rightMic"
-          className="mic-image rightMic rightMic-small"
-          alt="Left Mic Picture"
-          onMouseEnter={moveBlueBar}
-          onMouseLeave={moveBlueBarBack}
-          onClick={proChoice}
-        />
-      </div>
-      <div className="background background-left" id="background-left">
-        <img src={textureBg} alt="Background Texture" className="bluebg" />
-        <img
-          src={swirlBg}
-          id="swirlLeftBg"
-          className="swirlBg"
-          alt="Background Swirl Texture"
-        />
+      <DebateMateLogo />
 
-        <img
-          src={leftMic}
-          id="leftMic"
-          className="mic-image leftMic leftMic-small"
-          alt="Left Mic Picture"
-          onMouseEnter={moveRedBar}
-          onMouseLeave={moveRedBarBack}
-          onClick={conChoice}
-        />
-
-        {isHovered === 'red' ? (
-          <div id="red-bar" className="redBg-stretch">
-            <img
-              src={yes}
-              id="PROside"
-              alt="PRO"
-              style={{
-                position: 'absolute',
-                height: '20vh',
-                left: '22%',
-                top: '50%',
-
-                zIndex: -1,
-                transform: 'translateX(-50%)', //move (0,0) from top left to middle of pic
-                transition: 'opacity 0.5s ease-in-out',
-              }}
-            />
-          </div>
-        ) : (
-          ''
-        )}
-
-        <img src={instructions} alt="instructions" className="instructions" />
-
-        <img
-          src={no}
-          id="CONside"
-          alt="CON"
-          style={{
-            position: 'absolute',
-            height: '20vh',
-            left: '78%',
-            top: '50%',
-            opacity: 0,
-            zIndex: -1,
-            transform: 'translateX(-50%)', //move (0,0) from top left to middle of pic
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        />
-        <DebateMateLogo />
-      </div>
-
-      <div
-        className="content"
-        style={{
-          position: 'absolute',
-          display: 'flex',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          bottom: '30vh',
-          alignItems: 'center',
-          margin: 'auto',
-          zIndex: '6', //move (0,0) from top left to middle of pic
-        }}
-      >
-        <img
-          src={choosePromptPic}
-          alt="choose prompt"
-          style={{
-            width: '25vw',
-            marginBottom: '20px',
-            zIndex: '6',
-            //move (0,0) from top left to middle of pic
-          }}
-        />
-        <select
-          id="dropdown"
-          onChange={(e) => {
-            setTopic(e.target.value);
-          }}
-          style={{
-            textAlign: 'center',
-            fontSize: '1rem',
-            width: '25vw',
-            textWrap: 'wrap',
-            zIndex: '6',
-            minWidth: '200px',
-          }}
-        >
-          <option value={topic}>Is AI capable of real intelligence?</option>
-          <option value={topic}>Does free will exist?</option>
-        </select>
-      </div>
+      <SelectMenu topic={topic} setTopic={setTopic}></SelectMenu>
     </div>
   );
 };

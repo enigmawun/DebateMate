@@ -20,7 +20,6 @@
   background-color: #111722; /* Dark background for contrast */
 }
 
-
 .assessment-details p {
   background-color: transparent;
   color: white;
@@ -28,8 +27,8 @@
   margin-left: 10%;
 }
 .assessment-details h4 {
-  margin-bottom: 10px; 
-  margin-top: 60px; 
+  margin-bottom: 10px;
+  margin-top: 60px;
   background-color: transparent;
   color: white;
 }
@@ -44,7 +43,7 @@
 
 .assessment-summary {
   background-color: transparent;
-  border-bottom: 1px solid #3b3a51; 
+  border-bottom: 1px solid #3b3a51;
   padding-bottom: 40px;
 }
 .assessment-details {
@@ -56,44 +55,44 @@
   align-self: center;
 }
 
-.debate { 
-background-color: transparent;
-color: white;
-font-weight: bolder;
-margin-bottom: 20px;
+.debate {
+  background-color: transparent;
+  color: white;
+  font-weight: bolder;
+  margin-bottom: 20px;
 }
 
-.topic { 
-background-color: transparent;
-color: white;
-font-weight: bolder;
+.topic {
+  background-color: transparent;
+  color: white;
+  font-weight: bolder;
 }
 
 .user-side {
   background-color: transparent;
-  font-weight:400;
+  font-weight: 400;
 }
 
 .arguments {
-background-color: transparent;
-margin-top: 10px;
-margin-top: 40px;
-color: white;
-border-bottom: white;
+  background-color: transparent;
+  margin-top: 10px;
+  margin-top: 40px;
+  color: white;
+  border-bottom: white;
 }
 
 .arguments-container {
-background-color: transparent;
+  background-color: transparent;
 }
 
 .ai-argument {
-  justify-content: flex-start; 
+  justify-content: flex-start;
   text-align: left;
   margin-right: 150px;
 }
 
 .user-argument {
-  justify-content: flex-end; 
+  justify-content: flex-end;
   text-align: right;
   margin-left: 150px;
 }
@@ -131,7 +130,6 @@ body {
   width: 100%;
   background-color: transparent;
   /* margin: auto; */
-
 }
 
 /* Container Styles */
@@ -153,7 +151,6 @@ div .chatcontainer {
   overflow-y: auto;
   scrollbar-width: thin; /* Optional for smaller scrollbars */
   scrollbar-color: #888 #333;
-
 }
 .container {
   display: flex;
@@ -265,7 +262,6 @@ pre {
   }
 }
 
-
 .red-bar-big {
   width: 100vw !important;
 }
@@ -275,7 +271,7 @@ pre {
 }
 
 .swirl-opacityZero {
-  opacity:0 !important;
+  opacity: 0 !important;
   width: 100vw !important;
 }
 
@@ -295,4 +291,8 @@ pre {
 
 .appear {
   opacity: 100 !important;
+}
+
+.speechbubble {
+  position: absolute;
 }

@@ -11,11 +11,11 @@
 
 /*custom variables*/
 :root {
-  --blue: rgb(31, 42, 193, 0.9);
-  --red: rgba(200, 48, 37, 0.91);
+  --blue: rgb(11, 42, 118);
+  --red: rgba(125, 17, 26);
 }
 
-/*landing page*/
+/*front page*/
 .background {
   position: absolute;
   width: 50vw;
@@ -23,6 +23,15 @@
   top: 0;
 }
 
+.red {
+  background-color: var(--red);
+  right: 0;
+}
+
+.blue {
+  background-color: var(--blue);
+  left: 0;
+}
 .background.background-left {
   left: 0;
   background-color: var(--red);
@@ -41,7 +50,6 @@ img.bluebg {
   width: 100vw;
   height: 100vh;
   z-index: -2;
-  opacity: 0.9;
   mix-blend-mode: color-burn;
 }
 img.swirlBg {
@@ -51,27 +59,35 @@ img.swirlBg {
   width: 50vw;
   height: 100vh;
   mix-blend-mode: overlay;
-  transform: scaleX(-1);
+
   z-index: 0;
-  transition:
-    opacity 0.4s ease-out,
-    width 0.5s ease-in-out;
+  transition: width 0.5s ease-in-out;
 }
 
 .mic-image {
   position: absolute;
   bottom: 0;
-  height: 50vh;
+  height: 40vh;
   z-index: 7;
-  transition: height 0.5s ease-out;
+  transition: height 1s ease-out;
+}
+
+.leftMic:hover {
+  transform: scale(1.2) scaleX(-1);
 }
 
 .leftMic {
-  right: 25vw;
+  -webkit-transform: scaleX(-1);
+  right: 20vw;
+  transform: scaleX(-1);
 }
 
 .rightMic {
   left: 25vw;
+}
+
+.rightMic:hover {
+  transform: scale(1.2);
 }
 
 img.instructions {
@@ -403,12 +419,12 @@ select {
   height: 68.5vh !important;
 } */
 
-.leftMic-small:hover {
+.leftMic-small {
   left: 12vw;
   height: 68.5vh;
 }
 
-.rightMic-small:hover {
+.rightMic-small {
   left: 68vw;
   height: 68.5vh;
 }
@@ -419,4 +435,13 @@ select {
 
 .appear {
   opacity: 100 !important;
+}
+
+@keyframes expandBg {
+  from {
+    width: 50vw;
+  }
+  to {
+    width: 100vw;
+  }
 }

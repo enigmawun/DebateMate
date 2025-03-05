@@ -11,7 +11,7 @@ const DebateMateLogo = () => {
         style={{
           position: 'absolute',
           width: '40vw',
-
+          top: '5vw',
           zIndex: '3', //move (0,0) from top left to middle of pic
           transform: 'translateX(-50%)',
         }}
@@ -23,7 +23,7 @@ const DebateMateLogo = () => {
           position: 'absolute',
           width: '30vw',
           zIndex: '4',
-          top: '6vw',
+          top: '8vw',
           transform: 'translateX(-50%)',
         }}
       />{' '}
