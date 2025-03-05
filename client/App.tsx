@@ -26,7 +26,7 @@ import no from './assets/debate-no.png';
 
 const App = () => {
   const [topic, setTopic] = useState('AI Intelligence');
-  const [hoveredSide, setHoveredSide] = useState(null);
+  const [isHovered, setHoveredSide] = useState('');
   const redSideRef = useRef(null);
 
   const navigate = useNavigate();
@@ -60,21 +60,25 @@ const App = () => {
   const moveRedBar = () => {
     // const leftMic = document.getElementById('leftMic');
     // leftMic!.classList.add('leftMic-small');
+    setHoveredSide('red');
+    const leftBg = document.getElementById('background-left');
+    const rightBg = document.getElementById('background-right');
+    rightBg!.classList.add('disappear');
+    leftBg!.classList.add('red-bar-big');
+    // const redBar = document.getElementById('red-bar');
+    // // redBar!.classList.add('red-bar-big');
 
-    const redBar = document.getElementById('red-bar');
-    // redBar!.classList.add('red-bar-big');
+    // const swirlLeftBg = document.getElementById('swirlLeftBg');
+    // swirlLeftBg!.classList.add('swirl-opacityZero');
 
-    const swirlLeftBg = document.getElementById('swirlLeftBg');
-    swirlLeftBg!.classList.add('swirl-opacityZero');
+    // const rightMic = document.getElementById('rightMic');
+    // rightMic!.classList.add('disappear');
 
-    const rightMic = document.getElementById('rightMic');
-    rightMic!.classList.add('disappear');
+    // const swirlRightBg = document.getElementById('swirlRightBg');
+    // swirlRightBg!.classList.add('disappear');
 
-    const swirlRightBg = document.getElementById('swirlRightBg');
-    swirlRightBg!.classList.add('disappear');
-
-    const CONside = document.getElementById('CONside');
-    CONside!.classList.add('appear');
+    // const CONside = document.getElementById('CONside');
+    // CONside!.classList.add('appear');
   };
 
   const moveRedBarBack = () => {
@@ -142,146 +146,67 @@ const App = () => {
         justifyContent: 'center',
       }}
     >
-      <div className="background background-right">
-        {/* <img
-          src={blueBg}
-          alt="Background Blue Image"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: -2,
-          }}
-        /> */}
+      <div className="background background-right" id="background-right">
+        <img src={blueBg} alt="Background Blue Image" className="bluebg" />
 
         <img
           src={swirlBg}
           id="swirlRightBg"
-          className="swirlBg"
           alt="Background Swirl Texture"
-          // style={{
-          //   position: 'absolute',
-          //   top: 0,
-          //   right: 0,
-          //   width: '50vw',
-          //   height: '100vh',
-          //   // transform: 'scaleX(-1)',
-          //   mixBlendMode: 'color-burn',
-          //   transition: 'opacity 0.4s ease-out, width 0.5s ease-in-out',
-          // }}
+          className="swirlBg"
         />
-
         <img
           src={rightMic}
           id="rightMic"
-          className="leftMic-image rightMic-small"
+          className="mic-image rightMic rightMic-small"
           alt="Left Mic Picture"
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: '67vw',
-            height: '65vh',
-            zIndex: 7,
-            transition: 'height 0.5s ease-out',
-          }}
           onMouseEnter={moveBlueBar}
           onMouseLeave={moveBlueBarBack}
           onClick={proChoice}
         />
       </div>
-      <div className="background background-left">
-        <img
-          src={textureBg}
-          alt="Background Texture"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            mixBlendMode: 'color-burn',
-            opacity: 0.9,
-            zIndex: 0,
-          }}
-        />
-
+      <div className="background background-left" id="background-left">
+        <img src={textureBg} alt="Background Texture" className="bluebg" />
         <img
           src={swirlBg}
           id="swirlLeftBg"
+          className="swirlBg"
           alt="Background Swirl Texture"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '50vw',
-            height: '100vh',
-            mixBlendMode: 'overlay',
-            zIndex: 0,
-            transition: 'opacity 0.4s ease-out, width 0.5s ease-in-out',
-          }}
         />
 
         <img
           src={leftMic}
           id="leftMic"
-          className="leftMic-image leftMic-small"
+          className="mic-image leftMic leftMic-small"
           alt="Left Mic Picture"
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            right: '65vw',
-            height: '65vh',
-            zIndex: 7,
-            transition: 'height 0.5s ease-out',
-          }}
           onMouseEnter={moveRedBar}
           onMouseLeave={moveRedBarBack}
           onClick={conChoice}
         />
 
-        <div
-          id="red-bar"
-          style={{
-            backgroundColor: '#a61e31',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '50vw',
-            height: '100vh',
-            zIndex: -1,
-            transition: 'width 0.5s ease-in-out',
-          }}
-        />
+        {isHovered === 'red' ? (
+          <div id="red-bar" className="redBg-stretch">
+            <img
+              src={yes}
+              id="PROside"
+              alt="PRO"
+              style={{
+                position: 'absolute',
+                height: '20vh',
+                left: '22%',
+                top: '50%',
 
-        <img
-          src={instructions}
-          alt="instructions"
-          style={{
-            position: 'absolute',
-            width: '11vw',
-            left: '8.5%',
-            bottom: '8%',
-            transform: 'translateX(-50%)', //move (0,0) from top left to middle of pic
-          }}
-        />
+                zIndex: -1,
+                transform: 'translateX(-50%)', //move (0,0) from top left to middle of pic
+                transition: 'opacity 0.5s ease-in-out',
+              }}
+            />
+          </div>
+        ) : (
+          ''
+        )}
 
-        <img
-          src={yes}
-          id="PROside"
-          alt="PRO"
-          style={{
-            position: 'absolute',
-            height: '20vh',
-            left: '22%',
-            top: '50%',
-            opacity: 0,
-            zIndex: -1,
-            transform: 'translateX(-50%)', //move (0,0) from top left to middle of pic
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        />
+        <img src={instructions} alt="instructions" className="instructions" />
 
         <img
           src={no}

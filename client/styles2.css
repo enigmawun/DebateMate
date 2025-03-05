@@ -9,55 +9,78 @@
   color: black;
 }
 
-/*animations*/
-
 /*custom variables*/
 :root {
-  --blue: #020fcb;
-  --red: #c31003;
+  --blue: rgb(31, 42, 193, 0.9);
+  --red: rgba(200, 48, 37, 0.91);
 }
 
+/*landing page*/
 .background {
   position: absolute;
   width: 50vw;
   height: 100vh;
+  top: 0;
 }
 
 .background.background-left {
-  top: 0;
   left: 0;
   background-color: var(--red);
 }
 
 .background.background-right {
-  width: 100vw;
+  width: 50vw;
   background-color: var(--blue);
   right: 0;
-  top: 0;
-  transition:
-    opacity 4s ease-out,
-    width 4s ease-in-out,
-    background-color ease-in-out;
 }
 
-.swirlBg {
+img.bluebg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  opacity: 0.9;
+  mix-blend-mode: color-burn;
+}
+img.swirlBg {
+  position: absolute;
+  top: 0;
+  right: 0;
   width: 50vw;
   height: 100vh;
-  mix-blend-mode: 'color-burn';
-  width: 400px;
-  opacity: 0.5;
+  mix-blend-mode: overlay;
   transform: scaleX(-1);
+  z-index: 0;
   transition:
-    opacity 4s ease-out,
-    width 4s ease-in-out,
-    background-color ease-in-out;
+    opacity 0.4s ease-out,
+    width 0.5s ease-in-out;
 }
 
-/* .swirlBg:hover {
-  height: 100px;
-  width: 500px;
-  background-color: pink;
-} */
+.mic-image {
+  position: absolute;
+  bottom: 0;
+  height: 50vh;
+  z-index: 7;
+  transition: height 0.5s ease-out;
+}
+
+.leftMic {
+  right: 25vw;
+}
+
+.rightMic {
+  left: 25vw;
+}
+
+img.instructions {
+  position: absolute;
+  width: 11vw;
+  left: 8.5%;
+  bottom: 8%;
+}
+
 .assessment-container {
   display: flex;
   flex-direction: column;
@@ -333,6 +356,9 @@ select {
   .container {
     padding: 15px;
   }
+  img.instructions {
+    display: none;
+  }
 
   /* form {
     gap: 15px;
@@ -348,10 +374,20 @@ select {
     padding: 10px 15px;
   }
 }
-
-.red-bar-big {
-  width: 100vw !important;
+.redBg-stretch {
+  background-color: '#a61e31';
+  position: 'absolute';
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 4;
+  transition: width 0.5s ease-in-out;
 }
+
+/* .red-bar-big {
+  width: 100vw !important;
+} */
 
 .red-bar-small {
   width: 0vw !important;
