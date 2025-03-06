@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Argument from './Argument';
+import ArgumentContainer from './ArgumentContainer';
 
-const ConversationPage = () => {
+const ConversationPage: React.FC = () => {
   const location = useLocation();
   const { backEndInput } = location.state || {}; // Get state values from location
   const topic = backEndInput.topic;
   const userSide = backEndInput.user_side;
+  const [userString, setUserString] = useState('' as string);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const [aiArguments, setAiArguments] = useState([] as string[]);
   const [userArguments, setUserArguments] = useState([] as string[]);
   const [round, setRound] = useState(0);
-  const [userString, setUserString] = useState('');
 
   const [aiReasonings, setaiReasonings] = useState([] as string[]);
   const [aiWeakPoints, setaiWeakPoints] = useState([] as string[]);
@@ -18,57 +19,31 @@ const ConversationPage = () => {
   const [userWeakPoints, setUserWeakPoints] = useState([] as string[]);
   const [userStrongPoints, setuserStrongPoints] = useState([] as string[]);
 
-  const [assessment, setAssessment] = useState({});
-
   //  Move argArray into state to trigger re-renders
-  const [argumentElements, setArgumentElements] = useState<JSX.Element[]>([]);
 
+  const navigate = useNavigate();
   // Update createArgBody to set state instead of mutating variable
-  const createArgBody = () => {
-    const newArgArray: JSX.Element[] = [];
-    for (let i = 0; i < aiArguments.length; i++) {
-      newArgArray.push(
-        <Argument
-          key={`ai-${i}`}
-          body={aiArguments[i]}
-          font="ai comic-neue-regular"
-          role="ai"
-        />
-      );
-      if (userArguments[i]) {
-        newArgArray.push(
-          <Argument
-            key={`user-${i}`}
-            body={userArguments[i]}
-            font="user caveat-hand"
-            role="user"
-          />
-        );
-      }
-    }
-    setArgumentElements(newArgArray);
-  };
 
   // FUpdate useEffect to watch both arrays
   useEffect(() => {
     console.log('User Arguments:', userArguments);
     console.log('AI Arguments:', aiArguments);
-    createArgBody();
   }, [aiArguments, userArguments]);
 
   // For testing purposes only - debugging why ai arguments render twice on every request
-  useEffect(() => {
-    console.log('Refresh triggered. Updated AI Arguments:', aiArguments);
-  }, [aiArguments]);
-
-  const navigate = useNavigate();
 
   //submit new argument to API along with all the other info contained in backEndInput
-  const sendArgToServer = async () => {
+  const sendArgToServer = async (argArray: string[]) => {
     console.log('Sending Arg to server... ');
+    console.log(argArray, 'arguments sent to server');
+    console.log(
+      topic,
+      'topic sent in the body',
+      userSide,
+      'user side sent in the body'
+    );
     try {
       setRound(round + 1);
-
       const newData = await fetch('http://localhost:3000/api/ai/argument', {
         // rename here after
         method: 'POST',
@@ -76,7 +51,7 @@ const ConversationPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_arguments: userArguments,
+          user_arguments: [argArray],
           ai_arguments: aiArguments,
           topic: topic,
           user_side: userSide,
@@ -86,13 +61,13 @@ const ConversationPage = () => {
 
       if (!newData.ok) {
         throw new Error(`HTTP Connection Error: ${newData.status}`);
+      } else if (newData.ok) {
+        setUserArguments(argArray);
+        setUserString('');
       }
-
       const data = await newData.json();
-      console.log('data from server', data);
-      //then we want to add string ai_argument to AI input state as new elem in array
-      //store response object data on the existing array within backEndInput
-      // Use the correct property name from server response
+      console.log('data received from server after argument sent', data);
+
       const newAiArgument = data.ai_argument; // Changed from ai_arguments
       setAiArguments((prev) => [...prev, newAiArgument]);
 
@@ -155,11 +130,9 @@ const ConversationPage = () => {
   //fetch request one more time to ai/arguments tendpoint and wait for it
   //to come back and have it provide us with a response before we move on to
   //the assessment -- the assessment endpoint will make use of final AI argument and all reasonings
-  const lastFetch = async () => {
+  const lastFetch = async (updatedUserArguments: string[]) => {
     // one last time sending post request to /api/ai/argument to get the final AI argument
-    console.log('Sending last Arg to server... ');
-
-    sendArgToServer();
+    sendArgToServer(updatedUserArguments);
     console.log('Fetching assessment response...');
     try {
       const assessmentResponse = await fetch(
@@ -203,94 +176,26 @@ const ConversationPage = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    const userArgument = [userString];
-    const updatedUserArguments: string[] = [...userArguments].concat(
-      userArgument
-    );
-    setUserArguments(updatedUserArguments);
-    setUserString('');
-    if (round === 3) {
-      await lastFetch();
-      // navigate('/assessmentPage', {
-      //   state: {
-      //     assessmentPageInfo: {
-      //       ...assessment,
-      //     },
-      //   },
-      // });
-    } else {
-      //send user argument to the server
-      await sendArgToServer();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (inputRef.current) {
+      const userArg = inputRef.current.value;
+      const updatedUserArguments = [...userArguments, userArg];
+      if (round === 3) {
+        lastFetch(updatedUserArguments);
+      } else {
+        //send user argument to the server
+        sendArgToServer(updatedUserArguments);
+      }
     }
-    // console.log('newUserState', newUserState);
-    // console.log('userInputState', userInputState);
   };
 
-  useEffect(() => {
-    console.log('userInputState updated:', userArguments);
-  }, [userArguments]);
-
-  useEffect(() => {
-    if (topic && userSide) {
-      console.log('Making initial fetch with:', { topic, userSide });
-
-      const initialFetch = async () => {
-        console.log('Sending initial Arg to server... ');
-
-        try {
-          const newData = await fetch('http://localhost:3000/api/ai/argument', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({
-              user_arguments: [],
-              ai_arguments: [],
-              topic: topic,
-              user_side: userSide,
-              round: 0,
-            }),
-          });
-
-          if (!newData.ok) {
-            const errorText = await newData.text();
-            throw new Error(`HTTP Error ${newData.status}: ${errorText}`);
-          }
-
-          const data = await newData.json();
-          console.log('Initial API response:', data);
-
-          if (data.ai_argument) {
-            console.log('Setting AI argument:', data.ai_argument);
-            setAiArguments([data.ai_argument]);
-            setaiReasonings([data.ai_reasoning]);
-            setaiWeakPoints([data.ai_weak_point]);
-            setAiStrongPoints([data.ai_strong_point]);
-            setuserStrongPoints([data.user_strong_point]);
-            setUserWeakPoints([data.user_weak_point]);
-            setRound(1);
-          } else {
-            console.error('No AI argument in response:', data);
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-
-      initialFetch();
-    } else {
-      console.log('Missing required data:', { topic, userSide });
-    }
-  }, [topic, userSide]);
-
-  useEffect(() => {
-    console.log('Current AI Arguments:', aiArguments);
-  }, [aiArguments]);
-
+  const topicSummary =
+    topic === 'AI Intelligence'
+      ? 'the idea that AI can achieve true intelligence.'
+      : 'the idea that there is such a thing as free will.';
   return (
-    <div className="container">
+    <div className="chat-container">
       <h1 className="permanent-marker-regular debate">
         {`You are debating `}
         <span
@@ -299,38 +204,40 @@ const ConversationPage = () => {
             color: userSide === 'pro' ? 'green' : 'rgb(255, 99, 99)',
           }}
         >
-          {userSide === 'pro' ? 'for' : 'against'}
+          {userSide === 'pro' ? 'for ' : 'against'}
         </span>
-        <span className="permanent-marker-regular topic">
-          {` the topic: ${topic}`}
-        </span>
+        <span className="permanent-marker-regular topic">{topicSummary}</span>
       </h1>
-      <div
-        className="chatcontainer"
-        style={{
-          boxShadow:
-            userSide === 'pro'
-              ? '4px 4px 8px rgba(144, 255, 144, 0.4)'
-              : '4px 4px 8px rgba(255, 99, 99, 0.4)',
-        }}
-      >
-        {argumentElements} {/* Use the state array instead of variable */}
-      </div>
-      <div className="inputbox">
-        <textarea
-          className="userinput"
-          value={userString}
-          placeholder="Craft your argument here..."
-          onChange={(e) => {
-            setUserString(e.target.value);
-          }}
-          rows={8}
-          cols={40}
-          style={{
-            textWrap: 'wrap',
-          }}
+      <div className="chatcontainer">
+        <ArgumentContainer
+          userArguments={userArguments}
+          aiArguments={aiArguments}
+          setAiArguments={setAiArguments}
+          round={round}
         />
-        <button onClick={handleSubmit}>Submit</button>
+      </div>
+      {/* Use the state array instead of variable */}
+      <div className="inputbox">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            className="userinput"
+            ref={inputRef}
+            name="userString"
+            value={userString}
+            placeholder="Craft your argument here..."
+            onChange={(e) => {
+              setUserString(e.target.value);
+            }}
+            rows={8}
+            cols={40}
+            style={{
+              textWrap: 'wrap',
+            }}
+          />
+          <button className="submit-argument" type="submit">
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );

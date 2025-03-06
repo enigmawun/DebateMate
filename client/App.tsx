@@ -1,180 +1,112 @@
-import React, { useState, useRef, forwardRef } from 'react';
+import React, { useState, useEffect } from 'react';
 // import ReactDOM from 'react-dom/client';
 import { useNavigate } from 'react-router-dom';
+import NavigationHandler from './Components/NavigationHandler';
 import { createRoot } from 'react-dom/client';
-import './styles2.css';
-import hoveredContext from './Components/Contexts';
 import ConversationPage from './Components/ConversationPage';
 import AssessmentPage from './Components/AssessmentPage';
 import SelectMenu from './Components/SelectMenu';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DebateMateLogo from './Components/DebateMateLogo';
 import HalfBg from './Components/HalfBg';
-//images
+//images and styling
+import './styles2.css';
 import instructions from './assets/debateMate_instructions.png';
-
 import leftMic from './assets/debateMate_leftMic.png';
 import rightMic from './assets/debateMate_rightMic.png';
-import choosePromptPic from './assets/debateMate_chooseyourprompt.png';
-import textureBg from './assets/debateMateTexture.png';
-import swirlBgImg from './assets/debateMate_spinTexture.png';
-import titlePic from './assets/debateMate_Title.png';
 import Container from './Components/Container';
-import no from './assets/debate-no.png';
-import yes from './assets/debate-yes.png';
+
+import swirlBgImg from './assets/debateMate_spinTexture.png';
 
 const App = () => {
-  const [topic, setTopic] = useState('AI Intelligence');
-  const [isHovered, setHoveredSide] = useState<'red' | 'blue' | ''>('');
-  const blueMicRef = useRef<HTMLImageElement | null>(null);
-  const redMicRef = useRef<HTMLImageElement | null>(null);
-  const blueBgRef = useRef<HTMLDivElement | null>(null);
-  const navigate = useNavigate();
-
-  /*ROUTER*/
-  const proChoice = () => {
-    navigate('/conversationPage', {
-      state: {
-        backEndInput: {
-          topic: topic,
-          user_side: 'pro',
-        },
-      },
-    });
-  };
-
-  const conChoice = () => {
-    navigate('/conversationPage', {
-      state: {
-        backEndInput: {
-          topic: topic,
-          user_side: 'con',
-        },
-      },
-    });
-  };
+  const [topic, setTopic] = useState('AI intelligence');
+  const [isHovered, setHoveredSide] = useState<'red' | 'blue' | null | ''>(
+    null
+  );
+  const [choice, setChoice] = useState<'pro' | 'against' | null>(null);
+  const [prevHovered, setPrevHovered] = useState<null | string>(null);
+  const { proChoice, conChoice } = NavigationHandler({ topic, setChoice });
 
   /*Expand the red side on hover*/
   const handleMouseEnter = (color: 'red' | 'blue' | '') => {
     setHoveredSide(color);
-
-    // const swirlLeftBg = document.getElementById('background-left');
-    // swirlLeftBg!.setAttribute('display', 'none');
-    // swirlLeftBg!.classList.add('swirl-opacityZero');
-
-    // const rightMic = document.getElementById('rightMic');
-    // rightMic!.classList.add('disappear');
-
-    // const swirlRightBg = document.getElementById('background-right');
-    // swirlRightBg!.classList.add('disappear');
-
-    // const CONside = document.getElementById('CONside');
-    // CONside!.classList.add('appear');
+    const newChoice = color === 'red' ? 'pro' : 'against';
+    setChoice(newChoice);
   };
 
   const handleMouseLeave = (color: 'blue' | 'red') => {
-    console.log('moved bar back');
-    // if (color === 'red' && redMicRef.current) {
-    //   redMicRef.current.classList.remove('leftMic-small');
-    // } else if (color === 'blue' && blueMicRef.current) {
-    //   blueMicRef.current.setAttribute('background-color', 'blue');
-    // }
-    setHoveredSide('');
-    // const redBar = document.getElementById('red-bar');
-
-    // const swirlLeftBg = document.getElementById('swirlLeftBg');
-    // swirlLeftBg!.classList.remove('swirl-opacityZero');
-
-    // const swirlRightBg = document.getElementById('swirlRightBg');
-    // swirlRightBg!.classList.remove('disappear');
-
-    // const CONside = document.getElementById('CONside');
-    // CONside!.classList.remove('appear');
-  };
-
-  const moveBlueBar = () => {
-    // const redBar = document.getElementById('red-bar');
-    // proSide.classList.add('red-bar-small');
-
-    const swirlRightBg = document.getElementById('swirlRightBg');
-    swirlRightBg!.classList.add('swirl-opacityZero');
-
-    const leftMic = document.getElementById('leftMic');
-    leftMic!.classList.add('disappear');
-
-    const swirlLeftBg = document.getElementById('swirlLeftBg');
-    swirlLeftBg!.classList.add('disappear');
-
-    const PROside = document.getElementById('PROside');
-    PROside!.classList.add('appear');
-  };
-
-  const moveBlueBarBack = () => {
-    // const rightMic = document.getElementById('rightMic');
-    // rightMic!.classList.remove('rightMic-small');
-
-    const redBar = document.getElementById('red-bar');
-    redBar!.classList.remove('red-bar-small');
-
-    const swirlRightBg = document.getElementById('swirlRightBg');
-    swirlRightBg!.classList.remove('swirl-opacityZero');
-
-    const leftMic = document.getElementById('leftMic');
-    leftMic!.classList.remove('disappear');
-
-    const swirlLeftBg = document.getElementById('swirlLeftBg');
-    swirlLeftBg!.classList.remove('disappear');
-
-    const PROside = document.getElementById('PROside');
-    PROside!.classList.remove('appear');
+    setHoveredSide(null);
+    setChoice(null);
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}
-    >
-      {isHovered === 'red' ? (
-        <HalfBg color={isHovered} />
-      ) : (
-        <Container key="bluecontainer" isHovered={isHovered} color="blue">
+    <div className="main-container">
+      {!isHovered && (
+        <>
+          <Container key="redcontainer" isHovered={isHovered} color="red">
+            <img
+              src={instructions}
+              alt="instructions"
+              className="instructions"
+            />
+          </Container>
           <img
-            ref={blueMicRef}
-            key="blueMic"
-            src={rightMic}
-            id="leftMic"
-            className="mic-image leftMic"
-            alt="left Mic Picture"
-            onMouseEnter={() => handleMouseEnter('blue')}
-            onMouseLeave={() => handleMouseLeave('blue')}
-            onClick={conChoice}
+            src={swirlBgImg}
+            alt="Background Swirl Texture"
+            className={'swirlBg red'}
           />
-        </Container>
+          <div id="red-bar"></div>
+          <Container
+            key="bluecontainer"
+            isHovered={isHovered}
+            color="blue"
+          ></Container>
+          <img
+            src={swirlBgImg}
+            alt="Background Swirl Texture"
+            className={'swirlBg blue'}
+          />
+        </>
       )}
-      {isHovered === 'blue' ? (
-        <HalfBg color={isHovered}></HalfBg>
-      ) : (
-        <Container key="redcontainer" isHovered={isHovered} color="red">
-          <img
-            ref={redMicRef}
-            key="redMic"
-            src={rightMic}
-            id="rightMic"
-            className="mic-image rightMic"
-            alt="right Mic Picture"
-            onPointerEnter={() => handleMouseEnter('red')}
-            onPointerLeave={() => handleMouseLeave('red')}
-            onClick={proChoice}
-          />
-          <img src={instructions} alt="instructions" className="instructions" />
-        </Container>
+      {isHovered === 'red' && (
+        <Container
+          key="redcontainer"
+          isHovered={isHovered}
+          color="red"
+        ></Container>
+      )}
+      {isHovered === 'blue' && (
+        <Container
+          key="bluecontainer"
+          isHovered={isHovered}
+          color="blue"
+        ></Container>
       )}
 
-      <DebateMateLogo />
-
+      {isHovered !== 'blue' && (
+        <img
+          key="redMic"
+          src={rightMic}
+          id="leftMic"
+          className="mic-image leftMic"
+          alt="left Mic Picture"
+          onPointerEnter={() => handleMouseEnter('red')}
+          onPointerLeave={() => handleMouseLeave('red')}
+          onClick={proChoice}
+        />
+      )}
+      {isHovered !== 'red' && (
+        <img
+          key="blueMic"
+          src={leftMic}
+          id="lefttMic"
+          className="mic-image rightMic"
+          alt="right Mic Picture"
+          onMouseEnter={() => handleMouseEnter('blue')}
+          onMouseLeave={() => handleMouseLeave('blue')}
+          onClick={conChoice}
+        />
+      )}
       <SelectMenu topic={topic} setTopic={setTopic}></SelectMenu>
     </div>
   );

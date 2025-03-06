@@ -2,10 +2,11 @@ import { RequestHandler } from 'express';
 import { ServerError } from '../../types/types';
 import 'dotenv/config';
 import OpenAI from 'openai';
-import 'dotenv/config';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  organization: process.env.OPENAI_ORGANIZATION_ID,
+  project: process.env.OPENAI_PROJECT_ID,
+  apiKey: process.env.OPENAI_API_KEY2,
 });
 
 export const queryOpenAIArgument: RequestHandler = async (_req, res, next) => {

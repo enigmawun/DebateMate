@@ -61,7 +61,7 @@ const AssessmentPage = () => {
       console.log(winner);
     }
     return (
-      <div>
+      <div className="assessment-container">
         <h1>Congratulations,</h1>
         <h2>YOU WON!</h2>
         <h3>
@@ -81,9 +81,11 @@ const AssessmentPage = () => {
     return (
       <div className="assessment-container">
         <div className="assessment-summary">
-          <h1>Sorry,</h1>
-          <h2>You've been defeated by AI.</h2>
-          <h3>
+          <h1 className="permanent-marker-regular">Sorry,</h1>
+          <h2 className="permanent-marker-regular">
+            You've been defeated by AI.
+          </h2>
+          <h3 className="gochi-hand-regular">
             AI Score: {aiScore} vs. Your Score: {userScore}
           </h3>
         </div>

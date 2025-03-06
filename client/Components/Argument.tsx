@@ -2,22 +2,24 @@ import React from 'react';
 
 interface ArgumentProps {
   body: string;
-  key: string;
-  font: string;
-  role: "ai" | "user";
+  idx: number;
 }
 
-const Argument: React.FC<ArgumentProps> = ({ body, font, role }) => {
-
-  const containerClass = role === "ai" ? "ai-argument" : "user-argument";
-
-
-
-  console.log("ARGS BODY: ", body)
-
+const Argument: React.FC<ArgumentProps> = ({ body, idx }) => {
+  function isOdd(value: number): boolean {
+    if (value % 2) return false;
+    else return true;
+  }
+  const isComputer = isOdd(idx);
   return (
-    <div className={`arguments-container ${containerClass}`}>
-      <p className={`${font} arguments` }>{body}</p>
+    <div className="argument">
+      {isComputer ? (
+        <p className="user-text gochi-hand-regular">
+          {'User Argument: ' + { body }}
+        </p>
+      ) : (
+        <p className="ai-text inconsolata-reg">{'AI Argument: ' + body}</p>
+      )}
     </div>
   );
 };
