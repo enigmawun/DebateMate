@@ -21,6 +21,10 @@ body {
   background-size: cover;
 }
 
+form {
+  display: block;
+  width: 100%;
+}
 /*front page*/
 .background {
   position: absolute;
@@ -285,6 +289,7 @@ div .entry {
 
 div .inputbox {
   display: flex;
+  width: 90%;
 }
 
 div .ai > p {
@@ -357,21 +362,24 @@ textarea::placeholder {
   color: #3178c9;
 }
 
-button #addArgument {
+button.submit-argument {
   background-color: #3178c9;
   font-family: 'Permanent Marker';
   /* color: #d9edf7; */
-  border: none;
+
   padding: 12px 20px;
   font-size: 1rem;
   cursor: pointer;
   border-radius: 5px;
   transition: transform 0.2s;
+  box-shadow: inset 3px 3px 5px #2256c7;
 }
 
 button:hover {
   background-color: #3a9ddf;
-  transform: translateY(-2px);
+  transform: translateY(2px) translateX(2px);
+  border-radius: 5px;
+  box-shadow: none;
 }
 
 button:enabled {
