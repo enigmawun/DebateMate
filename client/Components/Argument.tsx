@@ -15,7 +15,7 @@ const Argument: React.FC<ArgumentProps> = ({ body, idx }) => {
     <div className="argument">
       {isComputer ? (
         <p className="user-text gochi-hand-regular">
-          {'User Argument: ' + { body }}
+          {'User Argument: ' + body}
         </p>
       ) : (
         <p className="ai-text inconsolata-reg">{'AI Argument: ' + body}</p>

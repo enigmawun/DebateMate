@@ -112,7 +112,7 @@ const App = () => {
   );
 };
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
@@ -126,11 +126,5 @@ const router = createBrowserRouter([
     element: <AssessmentPage />,
   },
 ]);
-
-createRoot(document.querySelector('#root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-);
 
 export default App;

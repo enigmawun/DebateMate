@@ -6,10 +6,11 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
-  entry: './client/App.tsx',
+  entry: './client/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   devtool: 'eval-source-map',
   mode: 'development',
@@ -17,7 +18,7 @@ export default {
     host: 'localhost',
     port: 8080,
     static: {
-      directory: path.resolve(__dirname, '/dist'),
+      directory: path.resolve(__dirname, 'dist'),
       publicPath: '/',
     },
     proxy: [
@@ -35,7 +36,7 @@ export default {
     rules: [
       {
         test: /\.(png|jpe?g|gif\svg)$/i,
-        type: "asset/resource"
+        type: 'asset/resource',
       },
       {
         test: /\.(js|jsx)$/,
