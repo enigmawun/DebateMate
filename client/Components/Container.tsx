@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { SwirlBg } from '../Components/SwirlBg';
 import blueBg from '../assets/debateMate_blueBg.png';
 import redBg from '../assets/debateMate_redBg.png';
-import textureBg from '../assets/debateMateTexture.png';
+
 import HalfBg from '../Components/HalfBg';
 
 import swirlBgImg from '../debateMate_spinTexture.png';

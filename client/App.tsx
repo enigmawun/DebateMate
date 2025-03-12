@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-// import ReactDOM from 'react-dom/client';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import NavigationHandler from './Components/NavigationHandler';
 import { createRoot } from 'react-dom/client';
+
+//custom components
 import ConversationPage from './Components/ConversationPage';
 import AssessmentPage from './Components/AssessmentPage';
 import SelectMenu from './Components/SelectMenu';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DebateMateLogo from './Components/DebateMateLogo';
 import HalfBg from './Components/HalfBg';
+import Container from './Components/Container';
 //images and styling
 import './styles2.css';
 import instructions from './assets/debateMate_instructions.png';
 import leftMic from './assets/debateMate_leftMic.png';
 import rightMic from './assets/debateMate_rightMic.png';
-import Container from './Components/Container';
-
 import swirlBgImg from './assets/debateMate_spinTexture.png';
 
 const App = () => {
@@ -24,8 +24,12 @@ const App = () => {
     null
   );
   const [choice, setChoice] = useState<'pro' | 'against' | null>(null);
-  const [prevHovered, setPrevHovered] = useState<null | string>(null);
-  const { proChoice, conChoice } = NavigationHandler({ topic, setChoice });
+  const navigate = useNavigate();
+  const { proChoice, conChoice } = NavigationHandler({
+    topic,
+    setChoice,
+    navigate,
+  });
 
   /*Expand the red side on hover*/
   const handleMouseEnter = (color: 'red' | 'blue' | '') => {
@@ -55,7 +59,7 @@ const App = () => {
             alt="Background Swirl Texture"
             className={'swirlBg red'}
           />
-          <div id="red-bar"></div>
+
           <Container
             key="bluecontainer"
             isHovered={isHovered}
@@ -127,10 +131,9 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.querySelector('#root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-);
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Failed to find the root element');
+const root = createRoot(rootElement);
+root.render(<RouterProvider router={router} />);
 
 export default App;

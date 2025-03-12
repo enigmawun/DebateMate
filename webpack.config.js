@@ -2,40 +2,47 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import 'dotenv/config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
   entry: './client/App.tsx',
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    publicPath: '/',
+    path: path.resolve(__dirname, 'dist'),
   },
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   mode: 'development',
   devServer: {
     host: 'localhost',
     port: 8080,
     static: {
-      directory: path.resolve(__dirname, '/dist'),
-      publicPath: '/',
+      directory: path.resolve(__dirname, 'dist'),
+      publicPath: './',
     },
+
+    hot: true,
+    historyApiFallback: true,
+    headers: { 'Access-Control-Allow-Origin': '*' },
     proxy: [
       {
-        context: ['/api'],
+        context: ['/api/**'],
         target: 'http://localhost:3000',
         secure: false,
       },
     ],
-    hot: true,
-    historyApiFallback: true,
-    headers: { 'Access-Control-Allow-Origin': '*' },
   },
   module: {
     rules: [
       {
-        test: /\.(png|jpe?g|gif\svg)$/i,
-        type: "asset/resource"
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name][ext]',
+        },
       },
       {
         test: /\.(js|jsx)$/,
@@ -47,7 +54,22 @@ export default {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name][ext]',
+        },
       },
       {
         test: /\.ts(x)?$/,
@@ -57,10 +79,11 @@ export default {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './client/index.html',
+    new HtmlWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[id].css',
     }),
-    new MiniCssExtractPlugin(),
   ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],

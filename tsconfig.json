@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
@@ -19,6 +19,11 @@
       "moduleResolution": "node"
     }
   },
-  "include": ["client/**/*", "server/**/*", "types/*.ts", "client/declarations.d.ts"],
+  "include": [
+    "client/**/*",
+    "server/**/*",
+    "types/*.ts",
+    "client/declarations.d.ts"
+  ],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

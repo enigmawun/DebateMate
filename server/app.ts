@@ -1,6 +1,8 @@
 import express, { ErrorRequestHandler } from 'express';
 import cors from 'cors';
 import 'dotenv/config';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { parseUserQuery } from './controllers/userQueryController.js';
 import {
   queryOpenAIArgument,
@@ -19,6 +21,8 @@ import {
 } from './controllers/promptController.js';
 
 import { ServerError } from '../types/types.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.use(cors());
@@ -35,6 +39,9 @@ app.use(
     credentials: true,
   })
 );
+
+// Serve static files from the dist directory
+app.use(express.static(path.join(__dirname, '../dist')));
 
 app.post(
   '/api/ai/argument',
@@ -68,6 +75,11 @@ app.post(
     res.status(200).json(res.locals.evaluationResult);
   }
 );
+
+// Serve index.html for all other routes to support client-side routing
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
 const errorHandler: ErrorRequestHandler = (
   err: ServerError,

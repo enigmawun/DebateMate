@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "webpack",
+    "build:prod": "NODE_ENV=production webpack --mode production",
+    "build:analyze": "NODE_ENV=production ANALYZE=true webpack --mode production",
     "start": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm ./server/server.ts & webpack-dev-server --hot --progress --color",
     "server": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm ./server/server.ts",
     "upsert-batch": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./offline/upsert-batch.ts"
@@ -44,6 +46,7 @@
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.12.2",
     "webpack": "^5.96.1",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0",
     "whatwg-fetch": "^3.6.20"
@@ -53,6 +56,7 @@
     "@emotion/styled": "^11.13.5",
     "@mui/material": "^6.1.8",
     "@pinecone-database/pinecone": "^4.0.0",
+    "copy-webpack-plugin": "^13.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
@@ -60,6 +64,7 @@
     "openai": "^4.69.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router": "^7.3.0",
     "react-router-dom": "^6.28.0"
   }
 }

@@ -15,12 +15,6 @@
   --red: rgba(125, 17, 26);
 }
 
-body {
-  background-image: url('./assets/debateMateTexture.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 form {
   display: block;
   width: 100%;
@@ -33,53 +27,51 @@ form {
   top: 0;
 }
 
-.red {
-  background-color: var(--red);
-}
+@media (min-width: 768px) {
+  .background.background-left {
+    left: 0;
+    width: 50vw;
+  }
 
-.blue {
-  background-color: var(--blue);
-}
-.background.background-left {
-  left: 0;
-  width: 50vw;
-}
-
-.background.background-right {
-  width: 50vw;
-  right: 0;
+  .background.background-right {
+    width: 50vw;
+    right: 0;
+  }
+  div .bg-texture {
+    width: 100vw;
+  }
 }
 
 div .bg-texture {
-  background-image: url('./assets/debateMateTexture.png');
   height: 100vh;
-  width: 50vw;
-  opacity: 1;
+  background-image: url('./assets/debateMateTexture.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  opacity: 0;
   mix-blend-mode: color-burn;
 }
 
 img.swirlBg {
   position: absolute;
-  width: 50vw;
-  height: 100%;
+  width: 60vw;
+  height: 100vh;
   mix-blend-mode: overlay;
-  animation-name: enlarge;
-  animation-duration: 4s;
-  z-index: 0;
-  transition:
-    opacity 0.4s ease-out,
-    width 0.5s ease-in-out;
 }
 
 @keyframes enlarge {
   0% {
-    width: 50vw;
+    width: 60vw;
+    height: 120vh;
   }
   25% {
-    width: 60vw;
+    width: 70vw;
+    opacity: 50%;
+    height: 140vh;
   }
   100% {
-    width: 50vw;
+    width: 60vw;
+    height: 120vh;
   }
 }
 
@@ -87,31 +79,34 @@ img.swirlBg.red {
   position: absolute;
   top: 0;
   left: 0;
-  /* animation-name: enlarge-reverse;
-  animation-duration: 4s; */
+  animation-name: enlarge-reverse;
+  animation-duration: 4s;
 }
 
 img.swirlBg.blue {
   position: absolute;
   top: 0;
   right: 0;
+  animation-name: enlarge;
+  animation-duration: 4s;
+
+  transition:
+    opacity 0.4s ease-out,
+    width 0.5s ease-in-out;
 }
 
 @keyframes enlarge-reverse {
-  from {
-    width: 150%;
+  0% {
+    width: 50vw;
   }
-  to {
-    width: 100%;
+  30% {
+    width: 60vw;
+  }
+  100% {
+    width: 50vw;
   }
 }
 
-@media (max-width: 768px) {
-  img.swirlBg {
-    width: 100%;
-    height: 100%;
-  }
-}
 .mic-image {
   position: absolute;
   bottom: 0;
@@ -269,12 +264,15 @@ div.content {
   font-style: normal;
 }
 /* Dark Mode Background */
+
 body {
   font-family: 'gochi hand';
   justify-content: center;
   align-items: center;
   text-align: center;
   background-image: url('./assets/debateMateTexture.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   line-height: 1.6;
   padding: 20px;
   height: 100vh;

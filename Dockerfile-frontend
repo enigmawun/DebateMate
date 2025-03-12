@@ -1,0 +1,17 @@
+# Stage 1: Build the React application
+FROM node:23.3.0 AS build
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy source code
+COPY ./client ./client
+COPY ./webpack.config.js ./webpack.config.js
+COPY ./tsconfig.json ./tsconfig.json
+
+# Build the application
+RUN npm run build

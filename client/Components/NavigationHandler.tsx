@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
-const NavigationHandler = ({
-  topic,
-  setChoice,
-}: {
+interface NavProps {
   topic: string;
   setChoice: (choice: 'pro' | 'against') => void;
-}) => {
-  const navigate = useNavigate();
+  navigate: (path: string, options?: any) => void;
+}
 
+const NavigationHandler = ({ topic, setChoice, navigate }: NavProps) => {
   const proChoice = () => {
     setChoice('pro');
     navigate('/conversationPage', {
