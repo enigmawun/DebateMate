@@ -2,13 +2,14 @@
   "name": "daffy-ai-project",
   "version": "1.0.0",
   "description": "",
-  "main": "./client/App.tsx",
+  "main": "./app/root.tsx",
   "type": "module",
   "scripts": {
     "build": "webpack",
     "start": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm ./server/server.ts & webpack-dev-server --hot --progress --color",
     "server": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm ./server/server.ts",
-    "upsert-batch": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./offline/upsert-batch.ts"
+    "upsert-batch": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./offline/upsert-batch.ts",
+    "vercel-build": "npm run build"
   },
   "keywords": [],
   "author": "",
