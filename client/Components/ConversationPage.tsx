@@ -204,7 +204,7 @@ const ConversationPage: React.FC = () => {
             color: userSide === 'pro' ? 'green' : 'rgb(255, 99, 99)',
           }}
         >
-          {userSide === 'pro' ? 'for ' : 'against'}
+          {userSide === 'pro' ? 'for ' : 'against '}
         </span>
         <span className="permanent-marker-regular topic">{topicSummary}</span>
       </h1>

@@ -36,6 +36,8 @@ app.use(
   })
 );
 
+app.use(express.static('dist'));
+
 app.post(
   '/api/ai/argument',
   parseUserQuery,
