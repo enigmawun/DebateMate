@@ -6,7 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
-  entry: './app/root.tsx',
+  entry: './client/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
