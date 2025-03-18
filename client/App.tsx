@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // import ReactDOM from 'react-dom/client';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import NavigationHandler from './Components/NavigationHandler';
-import { createRoot } from 'react-dom/client';
+// import { createRoot } from 'react-dom/client';
 import ConversationPage from './Components/ConversationPage';
 import AssessmentPage from './Components/AssessmentPage';
 import SelectMenu from './Components/SelectMenu';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import DebateMateLogo from './Components/DebateMateLogo';
 import HalfBg from './Components/HalfBg';
 //images and styling
