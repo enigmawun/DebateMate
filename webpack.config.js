@@ -19,7 +19,6 @@ export default {
     host: '0.0.0.0',
     hot: true,
     historyApiFallback: true,
-
     port: 8080,
     static: {
       directory: path.resolve(__dirname, 'dist'),
@@ -30,6 +29,7 @@ export default {
       {
         context: ['/api'],
         target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         secure: false,
       },
     ],
@@ -54,7 +54,7 @@ export default {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        test: /\.(png|jpe?g|gif|svg|webp)$/i,
         type: 'asset/resource',
       },
     ],

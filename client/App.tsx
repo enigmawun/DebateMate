@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 // import ReactDOM from 'react-dom/client';
 // import { useNavigate } from 'react-router-dom';
 import NavigationHandler from './Components/NavigationHandler';
@@ -16,7 +16,10 @@ import leftMic from './assets/debateMate_leftMic.png';
 import rightMic from './assets/debateMate_rightMic.png';
 import Container from './Components/Container';
 
-import swirlBgImg from './assets/debateMate_spinTexture.png';
+import swirlBgImg from './assets/debateMate_spinTexture.webp';
+
+const conversationPage = lazy(() => import('./Components/ConversationPage'));
+const assessmentPage = lazy(() => import('./Components/AssessmentPage'));
 
 const App = () => {
   const [topic, setTopic] = useState('AI intelligence');
@@ -44,17 +47,22 @@ const App = () => {
       {!isHovered && (
         <>
           <Container key="redcontainer" isHovered={isHovered} color="red">
-            <img
-              src={instructions}
-              alt="instructions"
-              className="instructions"
-            />
+            <picture>
+              <img
+                src={instructions}
+                alt="instructions"
+                className="instructions"
+              />
+            </picture>
           </Container>
-          <img
-            src={swirlBgImg}
-            alt="Background Swirl Texture"
-            className={'swirlBg red'}
-          />
+
+          <picture>
+            <img
+              src={swirlBgImg}
+              alt="Background Swirl Texture"
+              className={'swirlBg red'}
+            />
+          </picture>
           <div id="red-bar"></div>
           <Container
             key="bluecontainer"
@@ -119,11 +127,19 @@ export const router = createBrowserRouter([
   },
   {
     path: '/conversationPage',
-    element: <ConversationPage />,
+    element: (
+      <Suspense>
+        <ConversationPage />
+      </Suspense>
+    ),
   },
   {
     path: '/assessmentPage',
-    element: <AssessmentPage />,
+    element: (
+      <Suspense>
+        <AssessmentPage />
+      </Suspense>
+    ),
   },
 ]);
 

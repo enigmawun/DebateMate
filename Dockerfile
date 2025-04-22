@@ -21,7 +21,7 @@ RUN chmod -R 755 /app && \
 RUN npm run build
 
 # Expose port 3000
-EXPOSE 3000
+EXPOSE 8080 3000
 
 # Start the backend server
 CMD ["npm", "run", "start"]

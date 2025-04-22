@@ -34,8 +34,6 @@ const SelectMenu: React.FC<MenuProps> = ({ topic, setTopic }) => {
           style={{
             width: 'max(25vw, 200px)',
             marginBottom: '20px',
-            zIndex: '1',
-
             //move (0,0) from top left to middle of pic
           }}
         />

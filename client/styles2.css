@@ -16,7 +16,6 @@
 }
 
 body {
-  background-image: url('./assets/debateMateTexture.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -50,14 +49,15 @@ form {
   right: 0;
 }
 
-div .bg-texture {
-  background-image: url('./assets/debateMateTexture.png');
-  height: 100vh;
-  width: 50vw;
-  opacity: 1;
-  mix-blend-mode: color-burn;
+@media (width: 1920px) {
+  div .bg-texture {
+    background-image: url('./assets/texture1920x1080.webp');
+    height: 100vh;
+    width: 50vw;
+    opacity: 1;
+    mix-blend-mode: color-burn;
+  }
 }
-
 img.swirlBg {
   position: absolute;
   width: 50vw;
@@ -274,7 +274,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url('./assets/debateMateTexture.png');
+
   line-height: 1.6;
   padding: 20px;
   height: 100vh;

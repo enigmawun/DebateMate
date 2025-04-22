@@ -1,5 +1,5 @@
 import React from 'react';
-import speechBubble from '../assets/debateMate_speechBubble.png';
+import speechBubble from '../assets/debateMate_speechBubble.webp';
 import titlePic from '../assets/debateMate_Title.png';
 import logo from '../assets/debateMate_logo.png';
 
