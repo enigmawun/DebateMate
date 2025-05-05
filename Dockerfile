@@ -1,5 +1,5 @@
-# Stage 1: Build the backend
-FROM node:20.18.0
+# Stage 1: Build the frontend
+FROM node:20.18.0 AS builder
 
 # Set working directory
 WORKDIR /app
@@ -20,8 +20,15 @@ RUN chmod -R 755 /app && \
 # Build the application
 RUN npm run build
 
-# Expose port 3000
-EXPOSE 8080 3000
+#STAGE 2: Build the backend
 
+# Expose port 3000
+FROM node:20.18.0
+WORKDIR /app
+COPY --from=builder /app /app
+EXPOSE 8080
+
+
+ENV NODE_ENV=production
 # Start the backend server
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "server"]

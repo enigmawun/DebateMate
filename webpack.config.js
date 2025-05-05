@@ -29,7 +29,6 @@ export default {
       {
         context: ['/api'],
         target: 'http://localhost:3000',
-        target: 'http://localhost:8080',
         secure: false,
       },
     ],
