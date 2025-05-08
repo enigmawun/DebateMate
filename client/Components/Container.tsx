@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { SwirlBg } from '../Components/SwirlBg';
+
 import blueBg from '../assets/debateMate_blueBg.png';
 import redBg from '../assets/debateMate_redBg.png';
 
@@ -54,9 +54,7 @@ const Container: React.FC<ContainerProps> = ({
     </div>
   ) : (
     <div className={containerClass} id={id}>
-      <SwirlBg key={id} color={color}>
-        {children}
-      </SwirlBg>
+      {children}
     </div>
   );
 };

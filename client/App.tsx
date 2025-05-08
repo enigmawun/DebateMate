@@ -16,7 +16,10 @@ import leftMic from './assets/debateMate_leftMic.png';
 import rightMic from './assets/debateMate_rightMic.png';
 import Container from './Components/Container';
 
-import swirlBgImg from './assets/debateMate_spinTexture.webp';
+import swirlBg1280 from './assets/spinTexture1280.webp';
+import swirlBg1920 from './assets/debateMateTexture.png';
+import swirlBg800 from './assets/spinTexture800.webp';
+import swirlBg500 from './assets/spinTexture500.webp';
 
 const conversationPage = lazy(() => import('./Components/ConversationPage'));
 const assessmentPage = lazy(() => import('./Components/AssessmentPage'));
@@ -57,8 +60,11 @@ const App = () => {
           </Container>
 
           <picture>
+            <source media="(max-width: 1280px)" srcSet={swirlBg1280} />
+            <source media="(max-width: 800px)" srcSet={swirlBg800} />
+            <source media="(max-width: 500px)" srcSet={swirlBg500} />
             <img
-              src={swirlBgImg}
+              src={swirlBg1920}
               alt="Background Swirl Texture"
               className={'swirlBg red'}
             />
@@ -69,11 +75,17 @@ const App = () => {
             isHovered={isHovered}
             color="blue"
           ></Container>
-          <img
-            src={swirlBgImg}
-            alt="Background Swirl Texture"
-            className={'swirlBg blue'}
-          />
+          <picture>
+            <source media="(max-width: 1280px)" srcSet={swirlBg1280} />
+            <source media="(max-width: 800px)" srcSet={swirlBg800} />
+            <source media="(max-width: 500px)" srcSet={swirlBg500} />
+            <source media="(min-width: 1280px)" srcSet={swirlBg1920} />
+            <img
+              src={swirlBg1920}
+              alt="Background Swirl Texture"
+              className={'swirlBg red'}
+            />
+          </picture>
         </>
       )}
       {isHovered === 'red' && (
@@ -106,7 +118,7 @@ const App = () => {
       {isHovered !== 'red' && (
         <img
           key="blueMic"
-          src={leftMic}
+          src={rightMic}
           id="lefttMic"
           className="mic-image rightMic"
           alt="right Mic Picture"

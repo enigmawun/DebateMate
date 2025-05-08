@@ -48,18 +48,37 @@ form {
   width: 50vw;
   right: 0;
 }
-
-@media (width: 1920px) {
+@media (min-width: 1500px) {
   div .bg-texture {
-    background-image: url('./assets/texture1920x1080.webp');
-    height: 100vh;
-    width: 50vw;
-    opacity: 1;
-    mix-blend-mode: color-burn;
+    background-image: url('./assets/texture1920.webp');
   }
 }
+
+@media (max-width: 1280px) {
+  div .bg-texture {
+    background-image: url('./assets/texture1200.webp');
+  }
+}
+
+@media (max-width: 800px) {
+  div .bg-texture {
+    background-image: url('./assets/texture800.webp');
+  }
+}
+
+@media (max-width: 500px) {
+  div .bg-texture {
+    background-image: url('./assets/texture500.webp');
+  }
+}
+
+div .bg-texture {
+  height: 100vh;
+  width: 50vw;
+  opacity: 1;
+  mix-blend-mode: color-burn;
+}
 img.swirlBg {
-  position: absolute;
   width: 50vw;
   height: 100%;
   mix-blend-mode: overlay;
@@ -131,6 +150,7 @@ img.swirlBg.blue {
 }
 
 .rightMic {
+  transform: scaleX(-1);
   right: 15%;
   height: 60vh;
 }
@@ -138,7 +158,7 @@ img.swirlBg.blue {
 @media (max-width: 900px) {
   .rightMic {
     height: 40vh;
-    transform: perspective(200px);
+    transform: scaleX(-1) perspective(200px);
   }
   .leftMic {
     height: 40vh;
