@@ -58,34 +58,25 @@ const App = () => {
               />
             </picture>
           </Container>
-
-          <picture>
-            <source media="(max-width: 1280px)" srcSet={swirlBg1280} />
-            <source media="(max-width: 800px)" srcSet={swirlBg800} />
-            <source media="(max-width: 500px)" srcSet={swirlBg500} />
-            <img
-              src={swirlBg1920}
-              alt="Background Swirl Texture"
-              className={'swirlBg red'}
-            />
-          </picture>
+          <img
+            srcSet={`${swirlBg500} 0.5x, ${swirlBg800} 1x, ${swirlBg1280} 1.5x, ${swirlBg1920} 2x`}
+            src={swirlBg1920}
+            alt="Background Swirl Texture"
+            className={'swirlBg red'}
+          />
           <div id="red-bar"></div>
           <Container
             key="bluecontainer"
             isHovered={isHovered}
             color="blue"
           ></Container>
-          <picture>
-            <source media="(max-width: 1280px)" srcSet={swirlBg1280} />
-            <source media="(max-width: 800px)" srcSet={swirlBg800} />
-            <source media="(max-width: 500px)" srcSet={swirlBg500} />
-            <source media="(min-width: 1280px)" srcSet={swirlBg1920} />
-            <img
-              src={swirlBg1920}
-              alt="Background Swirl Texture"
-              className={'swirlBg red'}
-            />
-          </picture>
+
+          <img
+            srcSet={`${swirlBg500} 0.5x, ${swirlBg800} 1x, ${swirlBg1280} 1.5x, ${swirlBg1920} 2x`}
+            src={swirlBg1920}
+            alt="Background Swirl Texture"
+            className={'swirlBg blue'}
+          />
         </>
       )}
       {isHovered === 'red' && (
