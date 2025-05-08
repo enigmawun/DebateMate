@@ -2,6 +2,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,7 +16,7 @@ export default {
     publicPath: '/',
   },
   devtool: 'eval-source-map',
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devServer: {
     // host: 'localhost',
     host: '0.0.0.0',

@@ -44,7 +44,7 @@ const ConversationPage: React.FC = () => {
     );
     try {
       setRound(round + 1);
-      const newData = await fetch('http://localhost:3000/api/ai/argument', {
+      const newData = await fetch('/api/ai/argument', {
         // rename here after
         method: 'POST',
         headers: {
@@ -135,27 +135,24 @@ const ConversationPage: React.FC = () => {
     sendArgToServer(updatedUserArguments);
     console.log('Fetching assessment response...');
     try {
-      const assessmentResponse = await fetch(
-        'http://localhost:3000/api/ai/assessment',
-        {
-          // rename here after
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            user_arguments: userArguments,
-            ai_arguments: aiArguments,
-            topic,
-            user_side: userSide,
-            ai_reasoning: aiReasonings,
-            ai_strong_points: aiStrongPoints,
-            ai_weak_points: aiWeakPoints,
-            user_strong_points: userStrongPoints,
-            user_weak_points: userWeakPoints,
-          }),
-        }
-      );
+      const assessmentResponse = await fetch('/api/ai/assessment', {
+        // rename here after
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_arguments: userArguments,
+          ai_arguments: aiArguments,
+          topic,
+          user_side: userSide,
+          ai_reasoning: aiReasonings,
+          ai_strong_points: aiStrongPoints,
+          ai_weak_points: aiWeakPoints,
+          user_strong_points: userStrongPoints,
+          user_weak_points: userWeakPoints,
+        }),
+      });
 
       if (!assessmentResponse.ok) {
         throw new Error(`HTTP Error: ${assessmentResponse.status}`);

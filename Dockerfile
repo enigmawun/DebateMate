@@ -22,7 +22,7 @@ RUN npm run build
 
 #STAGE 2: Build the backend
 
-# Expose port 3000
+# Expose port 8080
 FROM node:20.18.0
 WORKDIR /app
 COPY --from=builder /app /app
