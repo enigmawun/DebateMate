@@ -78,6 +78,68 @@ div .bg-texture {
   opacity: 1;
   mix-blend-mode: color-burn;
 }
+
+.animate-spin {
+  animation: spin 10s linear infinite;
+  clip-path: circle();
+  position: relative;
+  border-radius: 50%;
+  animation-iteration-count: 3;
+  border: 20px solid rgba(255, 255, 255, 0.1);
+}
+
+.bg-color-change {
+  background-image: url('./assets/debateMateTexture.png');
+  background-color: red;
+  background-size: stretch;
+  animation: color-change 10s steps(2, end) 1;
+  transition-behavior: allow-discrete;
+  mix-blend-mode: luminosity;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@keyframes color-change {
+  0% {
+    background-color: red;
+    mix-blend-mode: luminosity;
+  }
+  49% {
+    background-color: red;
+    mix-blend-mode: color-burn;
+  }
+  50% {
+    background-color: blue;
+    mix-blend-mode: color-burn;
+  }
+  100% {
+    background-color: blue;
+    mix-blend-mode: luminosity;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotateZ(0deg);
+    scale: 1.5;
+  }
+  25% {
+    scale: 1;
+  }
+  50% {
+    scale: 0.5;
+    transform: rotateZ(-180deg);
+  }
+  75% {
+    scale: 1;
+  }
+  100% {
+    transform: rotateZ(180deg);
+    scale: 0.5;
+  }
+}
 img.swirlBg {
   position: absolute;
   top: 0;
@@ -86,7 +148,7 @@ img.swirlBg {
   mix-blend-mode: overlay;
   animation-name: enlarge;
   animation-duration: 4s;
-  z-index: 0;
+  z-index: 8;
   transition:
     opacity 0.4s ease-out,
     width 0.5s ease-in-out;

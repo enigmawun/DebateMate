@@ -1,29 +1,25 @@
 import React, { ReactNode } from 'react';
-import yes from '../assets/debate-yes.png';
-import no from '../assets/debate-no.png';
+
+import swirlBg1280 from '../assets/spinTexture1280.webp';
+import swirlBg1920 from '../assets/debateMate_spinTexture.png';
+import swirlBg800 from '../assets/spinTexture800.webp';
+import swirlBg500 from '../assets/spinTexture500.webp';
 
 interface HalfBgProps {
-  color: string;
+  color: 'red' | 'blue';
+  isHovered: 'red' | 'blue' | null;
   children?: ReactNode;
 }
-const HalfBg: React.FC<HalfBgProps> = ({ color }) => {
+const HalfBg = ({ color, children, isHovered }: HalfBgProps) => {
+  const side = color === 'red' ? 'left' : 'right';
   return (
-    <div>
-      {color === 'red' ? (
-        <img
-          className="bubble absolute right-5vw"
-          src={no}
-          id="CONside"
-          alt="CON"
-        />
-      ) : (
-        <img
-          className="bubble absolute left-5vw"
-          src={yes}
-          id="PROside"
-          alt="PRO"
-        />
-      )}
+    <div className={'background bg-spin background-' + side + ' ' + color}>
+      <img
+        srcSet={`${swirlBg500} 0.5x, ${swirlBg800} 1x, ${swirlBg1280} 1.5x, ${swirlBg1920} 2x`}
+        src={swirlBg1920}
+        alt="Background Swirl Texture"
+        className={'swirlBg ' + color}
+      />
     </div>
   );
 };
