@@ -1,16 +1,18 @@
 import React, { ReactNode } from 'react';
-import { SwirlBg } from '../Components/SwirlBg';
+import yes from '../assets/debate-yes.png';
+import no from '../assets/debate-no.png';
 import blueBg from '../assets/debateMate_blueBg.png';
 import redBg from '../assets/debateMate_redBg.png';
-import textureBg from '../assets/debateMateTexture.png';
+
 import HalfBg from '../Components/HalfBg';
 
-import swirlBgImg from '../debateMate_spinTexture.png';
+import swirlBgImg from '../debateMate_spinTexture.webp';
 
 interface ContainerProps {
   children?: ReactNode;
-  isHovered: 'red' | 'blue' | '' | null;
+  isHovered: 'red' | 'blue' | null;
   color: 'red' | 'blue';
+  side: 'left' | 'right';
 }
 type Metadata = {
   className: string;
@@ -23,6 +25,7 @@ const Container: React.FC<ContainerProps> = ({
   color,
   isHovered,
   children,
+  side,
 }) => {
   let metadata: Metadata = {
     className: '',
@@ -30,33 +33,18 @@ const Container: React.FC<ContainerProps> = ({
     alt: '',
     swirlId: '',
   };
-  let containerClass =
-    isHovered == color
-      ? 'background background-stretch ' + color
-      : 'background ' + color;
-  let id = '';
-  function getClasses(color: string) {
-    if (color === 'blue') {
-      if (isHovered !== 'blue') {
-        containerClass += ' background-right';
-      }
-      id = 'background-right';
-    } else if (color === 'red') {
-      containerClass += ' background-left';
-      id = 'background-left';
-    }
-  }
-  getClasses(color);
 
-  return isHovered === color ? (
-    <div className={'background ' + color}>
-      <HalfBg color={color}></HalfBg>
-    </div>
-  ) : (
-    <div className={containerClass} id={id}>
-      <SwirlBg key={id} color={color}>
-        {children}
-      </SwirlBg>
+  return (
+    <div className={'background background-stretch ' + color}>
+      {children}
+      {isHovered === color && (
+        <img
+          className={'bubble absolute ' + side + '-5vw'}
+          src={isHovered === 'blue' ? yes : no}
+          id={side + 'side'}
+          alt={side}
+        />
+      )}
     </div>
   );
 };

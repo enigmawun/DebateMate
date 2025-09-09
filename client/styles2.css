@@ -16,7 +16,6 @@
 }
 
 body {
-  background-image: url('./assets/debateMateTexture.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -49,23 +48,107 @@ form {
   width: 50vw;
   right: 0;
 }
+@media (min-width: 1500px) {
+  div .bg-texture {
+    background-image: url('./assets/texture1920.webp');
+  }
+}
+
+@media (max-width: 1280px) {
+  div .bg-texture {
+    background-image: url('./assets/texture1200.webp');
+  }
+}
+
+@media (max-width: 800px) {
+  div .bg-texture {
+    background-image: url('./assets/texture800.webp');
+  }
+}
+
+@media (max-width: 500px) {
+  div .bg-texture {
+    background-image: url('./assets/texture500.webp');
+  }
+}
 
 div .bg-texture {
-  background-image: url('./assets/debateMateTexture.png');
   height: 100vh;
   width: 50vw;
   opacity: 1;
   mix-blend-mode: color-burn;
 }
 
+.animate-spin {
+  animation: spin 10s linear infinite;
+  clip-path: circle();
+  position: relative;
+  border-radius: 50%;
+  animation-iteration-count: 3;
+  border: 20px solid rgba(255, 255, 255, 0.1);
+}
+
+.bg-color-change {
+  background-image: url('./assets/debateMateTexture.png');
+  background-color: red;
+  background-size: stretch;
+  animation: color-change 10s steps(2, end) 1;
+  transition-behavior: allow-discrete;
+  mix-blend-mode: luminosity;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@keyframes color-change {
+  0% {
+    background-color: red;
+    mix-blend-mode: luminosity;
+  }
+  49% {
+    background-color: red;
+    mix-blend-mode: color-burn;
+  }
+  50% {
+    background-color: blue;
+    mix-blend-mode: color-burn;
+  }
+  100% {
+    background-color: blue;
+    mix-blend-mode: luminosity;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotateZ(0deg);
+    scale: 1.5;
+  }
+  25% {
+    scale: 1;
+  }
+  50% {
+    scale: 0.5;
+    transform: rotateZ(-180deg);
+  }
+  75% {
+    scale: 1;
+  }
+  100% {
+    transform: rotateZ(180deg);
+    scale: 0.5;
+  }
+}
 img.swirlBg {
   position: absolute;
+  top: 0;
   width: 50vw;
   height: 100%;
   mix-blend-mode: overlay;
   animation-name: enlarge;
   animation-duration: 4s;
-  z-index: 0;
+  z-index: 8;
   transition:
     opacity 0.4s ease-out,
     width 0.5s ease-in-out;
@@ -84,16 +167,12 @@ img.swirlBg {
 }
 
 img.swirlBg.red {
-  position: absolute;
-  top: 0;
   left: 0;
   /* animation-name: enlarge-reverse;
   animation-duration: 4s; */
 }
 
 img.swirlBg.blue {
-  position: absolute;
-  top: 0;
   right: 0;
 }
 
@@ -131,6 +210,7 @@ img.swirlBg.blue {
 }
 
 .rightMic {
+  transform: scaleX(-1);
   right: 15%;
   height: 60vh;
 }
@@ -138,14 +218,14 @@ img.swirlBg.blue {
 @media (max-width: 900px) {
   .rightMic {
     height: 40vh;
-    transform: perspective(200px);
+    transform: scaleX(-1) perspective(200px);
   }
   .leftMic {
     height: 40vh;
   }
 }
 .rightMic:hover {
-  transform: scale(1.2);
+  transform: scaleX(-1) scale(1.2);
   transition: transform 0.6s ease-in;
 }
 
@@ -274,7 +354,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url('./assets/debateMateTexture.png');
+
   line-height: 1.6;
   padding: 20px;
   height: 100vh;

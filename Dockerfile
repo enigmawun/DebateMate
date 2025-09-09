@@ -1,24 +1,34 @@
-# Stage 1: Build the backend
-FROM node:20.18.0
+# Stage 1: Build the frontend
+FROM node:20.18.0 AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install all dependencies (including devDependencies)
-COPY package.json package-lock.json tsconfig.json ./
-RUN npm ci
+# Copy package files first (for better caching)
+COPY package*.json ./
 
-# Copy backend source code
-COPY ./server ./server
-COPY ./types ./types
+# Install dependencies
+RUN npm install
 
-# Copy compiled JavaScript from the build stage
-COPY --from=build /app/dist ./dist
+# Copy the rest of the application
+COPY . .
 
+# Ensure correct permissions and file existence
+RUN chmod -R 755 /app && \
+    ls -la /app/client/assets
+
+# Build the application
 RUN npm run build
 
-# Expose port 3000
-EXPOSE 3000
+#STAGE 2: Build the backend
 
+# Expose port 8080
+FROM node:20.18.0
+WORKDIR /app
+COPY --from=builder /app /app
+EXPOSE 8080
+
+
+ENV NODE_ENV=production
 # Start the backend server
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "server"]

@@ -2,6 +2,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,14 +16,18 @@ export default {
     publicPath: '/',
   },
   devtool: 'eval-source-map',
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devServer: {
-    host: 'localhost',
+    // host: 'localhost',
+    host: '0.0.0.0',
+    hot: true,
+    historyApiFallback: true,
     port: 8080,
     static: {
       directory: path.resolve(__dirname, 'dist'),
       publicPath: '/',
     },
+    headers: { 'Access-Control-Allow-Origin': '*' },
     proxy: [
       {
         context: ['/api'],
@@ -28,16 +35,9 @@ export default {
         secure: false,
       },
     ],
-    hot: true,
-    historyApiFallback: true,
-    headers: { 'Access-Control-Allow-Origin': '*' },
   },
   module: {
     rules: [
-      {
-        test: /\.(png|jpe?g|gif\svg)$/i,
-        type: 'asset/resource',
-      },
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
@@ -55,15 +55,20 @@ export default {
         loader: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(png|jpe?g|gif|svg|webp)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './client/index.html',
+      inject: true,
     }),
     new MiniCssExtractPlugin(),
   ],
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
 };
