@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense,  } from 'react';
 // import ReactDOM from 'react-dom/client';
 // import { useNavigate } from 'react-router-dom';
 import NavigationHandler from './Components/NavigationHandler';
@@ -14,19 +14,12 @@ const conversationPage = lazy(() => import('./Components/ConversationPage'));
 const assessmentPage = lazy(() => import('./Components/AssessmentPage'));
 
 const App = () => {
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   return (
     <>
-      {isLoading ? (
-        <LoadingSpinner className="animate-spin" />
-      ) : (
+     
         <MainContainer />
-      )}
+
     </>
   );
 };

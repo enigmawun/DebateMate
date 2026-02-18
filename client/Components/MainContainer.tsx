@@ -23,7 +23,6 @@ const MainContainer = () => {
 
   /*Expand the red side on hover*/
   const handleMouseEnter = (color: 'red' | 'blue' | null) => {
-    console.log('handleMouseEnter', color);
     setHoveredSide(color);
     const newChoice = color === 'red' ? 'pro' : 'against';
     setChoice(newChoice);
@@ -31,12 +30,13 @@ const MainContainer = () => {
 
   const handleMouseLeave = (color: 'blue' | 'red' | null) => {
     setHoveredSide(null);
-
     setChoice(null);
   };
 
   return (
     <div className="main-container">
+
+<SelectMenu topic={topic} setTopic={setTopic}></SelectMenu>
       {!isHovered && (
         <>
           <HalfBg color="red" key="red-halfbg" isHovered={isHovered}></HalfBg>
@@ -104,7 +104,6 @@ const MainContainer = () => {
         </Container>
       )}
 
-      <SelectMenu topic={topic} setTopic={setTopic}></SelectMenu>
     </div>
   );
 };
